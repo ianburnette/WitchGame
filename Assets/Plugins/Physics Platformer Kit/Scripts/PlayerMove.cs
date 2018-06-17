@@ -28,6 +28,8 @@ public class PlayerMove : MonoBehaviour
 	public float movementSensitivity = .25f;
     public float directionSpeed = 3f;
 
+	[SerializeField] float slopeCorrectionAmount;
+
 	//jumping
 	public Vector3 jumpForce =  new Vector3(0, 13, 0);		//normal jump force
 	public Vector3 secondJumpForce = new Vector3(0, 13, 0); //the force of a 2nd consecutive jump
@@ -43,6 +45,7 @@ public class PlayerMove : MonoBehaviour
 	Quaternion screenMovementSpace;
 	float airPressTime, groundedCount, curAccel, curDecel, curRotateSpeed, slope;
 	Vector3 direction, moveDirection, screenMovementForward, screenMovementRight, movingObjSpeed;
+	Vector3 slopeNormal;
 
 	CharacterMotor characterMotor;
 	EnemyAI enemyAI;
@@ -97,6 +100,7 @@ public class PlayerMove : MonoBehaviour
 	{
 		//are we grounded
 		grounded = IsGrounded ();
+		CorrectForSlope(slopeNormal);
 		//move, rotate, manage speed
 		characterMotor.MoveTo (moveDirection, curAccel, movementSensitivity, true);
 		if (rotateSpeed != 0 && direction.magnitude != 0)
@@ -136,7 +140,7 @@ public class PlayerMove : MonoBehaviour
 		//check whats at players feet, at each floorcheckers position
 		Vector3 groundNormal = new Vector3();
 		int numberOfHits = 0;
-
+		int loopCount = 0;
 		foreach (Transform check in floorCheckers)
 		{
 			RaycastHit hit;
@@ -154,7 +158,7 @@ public class PlayerMove : MonoBehaviour
 					}
 					else if (slope < slopeLimit && hit.transform.tag != "Pushable") {
 						//HandleSlope();
-						groundNormal += hit.normal;
+						groundNormal += hit.normal.normalized;
 						numberOfHits++;
 					}
 					//enemy bouncing
@@ -180,19 +184,47 @@ public class PlayerMove : MonoBehaviour
 						movingObjSpeed = Vector3.zero;
 					}
 					//yes our feet are on something
-					if (numberOfHits>0)
-						HandleSlope(groundNormal);
+					loopCount++;
+
 					return true;
 				}
+			} else {
+				loopCount++;
 			}
 		}
+
+		var nX = Mathf.Abs(groundNormal.x) > 0 ? groundNormal.x / numberOfHits : 0;
+		var nY = Mathf.Abs(groundNormal.y) > 0 ? groundNormal.y / numberOfHits : 0;
+		var nZ = Mathf.Abs(groundNormal.z) > 0 ? groundNormal.z / numberOfHits : 0;
+
+		slopeNormal = new Vector3(nX, nY, nZ);
+
 		movingObjSpeed = Vector3.zero;
 		//no none of the floorchecks hit anything, we must be in the air (or water)
 		return false;
 	}
 
 	void HandleSlope(Vector3 normal) {
-		Debug.DrawRay(transform.position, normal, Color.green);
+		Debug.DrawRay(transform.position, normal, Color.cyan);
+		var slopeForward = Vector3.Cross(transform.right, normal);
+		Debug.DrawRay(transform.position, slopeForward, Color.magenta);
+		var slopeAngle = Vector3.SignedAngle(transform.forward, slopeForward, Vector3.up);
+		rigid.AddForce(slopeForward * slopeCorrectionAmount);
+	}
+
+	void CorrectForSlope(Vector3 slopeNormal)
+	{
+		var slopeTangent = SlopeTangentAnalysis(slopeNormal);
+		var slopeCorrection = Vector3.Cross(slopeNormal, slopeTangent);
+		Debug.DrawRay(transform.position, transform.position + (slopeCorrection * slopeCorrectionAmount), Color.yellow);
+		rigid.AddForce(slopeCorrection * slopeCorrectionAmount);
+	}
+
+	Vector3 SlopeTangentAnalysis(Vector3 incomingNormal)
+	{
+		var tangentResult = Vector3.zero;
+		tangentResult = new Vector3(-incomingNormal.z, 0, incomingNormal.x);
+		return tangentResult;
 	}
 
 	//jumping

@@ -32,13 +32,10 @@ public abstract class CameraBase : MonoBehaviour {
 
     protected Vector3 CompensateForWalls(Vector3 from, Vector3 targetPosition)
     {
-        Debug.DrawLine(from, targetPosition, Color.cyan);
         RaycastHit wallHit = new RaycastHit();
         if (Physics.Linecast(from, targetPosition, out wallHit))
-        {
-            Debug.DrawRay(wallHit.point, Vector3.left, Color.red);
             return new Vector3(wallHit.point.x, targetPosition.y, wallHit.point.z);
-        }
+        
         return targetPosition;
     }
 
