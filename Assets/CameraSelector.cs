@@ -7,7 +7,8 @@ public class CameraSelector : MonoBehaviour {
     [SerializeField] Behaviour[] camScripts;
 
     [SerializeField] CamState currentCamState;
-    public enum CamState { Behind, /*FirstPerson,*/ Target/*, Free, Nodes*/ }
+    [SerializeField] Behaviour[] toDisableInFirstPerson;
+    public enum CamState { Behind, Target, FirstPerson, Free/*, Nodes*/ }
 
     public CamState CurrentCamState
     {
@@ -16,6 +17,8 @@ public class CameraSelector : MonoBehaviour {
             currentCamState = value;
             for (var i = 0; i <= LengthOfCamEnum(); i++)
                 camScripts[i].enabled = i == (int)value ? true : false;
+            foreach (var behaviour in toDisableInFirstPerson)
+                behaviour.enabled = currentCamState != CamState.FirstPerson;
         }
     }
 

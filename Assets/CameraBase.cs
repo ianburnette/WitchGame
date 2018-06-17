@@ -4,20 +4,18 @@ using UnityEngine;
 
 public abstract class CameraBase : MonoBehaviour {
 
-    [SerializeField] Vector3 velocityCamSmoothe = Vector3.zero;
+    Vector3 velocityCamSmoothe = Vector3.zero;
+    [Header("Global Camera Variables")]
     [SerializeField] float camSmoothDampTime = .1f;
     [SerializeField] public Transform toFollow;
+    [SerializeField] public Transform lens;
 
-    [SerializeField] protected float distanceAbovePlayer = 3f;
-    [SerializeField] protected float distanceBehindPlayer = 10f;
+    [SerializeField] protected Vector3 cameraOffset = new Vector3(0f, 3f, 10f);
 
-    protected void LookAtTarget() => transform.LookAt(toFollow.position);
+    protected virtual void SetRotation() => lens.LookAt(toFollow.position);
 
-    public virtual Vector3 CharacterOffset(float offset) => toFollow.position + Vector3.up * offset;
-
-    public virtual Vector3 LookDirection(float offset)
-    {
-        Vector3 dir = CharacterOffset(offset) - transform.position;
+    public virtual Vector3 LookDirection(float offset) {
+        var dir = toFollow.position - transform.position;
         dir.y = 0;
         return dir.normalized;
     }
@@ -25,12 +23,12 @@ public abstract class CameraBase : MonoBehaviour {
     public virtual void LateUpdate()
     {
         SetPosition();
-        LookAtTarget();
+        SetRotation();
     }
 
-    public abstract Vector3 TargetPosition();// => CharacterOffset(offset) + toFollow.up * distanceAbovePlayer - LookDirection(offset) * distanceBehindPlayer;
+    public abstract Vector3 TargetPosition();
 
-    protected void SetPosition() => transform.position = SmoothePosition(transform.position, CompensateForWalls(CharacterOffset(distanceAbovePlayer), TargetPosition()));
+    protected void SetPosition() => transform.position = SmoothePosition(transform.position, CompensateForWalls(toFollow.position, TargetPosition()));
 
     protected Vector3 CompensateForWalls(Vector3 from, Vector3 targetPosition)
     {

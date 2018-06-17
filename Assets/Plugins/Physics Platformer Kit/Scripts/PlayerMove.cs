@@ -6,7 +6,7 @@ using System.Collections;
 [RequireComponent(typeof(DealDamage))]
 [RequireComponent(typeof(AudioSource))]
 [RequireComponent(typeof(Rigidbody))]
-public class PlayerMove : MonoBehaviour 
+public class PlayerMove : MonoBehaviour
 {
 	//setup
 	public bool sidescroller;					//if true, won't apply vertical input
@@ -14,10 +14,10 @@ public class PlayerMove : MonoBehaviour
 	public Animator animator;					//object with animation controller on, which you want to animate
 	public AudioClip jumpSound;					//play when jumping
 	public AudioClip landSound;					//play when landing on ground
-	
+
 	//movement
 	public float accel = 70f;					//acceleration/deceleration in air or on the ground
-	public float airAccel = 18f;			
+	public float airAccel = 18f;
 	public float decel = 7.6f;
 	public float airDecel = 1.1f;
 	[Range(0f, 5f)]
@@ -26,8 +26,9 @@ public class PlayerMove : MonoBehaviour
 	public float slopeLimit = 40, slideAmount = 35;			//maximum angle of slopes you can walk on, how fast to slide down slopes you can't
 	public float movingPlatformFriction = 7.7f;				//you'll need to tweak this to get the player to stay on moving platforms properly
 
+	public float movementSensitivity = .25f;
     public float directionSpeed = 3f;
-	
+
 	//jumping
 	public Vector3 jumpForce =  new Vector3(0, 13, 0);		//normal jump force
 	public Vector3 secondJumpForce = new Vector3(0, 13, 0); //the force of a 2nd consecutive jump
@@ -35,20 +36,20 @@ public class PlayerMove : MonoBehaviour
 	public float jumpDelay = 0.1f;							//how fast you need to jump after hitting the ground, to do the next type of jump
 	public float jumpLeniancy = 0.17f;						//how early before hitting the ground you can press jump, and still have it work
 	[HideInInspector]
-	public int onEnemyBounce;					
-	
-	private int onJump;
-	private bool grounded;
-	private Transform[] floorCheckers;
-	private Quaternion screenMovementSpace;
-	private float airPressTime, groundedCount, curAccel, curDecel, curRotateSpeed, slope;
-	private Vector3 direction, moveDirection, screenMovementForward, screenMovementRight, movingObjSpeed;
-	
-	private CharacterMotor characterMotor;
-	private EnemyAI enemyAI;
-	private DealDamage dealDamage;
-	private Rigidbody rigid;
-	private AudioSource aSource;
+	public int onEnemyBounce;
+
+	int onJump;
+	bool grounded;
+	Transform[] floorCheckers;
+	Quaternion screenMovementSpace;
+	float airPressTime, groundedCount, curAccel, curDecel, curRotateSpeed, slope;
+	Vector3 direction, moveDirection, screenMovementForward, screenMovementRight, movingObjSpeed;
+
+	CharacterMotor characterMotor;
+	EnemyAI enemyAI;
+	DealDamage dealDamage;
+	Rigidbody rigid;
+	AudioSource aSource;
 
 	//setup
 	void Awake()
@@ -73,7 +74,6 @@ public class PlayerMove : MonoBehaviour
 			Debug.LogWarning ("PlayerMove script assigned to object without the tag 'Player', tag has been assigned automatically", transform);
 		}
 		//usual setup
-		mainCam = GameObject.FindGameObjectWithTag("MainCamera").transform;
 		dealDamage = GetComponent<DealDamage>();
 		characterMotor = GetComponent<CharacterMotor>();
 		rigid = GetComponent<Rigidbody>();
@@ -84,10 +84,10 @@ public class PlayerMove : MonoBehaviour
 		for (int i=0; i < floorCheckers.Length; i++)
 			floorCheckers[i] = floorChecks.GetChild(i);
 	}
-	
+
 	//get state of player, values and input
 	void Update()
-	{	
+	{
 		//stops rigidbody "sleeping" if we don't move, which would stop collision detection
 		rigid.WakeUp();
 		//handle jumping
@@ -96,55 +96,31 @@ public class PlayerMove : MonoBehaviour
 		curAccel = (grounded) ? accel : airAccel;
 		curDecel = (grounded) ? decel : airDecel;
 		curRotateSpeed = (grounded) ? rotateSpeed : airRotateSpeed;
-				
+
 		//get movement axis relative to camera
 		screenMovementSpace = Quaternion.Euler (0, mainCam.eulerAngles.y, 0);
 		screenMovementForward = screenMovementSpace * Vector3.forward;
 		screenMovementRight = screenMovementSpace * Vector3.right;
-		
+
 		//get movement input, set direction to move in
-		float h = Input.GetAxisRaw ("Horizontal");
-		float v = Input.GetAxisRaw ("Vertical");
-		
+		float h = Input.GetAxis ("Horizontal");
+		float v = Input.GetAxis ("Vertical");
+
 		//only apply vertical input to movemement, if player is not sidescroller
 		if(!sidescroller)
 			direction = (screenMovementForward * v) + (screenMovementRight * h);
 		else
 			direction = Vector3.right * h;
-        //direction = InputToWorldSpace(transform, mainCam, h, v);
 		moveDirection = transform.position + direction;
 	}
 
-    float InputToWorldSpace(Transform root, Transform camera, float h, float v)
-    {
-        Vector3 rootDirection = root.forward;
-        Vector3 stickDirection = new Vector3(h, 0, v);
-        float speedOut = stickDirection.sqrMagnitude;
-
-        Vector3 cameraDirection = camera.forward;
-        cameraDirection.y = 0f;
-        Quaternion referentialShift = Quaternion.FromToRotation(Vector3.forward, cameraDirection);
-
-        Vector3 moveDirection = referentialShift * stickDirection;
-        Vector3 axisSign = Vector3.Cross(moveDirection, rootDirection);
-
-        Vector3 rayBase = root.position + (Vector3.up * 2f);
-        Debug.DrawRay(rayBase, moveDirection, Color.green);
-        Debug.DrawRay(rayBase, rootDirection, Color.magenta);
-        Debug.DrawRay(rayBase, stickDirection, Color.blue);
-
-        float angleRootToMove = Vector3.Angle(rootDirection, moveDirection) * axisSign.y >= 0 ? -1f : 1f;
-        angleRootToMove /= 180f;
-        return angleRootToMove * directionSpeed;
-    }
-	
 	//apply correct player movement (fixedUpdate for physics calculations)
-	void FixedUpdate() 
+	void FixedUpdate()
 	{
 		//are we grounded
 		grounded = IsGrounded ();
 		//move, rotate, manage speed
-		characterMotor.MoveTo (moveDirection, curAccel, 0.7f, true);
+		characterMotor.MoveTo (moveDirection, curAccel, movementSensitivity, true);
 		if (rotateSpeed != 0 && direction.magnitude != 0)
 			characterMotor.RotateToDirection (moveDirection , curRotateSpeed * 5, true);
 		characterMotor.ManageSpeed (curDecel, maxSpeed + movingObjSpeed.magnitude, true);
@@ -154,9 +130,10 @@ public class PlayerMove : MonoBehaviour
 			animator.SetFloat("DistanceToTarget", characterMotor.DistanceToTarget);
 			animator.SetBool("Grounded", grounded);
 			animator.SetFloat("YVelocity", GetComponent<Rigidbody>().velocity.y);
+			animator.SetFloat("XVelocity", new Vector3(rigid.velocity.x,0,rigid.velocity.z).normalized.magnitude + .1f);
 		}
 	}
-	
+
 	//prevents rigidbody from sliding down slight slopes (read notes in characterMotor class for more info on friction)
 	void OnCollisionStay(Collision other)
 	{
@@ -171,10 +148,10 @@ public class PlayerMove : MonoBehaviour
 			rigid.velocity = Vector3.zero;
 		}
 	}
-	
+
 	//returns whether we are on the ground or not
 	//also: bouncing on enemies, keeping player on moving platforms and slope checking
-	private bool IsGrounded() 
+	private bool IsGrounded()
 	{
 		//get distance to ground, from centre of collider (where floorcheckers should be)
 		float dist = GetComponent<Collider>().bounds.extents.y;
@@ -225,30 +202,34 @@ public class PlayerMove : MonoBehaviour
 		//no none of the floorchecks hit anything, we must be in the air (or water)
 		return false;
 	}
-	
+
 	//jumping
-	private void JumpCalculations()
-	{
+	private void JumpCalculations() {
 		//keep how long we have been on the ground
 		groundedCount = (grounded) ? groundedCount += Time.deltaTime : 0f;
-		
+
 		//play landing sound
-		if(groundedCount < 0.25 && groundedCount != 0 && !GetComponent<AudioSource>().isPlaying && landSound && GetComponent<Rigidbody>().velocity.y < 1)
-		{
-			aSource.volume = Mathf.Abs(GetComponent<Rigidbody>().velocity.y)/40;
+		if (groundedCount < 0.25 && groundedCount != 0 && !GetComponent<AudioSource>().isPlaying && landSound &&
+		    GetComponent<Rigidbody>().velocity.y < 1) {
+			aSource.volume = Mathf.Abs(GetComponent<Rigidbody>().velocity.y) / 40;
 			aSource.clip = landSound;
-			aSource.Play ();
+			aSource.Play();
 		}
+
 		//if we press jump in the air, save the time
-		if (Input.GetButtonDown ("Jump") && !grounded)
+		if (Input.GetButtonDown("Jump") && !grounded)
 			airPressTime = Time.time;
-		
-		//if were on ground within slope limit
-		if (grounded && slope < slopeLimit)
+
+		if (Input.GetButton("Jump")) {
+			print("jumppressed");
+		}
+
+	//if were on ground within slope limit
+	if (grounded && slope < slopeLimit)
 		{
 			//and we press jump, or we pressed jump justt before hitting the ground
 			if (Input.GetButtonDown ("Jump") || airPressTime + jumpLeniancy > Time.time)
-			{	
+			{
 				//increment our jump type if we haven't been on the ground for long
 				onJump = (groundedCount < jumpDelay) ? Mathf.Min(2, onJump + 1) : 0;
 				//execute the correct jump (like in mario64, jumping 3 times quickly will do higher jumps)
@@ -263,7 +244,7 @@ public class PlayerMove : MonoBehaviour
 			}
 		}
 	}
-	
+
 	//push player at jump force
 	public void Jump(Vector3 jumpVelocity)
 	{
