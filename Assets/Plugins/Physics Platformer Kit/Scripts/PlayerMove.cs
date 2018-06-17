@@ -9,7 +9,6 @@ using System.Collections;
 public class PlayerMove : MonoBehaviour
 {
 	//setup
-	public bool sidescroller;					//if true, won't apply vertical input
 	public Transform mainCam, floorChecks;		//main camera, and floorChecks object. FloorChecks are raycasted down from to check the player is grounded.
 	public Animator animator;					//object with animation controller on, which you want to animate
 	public AudioClip jumpSound;					//play when jumping
@@ -54,30 +53,12 @@ public class PlayerMove : MonoBehaviour
 	//setup
 	void Awake()
 	{
-		//create single floorcheck in centre of object, if none are assigned
-		if(!floorChecks)
-		{
-			floorChecks = new GameObject().transform;
-			floorChecks.name = "FloorChecks";
-			floorChecks.parent = transform;
-			floorChecks.position = transform.position;
-			GameObject check = new GameObject();
-			check.name = "Check1";
-			check.transform.parent = floorChecks;
-			check.transform.position = transform.position;
-			Debug.LogWarning("No 'floorChecks' assigned to PlayerMove script, so a single floorcheck has been created", floorChecks);
-		}
-		//assign player tag if not already
-		if(tag != "Player")
-		{
-			tag = "Player";
-			Debug.LogWarning ("PlayerMove script assigned to object without the tag 'Player', tag has been assigned automatically", transform);
-		}
 		//usual setup
 		dealDamage = GetComponent<DealDamage>();
 		characterMotor = GetComponent<CharacterMotor>();
 		rigid = GetComponent<Rigidbody>();
 		aSource = GetComponent<AudioSource>();
+
 		//gets child objects of floorcheckers, and puts them in an array
 		//later these are used to raycast downward and see if we are on the ground
 		floorCheckers = new Transform[floorChecks.childCount];
@@ -106,11 +87,8 @@ public class PlayerMove : MonoBehaviour
 		float h = Input.GetAxis ("Horizontal");
 		float v = Input.GetAxis ("Vertical");
 
-		//only apply vertical input to movemement, if player is not sidescroller
-		if(!sidescroller)
-			direction = (screenMovementForward * v) + (screenMovementRight * h);
-		else
-			direction = Vector3.right * h;
+		direction = (screenMovementForward * v) + (screenMovementRight * h);
+
 		moveDirection = transform.position + direction;
 	}
 
@@ -156,6 +134,9 @@ public class PlayerMove : MonoBehaviour
 		//get distance to ground, from centre of collider (where floorcheckers should be)
 		float dist = GetComponent<Collider>().bounds.extents.y;
 		//check whats at players feet, at each floorcheckers position
+		Vector3 groundNormal = new Vector3();
+		int numberOfHits = 0;
+
 		foreach (Transform check in floorCheckers)
 		{
 			RaycastHit hit;
@@ -170,6 +151,11 @@ public class PlayerMove : MonoBehaviour
 					{
 						Vector3 slide = new Vector3(0f, -slideAmount, 0f);
 						rigid.AddForce (slide, ForceMode.Force);
+					}
+					else if (slope < slopeLimit && hit.transform.tag != "Pushable") {
+						//HandleSlope();
+						groundNormal += hit.normal;
+						numberOfHits++;
 					}
 					//enemy bouncing
 					if (hit.transform.tag == "Enemy" && rigid.velocity.y < 0)
@@ -194,6 +180,8 @@ public class PlayerMove : MonoBehaviour
 						movingObjSpeed = Vector3.zero;
 					}
 					//yes our feet are on something
+					if (numberOfHits>0)
+						HandleSlope(groundNormal);
 					return true;
 				}
 			}
@@ -201,6 +189,10 @@ public class PlayerMove : MonoBehaviour
 		movingObjSpeed = Vector3.zero;
 		//no none of the floorchecks hit anything, we must be in the air (or water)
 		return false;
+	}
+
+	void HandleSlope(Vector3 normal) {
+		Debug.DrawRay(transform.position, normal, Color.green);
 	}
 
 	//jumping

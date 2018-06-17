@@ -9,7 +9,7 @@ public class FollowCamera : CameraBase {
 
     public override void LateUpdate()
     {
-        Debugs();
+        //Debugs();
         SetPosition();
         SetRotation();
     }
