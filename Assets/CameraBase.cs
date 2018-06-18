@@ -35,7 +35,7 @@ public abstract class CameraBase : MonoBehaviour {
         RaycastHit wallHit = new RaycastHit();
         if (Physics.Linecast(from, targetPosition, out wallHit))
             return new Vector3(wallHit.point.x, targetPosition.y, wallHit.point.z);
-        
+
         return targetPosition;
     }
 

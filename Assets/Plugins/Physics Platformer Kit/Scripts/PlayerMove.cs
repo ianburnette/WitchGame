@@ -75,7 +75,7 @@ public class PlayerMove : MonoBehaviour
 	void Update()
 	{
 		//stops rigidbody "sleeping" if we don't move, which would stop collision detection
-		rigid.WakeUp();
+		//rigid.WakeUp();
 		//handle jumping
 		JumpCalculations ();
 		//adjust movement values if we're in the air or on the ground
@@ -103,6 +103,7 @@ public class PlayerMove : MonoBehaviour
 		//are we grounded
 		grounded = IsGrounded ();
 		//CorrectForSlope(slopeNormal);
+		//rigid.AddForce(-slopeNormal.normalized * slopeCorrectionAmount);
 		//move, rotate, manage speed
 		characterMotor.MoveTo (moveDirection, curAccel, movementSensitivity, true);
 		if (rotateSpeed != 0 && direction.magnitude != 0)
@@ -178,14 +179,14 @@ public class PlayerMove : MonoBehaviour
 
 					//yes our feet are on something
 					loopCount++;
-
+					return true;
 				}
 			} else
 				loopCount++;
 
 		}
 
-		if (loopCount > 0 && numberOfHits>0) {
+		/*if (loopCount > 0 && numberOfHits>0) {
 			var nX = Mathf.Abs(slopeNormal.x) > 0 ? slopeNormal.x / numberOfHits : 0;
 			var nY = Mathf.Abs(slopeNormal.y) > 0 ? slopeNormal.y / numberOfHits : 0;
 			var nZ = Mathf.Abs(slopeNormal.z) > 0 ? slopeNormal.z / numberOfHits : 0;
@@ -195,7 +196,8 @@ public class PlayerMove : MonoBehaviour
 
 			HandleSlope(slopeCorrection);
 			return true;
-		}
+		}*/
+
 
 		movingObjSpeed = Vector3.zero;
 		//no none of the floorchecks hit anything, we must be in the air (or water)
