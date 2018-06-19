@@ -4,7 +4,7 @@ using System.Collections;
 //simple "platformer enemy" AI
 [RequireComponent(typeof(CharacterMotor))]
 [RequireComponent(typeof(DealDamage))]
-public class EnemyAI : MonoBehaviour 
+public class EnemyAI : MonoBehaviour
 {
 	public float acceleration = 35f;					//acceleration of enemy movement
 	public float deceleration = 8f;						//deceleration of enemy movement
@@ -20,19 +20,19 @@ public class EnemyAI : MonoBehaviour
 	public float chaseStopDistance = 0.7f;				//stop this far away from object when chasing it
 	public GameObject sightBounds;						//trigger for sight bounds
 	public GameObject attackBounds;						//trigger for attack bounds (player is hurt when they enter these bounds)
-	public Animator animatorController;					//object which holds the animator for this enem	
+	public Animator animatorController;					//object which holds the animator for this enem
 	public MoveToPoints moveToPointsScript;				//if you've attached this script, drag the component here
-	
+
 	private TriggerParent sightTrigger;
 	private TriggerParent attackTrigger;
-	private PlayerMove playerMove;
+	PlayerMove playerMove;
 	private CharacterMotor characterMotor;
 	private DealDamage dealDamage;
-	
-	
+
+
 	//setup
 	void Awake()
-	{		
+	{
 		characterMotor = GetComponent<CharacterMotor>();
 		dealDamage = GetComponent<DealDamage>();
 		//avoid setup errors
@@ -41,7 +41,7 @@ public class EnemyAI : MonoBehaviour
 			tag = "Enemy";
 			Debug.LogWarning("'EnemyAI' script attached to object without 'Enemy' tag, it has been assign automatically", transform);
 		}
-		
+
 		if(sightBounds)
 		{
 			sightTrigger = sightBounds.GetComponent<TriggerParent>();
@@ -50,7 +50,7 @@ public class EnemyAI : MonoBehaviour
 		}
 		if(!sightBounds)
 			Debug.LogWarning("Assign a trigger with 'TriggerParent' script attached, to 'SightBounds' or enemy will not be able to see", transform);
-		
+
 		if(attackBounds)
 		{
 			attackTrigger = attackBounds.GetComponent<TriggerParent>();
@@ -60,7 +60,7 @@ public class EnemyAI : MonoBehaviour
 		else
 			Debug.LogWarning("Assign a trigger with 'TriggerParent' script attached, to 'AttackBounds' or enemy will not be able to attack", transform);
 	}
-	
+
 	void Update()
 	{
 		//chase
@@ -75,7 +75,7 @@ public class EnemyAI : MonoBehaviour
 				moveToPointsScript.enabled = false;
 		}
 		else
-		{	
+		{
 			//notify animator
 			if(animatorController)
 				animatorController.SetBool("Moving", false);
@@ -83,28 +83,28 @@ public class EnemyAI : MonoBehaviour
 			if(moveToPointsScript)
 				moveToPointsScript.enabled = true;
 		}
-		
+
 		//attack
 		if (attackTrigger && attackTrigger.collided)
 		{
 			dealDamage.Attack(attackTrigger.hitObject, attackDmg, pushHeight, pushForce);
 			//notify animator controller
 			if(animatorController)
-				animatorController.SetBool("Attacking", true);	
+				animatorController.SetBool("Attacking", true);
 		}
 		else if(animatorController)
 			animatorController.SetBool("Attacking", false);
 	}
-	
+
 	void FixedUpdate()
 	{
 		characterMotor.ManageSpeed(deceleration, speedLimit, ignoreY);
 		characterMotor.RotateToVelocity (rotateSpeed, ignoreY);
 	}
-	
+
 	//bounce player when they land on this enemy
 	public void BouncedOn()
-	{	
+	{
 		if(!playerMove)
 			playerMove = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMove>();
 		if (bounceSound)

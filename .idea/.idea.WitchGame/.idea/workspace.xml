@@ -2,63 +2,39 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1f376e71-bc0d-46f3-8eb7-a8bfff4243b6" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/Assets/Plugins/Physics Platformer Kit/Misc/Frictionless PMat.physicMaterial" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Plugins/Physics Platformer Kit/Misc/Frictionless PMat.physicMaterial" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Plugins/Physics Platformer Kit/Misc/New Physic Material.physicMaterial" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Plugins/Physics Platformer Kit/Misc/New Physic Material.physicMaterial" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Plugins/Physics Platformer Kit/Scripts/PlayerMove.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Plugins/Physics Platformer Kit/Scripts/PlayerMove.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.WitchGame/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.WitchGame/.idea/contentModel.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.WitchGame/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.WitchGame/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assembly-CSharp-firstpass.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Assembly-CSharp-firstpass.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assembly-CSharp.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Assembly-CSharp.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/Physics Platformer Kit/Misc/PlayerController.controller" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Plugins/Physics Platformer Kit/Misc/PlayerController.controller" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/Physics Platformer Kit/Scripts/CharacterMotor.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/Physics Platformer Kit/Scripts/CharacterMotor.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/Physics Platformer Kit/Scripts/EnemyAI.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/Physics Platformer Kit/Scripts/EnemyAI.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/Physics Platformer Kit/Scripts/PlayerMove.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/Physics Platformer Kit/Scripts/PlayerMove.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/Physics Platformer Kit/Scripts/Throwing.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/Physics Platformer Kit/Scripts/Throwing.cs.meta" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/SampleScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/SampleScene.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Library/CurrentLayout.dwlt" beforeDir="false" afterPath="$PROJECT_DIR$/Library/CurrentLayout.dwlt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Library/EditorInstance.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Library/CrashedAssetImports.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Library/InspectorExpandedItems.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Library/InspectorExpandedItems.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Library/ProtocolInstance.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Library/ProtocolInstance.json" beforeDir="false" afterPath="$PROJECT_DIR$/Library/ProtocolInstance.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Library/ScriptAssemblies/Assembly-CSharp-firstpass.dll" beforeDir="false" afterPath="$PROJECT_DIR$/Library/ScriptAssemblies/Assembly-CSharp-firstpass.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Library/ScriptAssemblies/Assembly-CSharp-firstpass.dll.mdb" beforeDir="false" afterPath="$PROJECT_DIR$/Library/ScriptAssemblies/Assembly-CSharp-firstpass.dll.mdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Library/ScriptAssemblies/Assembly-CSharp.dll" beforeDir="false" afterPath="$PROJECT_DIR$/Library/ScriptAssemblies/Assembly-CSharp.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Library/ScriptAssemblies/Assembly-CSharp.dll.mdb" beforeDir="false" afterPath="$PROJECT_DIR$/Library/ScriptAssemblies/Assembly-CSharp.dll.mdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Library/ScriptAssemblies/BuiltinAssemblies.stamp" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Library/assetDatabase3" beforeDir="false" afterPath="$PROJECT_DIR$/Library/assetDatabase3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Library/expandedItems" beforeDir="false" afterPath="$PROJECT_DIR$/Library/expandedItems" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Library/metadata/36/363419e9ee3d68a4ea8743eef2d4402d" beforeDir="false" afterPath="$PROJECT_DIR$/Library/metadata/36/363419e9ee3d68a4ea8743eef2d4402d" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Library/metadata/36/363419e9ee3d68a4ea8743eef2d4402d.info" beforeDir="false" afterPath="$PROJECT_DIR$/Library/metadata/36/363419e9ee3d68a4ea8743eef2d4402d.info" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Library/metadata/a2/a2ed9b0bbefceb347b9986898b936b34" beforeDir="false" afterPath="$PROJECT_DIR$/Library/metadata/a2/a2ed9b0bbefceb347b9986898b936b34" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Library/metadata/ab/abf834097aa74eb4e86aa91a4b6ab25b" beforeDir="false" afterPath="$PROJECT_DIR$/Library/metadata/ab/abf834097aa74eb4e86aa91a4b6ab25b" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Library/metadata/ab/abf834097aa74eb4e86aa91a4b6ab25b.info" beforeDir="false" afterPath="$PROJECT_DIR$/Library/metadata/ab/abf834097aa74eb4e86aa91a4b6ab25b.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Library/metadata/b9/b9ba551e60e36a949bdf6c0262d8b61e" beforeDir="false" afterPath="$PROJECT_DIR$/Library/metadata/b9/b9ba551e60e36a949bdf6c0262d8b61e" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Library/metadata/b9/b9ba551e60e36a949bdf6c0262d8b61e.info" beforeDir="false" afterPath="$PROJECT_DIR$/Library/metadata/b9/b9ba551e60e36a949bdf6c0262d8b61e.info" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Library/shadercompiler-UnityShaderCompiler0.log" beforeDir="false" afterPath="$PROJECT_DIR$/Library/shadercompiler-UnityShaderCompiler0.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Temp/ProcessJobs/8b66c1524eec8e6b2949c15a5b393b76.bakert" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Temp/UnityLockfile" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Temp/UnityTempFile-064ab5616bd6341669f3a88128a06aaf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Temp/UnityTempFile-08de469b442bb4f2d87f2dd85ec30b6e" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Temp/UnityTempFile-0dc7d39c867b74da69931f97de20c83c" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Temp/UnityTempFile-11d0fe0d637844767aed019b7ac8c69f" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Temp/UnityTempFile-131ddb2a150ba449ea99b0adde3d20fe" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Temp/UnityTempFile-1e0d511fb0fc5402b837e56d856129c9" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Temp/UnityTempFile-1e2274171a5fb473396b6c5cdff204cb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Temp/UnityTempFile-2725d0bd7c329441d801618cb1bde2cf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Temp/UnityTempFile-2e14c1b65c3454d7f919835d6f3bdd46" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Temp/UnityTempFile-35dc1e7dde84e4cb9acba9af4a6076be" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Temp/UnityTempFile-3aeec603d60de49d0ae25d65867ecfe7" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Temp/UnityTempFile-460fe532fd02c42a79fccc2b85370aba" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Temp/UnityTempFile-49615b5616c3b4ac2a87a2c9b95f7a77" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Temp/UnityTempFile-57879357c172c4157a052bc81bfeef4e" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Temp/UnityTempFile-5b3fdc591270d4b7388c414f6d0a8bb2" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Temp/UnityTempFile-61b830c551e63454b8ad1575623cac54" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Temp/UnityTempFile-63543bae6d6ac41909a34a3c057424ca" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Temp/UnityTempFile-713b2098386ac426788281e3456ecda4" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Temp/UnityTempFile-7e8c530322e1d4f469f3fb407e48a7d7" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Temp/UnityTempFile-828b3712eaaef471c8e3c8e4c444652f" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Temp/UnityTempFile-82bd048f61b6c4681ae452a0f0a4ba36" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Temp/UnityTempFile-8593bdf3668294f77b8f9991f4d6c461" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Temp/UnityTempFile-8e228e8253a844b9d827d2e3f03c3c7d" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Temp/UnityTempFile-9271cc725cef541c6beb0e3aa6fbd2f8" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Temp/UnityTempFile-989f7de9e5f5344ab8de1f3d178fd644" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Temp/UnityTempFile-9e1b8875cf7494b6da200e721bf8f6a7" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Temp/UnityTempFile-a389a3f056b9147069de8324ab355d6d" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Temp/UnityTempFile-a7875cd5286df4cadacb27af59565700" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Temp/UnityTempFile-a9769d13678d7459d8fc8802ad396e46" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Temp/UnityTempFile-a989548cebad845edad1a9b8f0c02a14" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Temp/UnityTempFile-bd267f395db0045a3bdf6d2719124195" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Temp/UnityTempFile-be9aba35076994658b9a3d87a5d9a4fe" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Temp/UnityTempFile-c3e12197830664df3b581e54b9cf1751" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Temp/UnityTempFile-cde2d9eee4a4c4f60adfedd04e6be1f4" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Temp/UnityTempFile-d509ff309102c41c688b581ca6edec5e" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Temp/UnityTempFile-e82f9cd8a419b48e28fff5459e2368fb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Temp/UnityTempFile-eecaa3659b0f5407da11121508e7f27f" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Temp/UnityTempFile-f39a918c45b2e4169931e47496ef87e1" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Temp/UnityTempFile-f59c4e96ccad7459699c584ecf5ffa93" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Temp/UnityTempFile-ffe04165f7ba444d1b6add6492e8d2d7" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Temp/__Backupscenes/0.backup" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Temp/__Backupscenes/0.backup" beforeDir="false" afterPath="$PROJECT_DIR$/Temp/__Backupscenes/0.backup" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WitchGame.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/WitchGame.sln.DotSettings.user" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -68,7 +44,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file leaf-file-name="CameraBase.cs" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Assets/CameraBase.cs">
           <provider selected="true" editor-type-id="text-editor">
@@ -85,92 +61,188 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="PlayerMove.cs" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Assets/Plugins/Physics Platformer Kit/Scripts/PlayerMove.cs">
+      <file leaf-file-name="CharacterMotor.cs" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Assets/CharacterMotor.cs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="57">
-              <caret line="77" column="10" selection-start-line="77" selection-start-column="10" selection-end-line="77" selection-end-column="10" />
+            <state relative-caret-position="587">
+              <caret line="107" selection-start-line="107" selection-end-line="107" />
               <folding>
-                <marker date="1529305158514" expanded="true" signature="6:63" ph="..." />
-                <marker date="1529305158514" expanded="true" signature="326:10759" ph="{...}" />
-                <marker date="1529305158514" expanded="true" signature="2523:3013" ph="{...}" />
-                <marker date="1529305158514" expanded="true" signature="2718:2859" ph="/* gets child objects of floorcheckers, and puts them in an array ... */" />
-                <marker date="1529305158514" expanded="true" signature="3070:3933" ph="{...}" />
-                <marker date="1529305158514" expanded="true" signature="3076:3198" ph="/* stops rigidbody &quot;sleeping&quot; if we don't move, which would stop collision detection ... */" />
-                <marker date="1529305158514" expanded="true" signature="4026:4859" ph="{...}" />
-                <marker date="1529305158514" expanded="true" signature="4080:4211" ph="/* CorrectForSlope(slopeNormal); ... */" />
-                <marker date="1529305158514" expanded="true" signature="4545:4856" ph="{...}" />
-                <marker date="1529305158514" expanded="true" signature="5016:5565" ph="{...}" />
-                <marker date="1529305158514" expanded="true" signature="5331:5562" ph="{...}" />
-                <marker date="1529305158514" expanded="true" signature="5339:5524" ph="/* it's usually not a good idea to alter a rigidbodies velocity every frame ... */" />
-                <marker date="1529305158514" expanded="true" signature="5568:5697" ph="/* returns whether we are on the ground or not ... */" />
-                <marker date="1529305158514" expanded="true" signature="5725:8107" ph="{...}" />
-                <marker date="1529305158514" expanded="true" signature="6023:7507" ph="{...}" />
-                <marker date="1529305158514" expanded="true" signature="6121:7480" ph="{...}" />
-                <marker date="1529305158514" expanded="true" signature="6182:7475" ph="{...}" />
-                <marker date="1529305158514" expanded="true" signature="6346:6457" ph="{...}" />
-                <marker date="1529305158514" expanded="true" signature="6522:6619" ph="{...}" />
-                <marker date="1529305158514" expanded="true" signature="6706:6881" ph="{...}" />
-                <marker date="1529305158514" expanded="true" signature="7020:7344" ph="{...}" />
-                <marker date="1529305158514" expanded="true" signature="7511:7975" ph="/* if (loopCount &gt; 0 &amp;&amp; numberOfHits&gt;0) { ... */" />
-                <marker date="1529305158514" expanded="true" signature="8143:8472" ph="{...}" />
-                <marker date="1529305158514" expanded="true" signature="8516:8988" ph="{...}" />
-                <marker date="1529305158514" expanded="true" signature="8522:8713" ph="/* var slopeTangent = SlopeTangentAnalysis(slopeNormal); ... */" />
-                <marker date="1529305158514" expanded="true" signature="9148:10432" ph="{...}" />
-                <marker date="1529305158514" expanded="true" signature="9443:9570" ph="{...}" />
-                <marker date="1529305158514" expanded="true" signature="9728:9758" ph="{...}" />
-                <marker date="1529305158514" expanded="true" signature="9836:10429" ph="{...}" />
-                <marker date="1529305158514" expanded="true" signature="9995:10425" ph="{...}" />
-                <marker date="1529305158514" expanded="true" signature="10367:10420" ph="{...}" />
-                <marker date="1529305158514" expanded="true" signature="10502:10757" ph="{...}" />
-                <marker date="1529305158514" expanded="true" signature="10521:10601" ph="{...}" />
+                <marker date="1529393543101" expanded="true" signature="20:200" ph="/* this class holds movement functions for a rigidbody character such as player, enemy, npc.. ... */" />
+                <marker date="1529393543101" expanded="true" signature="282:3107" ph="{...}" />
+                <marker date="1529393543101" expanded="true" signature="426:1162" ph="{...}" />
+                <marker date="1529393543101" expanded="true" signature="725:1159" ph="{...}" />
+                <marker date="1529393543101" expanded="true" signature="1327:1656" ph="{...}" />
+                <marker date="1529393543101" expanded="true" signature="1768:2126" ph="{...}" />
+                <marker date="1529393543101" expanded="true" signature="1922:2123" ph="{...}" />
+                <marker date="1529393543101" expanded="true" signature="2251:2587" ph="{...}" />
+                <marker date="1529393543101" expanded="true" signature="2313:2362" ph="{...}" />
+                <marker date="1529393543101" expanded="true" signature="2742:3105" ph="{...}" />
+                <marker date="1529393543101" expanded="true" signature="2851:3102" ph="{...}" />
+                <marker date="1529393543101" expanded="true" signature="3109:3506" ph="/* NOTE: ManageSpeed does a similar job to simply increasing the friction property of a rigidbodies &quot;physics mate ... */" />
+                <marker date="1529393543101" expanded="true" signature="3508:3795" ph="/* NOTE: when you use MoveTo, make sure the stopping distance is something like 0.3 and not 0 ... */" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="FollowCamera.cs" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Assets/FollowCamera.cs">
+      <file leaf-file-name="Throwing.cs" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Assets/Throwing.cs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="135">
-              <caret line="11" column="10" selection-start-line="11" selection-start-column="10" selection-end-line="11" selection-end-column="10" />
+            <state relative-caret-position="465">
+              <caret line="32" column="4" selection-start-line="32" selection-start-column="4" selection-end-line="32" selection-end-column="4" />
               <folding>
-                <marker date="1529248062759" expanded="false" signature="6:78" ph="..." />
-                <marker date="1529248062759" expanded="true" signature="119:798" ph="{...}" />
-                <marker date="1529248062759" expanded="true" signature="243:321" ph="{...}" />
-                <marker date="1529248062759" expanded="true" signature="512:796" ph="{...}" />
+                <marker date="1529393609813" expanded="false" signature="6:44" ph="..." />
+                <marker date="1529393609813" expanded="true" signature="46:185" ph="/* this allows the player to pick up/throw, and also pull certain objects ... */" />
+                <marker date="1529393609813" expanded="true" signature="340:8157" ph="{...}" />
+                <marker date="1529393609813" expanded="true" signature="2164:3009" ph="{...}" />
+                <marker date="1529393609813" expanded="true" signature="2268:2680" ph="{...}" />
+                <marker date="1529393609813" expanded="true" signature="3046:4417" ph="{...}" />
+                <marker date="1529393609813" expanded="true" signature="3196:3254" ph="{...}" />
+                <marker date="1529393609813" expanded="true" signature="3697:4414" ph="{...}" />
+                <marker date="1529393609813" expanded="true" signature="3705:4141" ph="/* the below line would rotate the character to the thing its grabbing. Unity(5.1) physics seems to have broken t ... */" />
+                <marker date="1529393609813" expanded="true" signature="4225:4255" ph="{...}" />
+                <marker date="1529393609813" expanded="true" signature="4270:4410" ph="{...}" />
+                <marker date="1529393609813" expanded="true" signature="4469:4826" ph="{...}" />
+                <marker date="1529393609813" expanded="true" signature="4579:4823" ph="{...}" />
+                <marker date="1529393609813" expanded="true" signature="4870:5411" ph="{...}" />
+                <marker date="1529393609813" expanded="true" signature="5453:7032" ph="{...}" />
+                <marker date="1529393609813" expanded="true" signature="5987:6606" ph="{...}" />
+                <marker date="1529393609813" expanded="true" signature="6712:7029" ph="{...}" />
+                <marker date="1529393609813" expanded="true" signature="7062:7251" ph="{...}" />
+                <marker date="1529393609813" expanded="true" signature="7279:7631" ph="{...}" />
+                <marker date="1529393609813" expanded="true" signature="7299:7380" ph="{...}" />
+                <marker date="1529393609813" expanded="true" signature="7722:7956" ph="{...}" />
+                <marker date="1529393609813" expanded="true" signature="7740:7953" ph="{...}" />
+                <marker date="1529393609813" expanded="true" signature="7763:7850" ph="{...}" />
+                <marker date="1529393609813" expanded="true" signature="8076:8155" ph="{...}" />
+                <marker date="1529393609813" expanded="true" signature="8159:8524" ph="/* NOTE: to check if the player is able to lift an object, and that nothing is above their head, a sphereCheck is ... */" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="FreeCamera.cs" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Assets/FreeCamera.cs">
+      <file leaf-file-name="EnemyAI.cs" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Assets/EnemyAI.cs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="75">
-              <caret line="5" column="17" selection-start-line="5" selection-start-column="17" selection-end-line="5" selection-end-column="17" />
+            <state relative-caret-position="375">
+              <caret line="26" column="37" selection-start-line="26" selection-start-column="37" selection-end-line="26" selection-end-column="37" />
               <folding>
-                <marker date="1529241794002" expanded="true" signature="6:32" ph="..." />
-                <marker date="1529241794002" expanded="true" signature="71:1734" ph="{...}" />
-                <marker date="1529241794002" expanded="true" signature="522:624" ph="{...}" />
-                <marker date="1529241794002" expanded="true" signature="664:769" ph="{...}" />
-                <marker date="1529241794002" expanded="true" signature="939:1537" ph="{...}" />
-                <marker date="1529241794002" expanded="true" signature="1085:1250" ph="{...}" />
+                <marker date="1529393596475" expanded="false" signature="6:44" ph="..." />
+                <marker date="1529393596475" expanded="true" signature="195:4588" ph="{...}" />
+                <marker date="1529393596475" expanded="true" signature="1821:2846" ph="{...}" />
+                <marker date="1529393596475" expanded="true" signature="1962:2113" ph="{...}" />
+                <marker date="1529393596475" expanded="true" signature="2132:2320" ph="{...}" />
+                <marker date="1529393596475" expanded="true" signature="2499:2692" ph="{...}" />
+                <marker date="1529393596475" expanded="true" signature="2862:3876" ph="{...}" />
+                <marker date="1529393596475" expanded="true" signature="3008:3330" ph="{...}" />
+                <marker date="1529393596475" expanded="true" signature="3337:3535" ph="{...}" />
+                <marker date="1529393596475" expanded="true" signature="3594:3792" ph="{...}" />
+                <marker date="1529393596475" expanded="true" signature="3897:4026" ph="{...}" />
+                <marker date="1529393596475" expanded="true" signature="4098:4586" ph="{...}" />
+                <marker date="1529393596475" expanded="true" signature="4307:4452" ph="{...}" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="FirstPersonCamera.cs" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Assets/FirstPersonCamera.cs">
+      <file leaf-file-name="PlayerMoveTemp.cs" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Assets/PlayerMoveTemp.cs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="45">
-              <caret line="3" column="25" selection-start-line="3" selection-start-column="25" selection-end-line="3" selection-end-column="25" />
+            <state relative-caret-position="217">
+              <caret line="334" column="73" selection-start-line="334" selection-start-column="68" selection-end-line="334" selection-end-column="73" />
               <folding>
-                <marker date="1529241794018" expanded="true" signature="64:1180" ph="{...}" />
-                <marker date="1529241794018" expanded="true" signature="356:489" ph="{...}" />
-                <marker date="1529241794018" expanded="true" signature="601:713" ph="{...}" />
-                <marker date="1529241794018" expanded="true" signature="747:1178" ph="{...}" />
+                <marker date="1529388168306" expanded="true" signature="6:44" ph="..." />
+                <marker date="1529388168306" expanded="true" signature="311:17242" ph="{...}" />
+                <marker date="1529388168306" expanded="true" signature="2727:2785" ph="/* [SerializeField] ... */" />
+                <marker date="1529388168306" expanded="true" signature="3566:4895" ph="{...}" />
+                <marker date="1529388168306" expanded="true" signature="3659:4112" ph="{...}" />
+                <marker date="1529388168306" expanded="true" signature="4177:4339" ph="{...}" />
+                <marker date="1529388168306" expanded="true" signature="4600:4741" ph="/* gets child objects of floorcheckers, and puts them in an array ... */" />
+                <marker date="1529388168306" expanded="true" signature="4952:6200" ph="{...}" />
+                <marker date="1529388168306" expanded="true" signature="5976:6194" ph="/* float directionFloat = 0f; ... */" />
+                <marker date="1529388168306" expanded="false" signature="6315:7664" ph="{...}" />
+                <marker date="1529388168306" expanded="true" signature="7711:8351" ph="{...}" />
+                <marker date="1529388168306" expanded="true" signature="7863:7977" ph="/* Debug.DrawRay(transform.position, (slopeTangent), Color.blue); ... */" />
+                <marker date="1529388168306" expanded="true" signature="8409:8574" ph="{...}" />
+                <marker date="1529388168306" expanded="true" signature="8667:11354" ph="{...}" />
+                <marker date="1529388168306" expanded="true" signature="9014:9072" ph="{...}" />
+                <marker date="1529388168306" expanded="true" signature="9126:9274" ph="{...}" />
+                <marker date="1529388168306" expanded="true" signature="9188:9263" ph="/* print(specificSlopeNormal); ... */" />
+                <marker date="1529388168306" expanded="true" signature="9694:10012" ph="/* Debug.DrawRay(transform.position, transform.position - moveDirection , Color.green); ... */" />
+                <marker date="1529388168306" expanded="true" signature="10139:10364" ph="/* Debug.Log (&quot;accelerating with &quot; + accelCurve.Evaluate(direction.magnitude)+ &quot; magnitude&quot;); ... */" />
+                <marker date="1529388168306" expanded="true" signature="10505:10629" ph="/* characterMotor.MoveTo (moveDirection, curAccel, stopDistance, true); ... */" />
+                <marker date="1529388168306" expanded="true" signature="10905:11303" ph="{...}" />
+                <marker date="1529388168306" expanded="true" signature="10983:11298" ph="/* animator.SetFloat(&quot;DistanceToTarget&quot;, direction.magnitude); ... */" />
+                <marker date="1529388168306" expanded="true" signature="11512:12185" ph="{...}" />
+                <marker date="1529388168306" expanded="true" signature="11673:11714" ph="{...}" />
+                <marker date="1529388168306" expanded="true" signature="11870:12182" ph="{...}" />
+                <marker date="1529388168306" expanded="true" signature="11886:12135" ph="/* print(&quot;in collision function setting&quot;); ... */" />
+                <marker date="1529388168306" expanded="true" signature="12188:12317" ph="/* returns whether we are on the ground or not ... */" />
+                <marker date="1529388168306" expanded="true" signature="12344:15487" ph="{...}" />
+                <marker date="1529388168306" expanded="true" signature="12707:14630" ph="{...}" />
+                <marker date="1529388168306" expanded="true" signature="12830:14484" ph="{...}" />
+                <marker date="1529388168306" expanded="true" signature="12969:14479" ph="{...}" />
+                <marker date="1529388168306" expanded="true" signature="12996:13070" ph="/* slope control ... */" />
+                <marker date="1529388168306" expanded="true" signature="13287:13405" ph="{...}" />
+                <marker date="1529388168306" expanded="true" signature="13490:13672" ph="{...}" />
+                <marker date="1529388168306" expanded="true" signature="13814:14144" ph="{...}" />
+                <marker date="1529388168306" expanded="true" signature="14154:14205" ph="{...}" />
+                <marker date="1529388168306" expanded="true" signature="14226:14292" ph="/* yes our feet are on something ... */" />
+                <marker date="1529388168306" expanded="true" signature="14371:14473" ph="{...}" />
+                <marker date="1529388168306" expanded="true" signature="14501:14601" ph="{...}" />
+                <marker date="1529388168306" expanded="true" signature="15532:16836" ph="{...}" />
+                <marker date="1529388168306" expanded="true" signature="15906:16035" ph="{...}" />
+                <marker date="1529388168306" expanded="true" signature="16240:16833" ph="{...}" />
+                <marker date="1529388168306" expanded="true" signature="16399:16829" ph="{...}" />
+                <marker date="1529388168306" expanded="true" signature="16771:16824" ph="{...}" />
+                <marker date="1529388168306" expanded="true" signature="16906:17240" ph="{...}" />
+                <marker date="1529388168306" expanded="true" signature="17004:17084" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MovementStateMachine.cs" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Assets/MovementStateMachine.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="165">
+              <caret line="11" column="9" selection-start-line="11" selection-start-column="9" selection-end-line="11" selection-end-column="9" />
+              <folding>
+                <marker date="1529387221330" expanded="true" signature="6:78" ph="..." />
+                <marker date="1529387221330" expanded="true" signature="130:651" ph="{...}" />
+                <marker date="1529387221330" expanded="true" signature="309:519" ph="{...}" />
+                <marker date="1529387221330" expanded="true" signature="317:354" ph="{...}" />
+                <marker date="1529387221330" expanded="true" signature="361:516" ph="{...}" />
+                <marker date="1529387221330" expanded="true" signature="562:649" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="PlayerMove.cs" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Assets/PlayerMove.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="180">
+              <caret line="12" selection-start-line="12" selection-end-line="12" />
+              <folding>
+                <marker date="1529393431482" expanded="true" signature="219:7491" ph="{...}" />
+                <marker date="1529393431482" expanded="true" signature="1622:2112" ph="{...}" />
+                <marker date="1529393431482" expanded="true" signature="1817:1958" ph="/* gets child objects of floorcheckers, and puts them in an array ... */" />
+                <marker date="1529393431482" expanded="true" signature="2169:3026" ph="{...}" />
+                <marker date="1529393431482" expanded="true" signature="3119:3998" ph="{...}" />
+                <marker date="1529393431482" expanded="true" signature="3684:3995" ph="{...}" />
+                <marker date="1529393431482" expanded="true" signature="4026:5999" ph="{...}" />
+                <marker date="1529393431482" expanded="true" signature="4362:5551" ph="{...}" />
+                <marker date="1529393431482" expanded="true" signature="4477:5547" ph="{...}" />
+                <marker date="1529393431482" expanded="true" signature="4832:5008" ph="{...}" />
+                <marker date="1529393431482" expanded="true" signature="5157:5476" ph="{...}" />
+                <marker date="1529393431482" expanded="true" signature="6024:6182" ph="{...}" />
+                <marker date="1529393431482" expanded="true" signature="6206:6348" ph="{...}" />
+                <marker date="1529393431482" expanded="true" signature="6535:7193" ph="{...}" />
+                <marker date="1529393431482" expanded="true" signature="6620:6747" ph="{...}" />
+                <marker date="1529393431482" expanded="true" signature="6953:7133" ph="{...}" />
+                <marker date="1529393431482" expanded="true" signature="7234:7489" ph="{...}" />
+                <marker date="1529393431482" expanded="true" signature="7253:7333" ph="{...}" />
               </folding>
             </state>
           </provider>
@@ -195,12 +267,8 @@
       <file leaf-file-name="TargetCamera.cs" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Assets/TargetCamera.cs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
+            <state relative-caret-position="210">
               <caret line="14" selection-start-line="14" selection-end-line="14" />
-              <folding>
-                <marker date="1529241068102" expanded="false" signature="6:78" ph="..." />
-                <marker date="1529241068102" expanded="true" signature="119:357" ph="{...}" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -211,6 +279,13 @@
     <findStrings>
       <find>jump</find>
       <find>floorcheckers</find>
+      <find>specificSlopeNormal</find>
+      <find>correctfors</find>
+      <find>layermas</find>
+      <find>stickto</find>
+      <find>addforce</find>
+      <find>rigid</find>
+      <find>groundedcount</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -221,31 +296,43 @@
     <setting file="file://$PROJECT_DIR$/Assets/FollowCamera.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/FirstPersonCamera.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/CameraBase.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Plugins/Physics Platformer Kit/Scripts/CharacterMotor.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Plugins/Physics Platformer Kit/Scripts/Throwing.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/CameraSelector.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Plugins/Physics Platformer Kit/Scripts/PlayerMove.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/TargetCamera.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/EnemyAI.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Throwing.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/CharacterMotor.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/PlayerBroomMove.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/PlayerMove.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Plugins/Physics Platformer Kit/Scripts/Health.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/MovementStateMachine.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/PlayerMoveTemp.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/Assets/CameraSelector.cs" />
         <option value="$PROJECT_DIR$/Assets/TargetCamera.cs" />
         <option value="$PROJECT_DIR$/Assets/FreeCamera.cs" />
         <option value="$PROJECT_DIR$/Assets/FirstPersonCamera.cs" />
         <option value="$PROJECT_DIR$/Assets/Plugins/Physics Platformer Kit/Scripts/Health.cs" />
         <option value="$PROJECT_DIR$/Assets/FollowCamera.cs" />
         <option value="$PROJECT_DIR$/Assets/CameraBase.cs" />
+        <option value="$PROJECT_DIR$/Assets/PlayerBroomMove.cs" />
+        <option value="$PROJECT_DIR$/Assets/PlayerMovementStateMachine.cs" />
+        <option value="$PROJECT_DIR$/Assets/MovementStateMachine.cs" />
+        <option value="$PROJECT_DIR$/Assets/CameraSelector.cs" />
+        <option value="$PROJECT_DIR$/Assets/PlayerMoveTemp.cs" />
+        <option value="$PROJECT_DIR$/Assets/Plugins/Physics Platformer Kit/Scripts/CharacterMotor.cs" />
         <option value="$PROJECT_DIR$/Assets/Plugins/Physics Platformer Kit/Scripts/PlayerMove.cs" />
+        <option value="$PROJECT_DIR$/Assets/CharacterMotor.cs" />
+        <option value="$PROJECT_DIR$/Assets/EnemyAI.cs" />
+        <option value="$PROJECT_DIR$/Assets/Throwing.cs" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
     <option name="y" value="23" />
-    <option name="width" value="960" />
-    <option name="height" value="406" />
+    <option name="width" value="1440" />
+    <option name="height" value="813" />
   </component>
   <component name="ProjectView">
     <navigator currentView="UnityExplorer" proportions="" version="1">
@@ -263,6 +350,24 @@
             <path>
               <item name="" type="ad4990d8:FileSystemViewPaneBase$ProjectViewPaneTreeStructure$createRoot$1" />
               <item name="WitchGame" type="483dac07:UnityExplorerNode$Root" />
+            </path>
+            <path>
+              <item name="" type="ad4990d8:FileSystemViewPaneBase$ProjectViewPaneTreeStructure$createRoot$1" />
+              <item name="WitchGame" type="483dac07:UnityExplorerNode$Root" />
+              <item name="" type="1045f7f1:UnityExplorerNode" />
+            </path>
+            <path>
+              <item name="" type="ad4990d8:FileSystemViewPaneBase$ProjectViewPaneTreeStructure$createRoot$1" />
+              <item name="WitchGame" type="483dac07:UnityExplorerNode$Root" />
+              <item name="" type="1045f7f1:UnityExplorerNode" />
+              <item name="" type="1045f7f1:UnityExplorerNode" />
+            </path>
+            <path>
+              <item name="" type="ad4990d8:FileSystemViewPaneBase$ProjectViewPaneTreeStructure$createRoot$1" />
+              <item name="WitchGame" type="483dac07:UnityExplorerNode$Root" />
+              <item name="" type="1045f7f1:UnityExplorerNode" />
+              <item name="" type="1045f7f1:UnityExplorerNode" />
+              <item name="" type="1045f7f1:UnityExplorerNode" />
             </path>
           </expand>
           <select />
@@ -302,27 +407,28 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1440" height="812" extended-state="6" />
+    <frame x="0" y="23" width="1440" height="813" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info anchor="right" id="Key Promoter X" />
+      <window_info anchor="right" id="Key Promoter X" order="3" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="right" id="Errors In Solution" />
-      <window_info anchor="bottom" id="Event Log" side_tool="true" />
-      <window_info anchor="bottom" id="Unit Tests" />
+      <window_info anchor="right" id="Errors In Solution" order="3" />
+      <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
+      <window_info anchor="bottom" id="Unit Tests" order="7" />
       <window_info anchor="bottom" id="Run" order="2" />
-      <window_info anchor="bottom" id="Version Control" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.13447782" />
-      <window_info anchor="bottom" id="Docker" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Unity" />
+      <window_info anchor="bottom" id="Version Control" order="7" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.20028612" />
+      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Unity" order="7" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32960895" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
-      <window_info id="Favorites" side_tool="true" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="NuGet" order="7" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="NuGet" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
     </layout>
@@ -337,9 +443,57 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/Assets/CameraBase.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="555">
+          <caret line="37" selection-start-line="37" selection-end-line="37" />
+          <folding>
+            <marker date="1529306781383" expanded="false" signature="6:78" ph="..." />
+            <marker date="1529306781383" expanded="true" signature="129:1499" ph="{...}" />
+            <marker date="1529306781383" expanded="true" signature="577:692" ph="{...}" />
+            <marker date="1529306781383" expanded="true" signature="730:788" ph="{...}" />
+            <marker date="1529306781383" expanded="true" signature="1067:1307" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/PlayerBroomMove.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="5" column="4" selection-start-line="5" selection-start-column="4" selection-end-line="5" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/FollowCamera.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="11" column="10" selection-start-line="11" selection-start-column="10" selection-end-line="11" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/FreeCamera.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="5" column="17" selection-start-line="5" selection-start-column="17" selection-end-line="5" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/FirstPersonCamera.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="25" selection-start-line="3" selection-start-column="25" selection-end-line="3" selection-end-column="25" />
+          <folding>
+            <marker date="1529241794018" expanded="true" signature="64:1180" ph="{...}" />
+            <marker date="1529241794018" expanded="true" signature="356:489" ph="{...}" />
+            <marker date="1529241794018" expanded="true" signature="601:713" ph="{...}" />
+            <marker date="1529241794018" expanded="true" signature="747:1178" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Assets/CameraSelector.cs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
+        <state relative-caret-position="150">
           <caret line="10" column="62" selection-start-line="10" selection-start-column="62" selection-end-line="10" selection-end-column="62" />
           <folding>
             <marker date="1529233992721" expanded="false" signature="6:78" ph="..." />
@@ -348,6 +502,82 @@
             <marker date="1529233992721" expanded="true" signature="446:762" ph="{...}" />
             <marker date="1529233992721" expanded="true" signature="837:993" ph="{...}" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/TargetCamera.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="14" selection-start-line="14" selection-end-line="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/Plugins/Physics Platformer Kit/Scripts/PlayerMove.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="16" column="21" selection-start-line="16" selection-start-column="21" selection-end-line="16" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/PlayerMovementStateMachine.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="10" column="25" selection-start-line="10" selection-start-column="25" selection-end-line="10" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/CameraBase.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="525">
+          <caret line="37" selection-start-line="37" selection-end-line="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/FollowCamera.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="11" column="10" selection-start-line="11" selection-start-column="10" selection-end-line="11" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/FreeCamera.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="5" column="17" selection-start-line="5" selection-start-column="17" selection-end-line="5" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/FirstPersonCamera.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="25" selection-start-line="3" selection-start-column="25" selection-end-line="3" selection-end-column="25" />
+          <folding>
+            <marker date="1529241794018" expanded="true" signature="64:1180" ph="{...}" />
+            <marker date="1529241794018" expanded="true" signature="356:489" ph="{...}" />
+            <marker date="1529241794018" expanded="true" signature="601:713" ph="{...}" />
+            <marker date="1529241794018" expanded="true" signature="747:1178" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/CameraSelector.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="10" column="62" selection-start-line="10" selection-start-column="62" selection-end-line="10" selection-end-column="62" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/TargetCamera.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="14" selection-start-line="14" selection-end-line="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/Plugins/Physics Platformer Kit/Scripts/PlayerMove.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1155">
+          <caret line="77" column="10" selection-start-line="77" selection-start-column="10" selection-end-line="77" selection-end-column="10" />
         </state>
       </provider>
     </entry>
@@ -366,33 +596,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Assets/TargetCamera.cs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
+        <state relative-caret-position="210">
           <caret line="14" selection-start-line="14" selection-end-line="14" />
-          <folding>
-            <marker date="1529241068102" expanded="false" signature="6:78" ph="..." />
-            <marker date="1529241068102" expanded="true" signature="119:357" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Assets/Plugins/Physics Platformer Kit/Scripts/CharacterMotor.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1034">
-          <folding>
-            <marker date="1529225753290" expanded="true" signature="20:200" ph="/* this class holds movement functions for a rigidbody character such as player, enemy, npc.. ... */" />
-            <marker date="1529225753290" expanded="true" signature="283:3304" ph="{...}" />
-            <marker date="1529225753290" expanded="true" signature="484:1346" ph="{...}" />
-            <marker date="1529225753290" expanded="true" signature="909:1343" ph="{...}" />
-            <marker date="1529225753290" expanded="true" signature="1512:1842" ph="{...}" />
-            <marker date="1529225753290" expanded="true" signature="1955:2316" ph="{...}" />
-            <marker date="1529225753290" expanded="true" signature="2112:2313" ph="{...}" />
-            <marker date="1529225753290" expanded="true" signature="2442:2780" ph="{...}" />
-            <marker date="1529225753290" expanded="true" signature="2504:2553" ph="{...}" />
-            <marker date="1529225753290" expanded="true" signature="2936:3302" ph="{...}" />
-            <marker date="1529225753290" expanded="true" signature="3048:3299" ph="{...}" />
-            <marker date="1529225753290" expanded="true" signature="3306:3703" ph="/* NOTE: ManageSpeed does a similar job to simply increasing the friction property of a rigidbodies &quot;physics mate ... */" />
-            <marker date="1529225753290" expanded="true" signature="3705:3992" ph="/* NOTE: when you use MoveTo, make sure the stopping distance is something like 0.3 and not 0 ... */" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -400,21 +605,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="147">
           <caret line="24" column="29" selection-start-line="24" selection-start-column="19" selection-end-line="24" selection-end-column="29" />
-          <folding>
-            <marker date="1529246810950" expanded="false" signature="6:44" ph="..." />
-            <marker date="1529246810950" expanded="true" signature="232:4627" ph="{...}" />
-            <marker date="1529246810950" expanded="true" signature="1806:2255" ph="{...}" />
-            <marker date="1529246810950" expanded="true" signature="2301:2790" ph="{...}" />
-            <marker date="1529246810950" expanded="true" signature="2357:2513" ph="{...}" />
-            <marker date="1529246810950" expanded="true" signature="2564:2699" ph="{...}" />
-            <marker date="1529246810950" expanded="true" signature="2615:2695" ph="{...}" />
-            <marker date="1529246810950" expanded="true" signature="2851:3035" ph="{...}" />
-            <marker date="1529246810950" expanded="true" signature="2957:3032" ph="{...}" />
-            <marker date="1529246810950" expanded="true" signature="3119:3851" ph="{...}" />
-            <marker date="1529246810950" expanded="true" signature="3489:3666" ph="{...}" />
-            <marker date="1529246810950" expanded="true" signature="3930:4625" ph="{...}" />
-            <marker date="1529246810950" expanded="true" signature="3973:4086" ph="{...}" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -422,46 +612,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="554">
           <caret line="114" column="26" selection-start-line="114" selection-start-column="16" selection-end-line="114" selection-end-column="26" />
-          <folding>
-            <marker date="1529225753300" expanded="false" signature="6:44" ph="..." />
-            <marker date="1529225753300" expanded="true" signature="46:185" ph="/* this allows the player to pick up/throw, and also pull certain objects ... */" />
-            <marker date="1529225753300" expanded="true" signature="341:8205" ph="{...}" />
-            <marker date="1529225753300" expanded="true" signature="2190:3037" ph="{...}" />
-            <marker date="1529225753300" expanded="true" signature="2294:2706" ph="{...}" />
-            <marker date="1529225753300" expanded="true" signature="3075:4454" ph="{...}" />
-            <marker date="1529225753300" expanded="true" signature="3225:3284" ph="{...}" />
-            <marker date="1529225753300" expanded="false" signature="3731:4451" ph="{...}" />
-            <marker date="1529225753300" expanded="true" signature="3739:4175" ph="/* the below line would rotate the character to the thing its grabbing. Unity(5.1) physics seems to have broken t ... */" />
-            <marker date="1529225753300" expanded="true" signature="4259:4289" ph="{...}" />
-            <marker date="1529225753300" expanded="true" signature="4307:4447" ph="{...}" />
-            <marker date="1529225753300" expanded="true" signature="4507:4864" ph="{...}" />
-            <marker date="1529225753300" expanded="true" signature="4617:4861" ph="{...}" />
-            <marker date="1529225753300" expanded="true" signature="4911:5452" ph="{...}" />
-            <marker date="1529225753300" expanded="true" signature="5495:7076" ph="{...}" />
-            <marker date="1529225753300" expanded="true" signature="6031:6650" ph="{...}" />
-            <marker date="1529225753300" expanded="true" signature="6756:7073" ph="{...}" />
-            <marker date="1529225753300" expanded="true" signature="7107:7296" ph="{...}" />
-            <marker date="1529225753300" expanded="true" signature="7325:7677" ph="{...}" />
-            <marker date="1529225753300" expanded="true" signature="7345:7426" ph="{...}" />
-            <marker date="1529225753300" expanded="true" signature="7769:8003" ph="{...}" />
-            <marker date="1529225753300" expanded="true" signature="7787:8000" ph="{...}" />
-            <marker date="1529225753300" expanded="true" signature="7810:7897" ph="{...}" />
-            <marker date="1529225753300" expanded="true" signature="8124:8203" ph="{...}" />
-            <marker date="1529225753300" expanded="true" signature="8207:8573" ph="/* NOTE: to check if the player is able to lift an object, and that nothing is above their head, a sphereCheck is ... */" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Assets/FollowCamera.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="11" column="10" selection-start-line="11" selection-start-column="10" selection-end-line="11" selection-end-column="10" />
-          <folding>
-            <marker date="1529248062759" expanded="false" signature="6:78" ph="..." />
-            <marker date="1529248062759" expanded="true" signature="119:798" ph="{...}" />
-            <marker date="1529248062759" expanded="true" signature="243:321" ph="{...}" />
-            <marker date="1529248062759" expanded="true" signature="512:796" ph="{...}" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -469,16 +619,25 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="75">
           <caret line="5" column="17" selection-start-line="5" selection-start-column="17" selection-end-line="5" selection-end-column="17" />
-          <folding>
-            <marker date="1529241794002" expanded="true" signature="6:32" ph="..." />
-            <marker date="1529241794002" expanded="true" signature="71:1734" ph="{...}" />
-            <marker date="1529241794002" expanded="true" signature="522:624" ph="{...}" />
-            <marker date="1529241794002" expanded="true" signature="664:769" ph="{...}" />
-            <marker date="1529241794002" expanded="true" signature="939:1537" ph="{...}" />
-            <marker date="1529241794002" expanded="true" signature="1085:1250" ph="{...}" />
-          </folding>
         </state>
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/PlayerBroomMove.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="5" column="4" selection-start-line="5" selection-start-column="4" selection-end-line="5" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/FollowCamera.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="11" column="10" selection-start-line="11" selection-start-column="10" selection-end-line="11" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/PlayerMovementStateMachine.cs">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/Assets/CameraBase.cs">
       <provider selected="true" editor-type-id="text-editor">
@@ -494,44 +653,212 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/CameraSelector.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="10" column="62" selection-start-line="10" selection-start-column="62" selection-end-line="10" selection-end-column="62" />
+          <folding>
+            <marker date="1529233992721" expanded="false" signature="6:78" ph="..." />
+            <marker date="1529233992721" expanded="true" signature="124:1097" ph="{...}" />
+            <marker date="1529233992721" expanded="true" signature="387:768" ph="{...}" />
+            <marker date="1529233992721" expanded="true" signature="446:762" ph="{...}" />
+            <marker date="1529233992721" expanded="true" signature="837:993" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/PlayerMoveTemp.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="217">
+          <caret line="334" column="73" selection-start-line="334" selection-start-column="68" selection-end-line="334" selection-end-column="73" />
+          <folding>
+            <marker date="1529388168306" expanded="true" signature="6:44" ph="..." />
+            <marker date="1529388168306" expanded="true" signature="311:17242" ph="{...}" />
+            <marker date="1529388168306" expanded="true" signature="2727:2785" ph="/* [SerializeField] ... */" />
+            <marker date="1529388168306" expanded="true" signature="3566:4895" ph="{...}" />
+            <marker date="1529388168306" expanded="true" signature="3659:4112" ph="{...}" />
+            <marker date="1529388168306" expanded="true" signature="4177:4339" ph="{...}" />
+            <marker date="1529388168306" expanded="true" signature="4600:4741" ph="/* gets child objects of floorcheckers, and puts them in an array ... */" />
+            <marker date="1529388168306" expanded="true" signature="4952:6200" ph="{...}" />
+            <marker date="1529388168306" expanded="true" signature="5976:6194" ph="/* float directionFloat = 0f; ... */" />
+            <marker date="1529388168306" expanded="false" signature="6315:7664" ph="{...}" />
+            <marker date="1529388168306" expanded="true" signature="7711:8351" ph="{...}" />
+            <marker date="1529388168306" expanded="true" signature="7863:7977" ph="/* Debug.DrawRay(transform.position, (slopeTangent), Color.blue); ... */" />
+            <marker date="1529388168306" expanded="true" signature="8409:8574" ph="{...}" />
+            <marker date="1529388168306" expanded="true" signature="8667:11354" ph="{...}" />
+            <marker date="1529388168306" expanded="true" signature="9014:9072" ph="{...}" />
+            <marker date="1529388168306" expanded="true" signature="9126:9274" ph="{...}" />
+            <marker date="1529388168306" expanded="true" signature="9188:9263" ph="/* print(specificSlopeNormal); ... */" />
+            <marker date="1529388168306" expanded="true" signature="9694:10012" ph="/* Debug.DrawRay(transform.position, transform.position - moveDirection , Color.green); ... */" />
+            <marker date="1529388168306" expanded="true" signature="10139:10364" ph="/* Debug.Log (&quot;accelerating with &quot; + accelCurve.Evaluate(direction.magnitude)+ &quot; magnitude&quot;); ... */" />
+            <marker date="1529388168306" expanded="true" signature="10505:10629" ph="/* characterMotor.MoveTo (moveDirection, curAccel, stopDistance, true); ... */" />
+            <marker date="1529388168306" expanded="true" signature="10905:11303" ph="{...}" />
+            <marker date="1529388168306" expanded="true" signature="10983:11298" ph="/* animator.SetFloat(&quot;DistanceToTarget&quot;, direction.magnitude); ... */" />
+            <marker date="1529388168306" expanded="true" signature="11512:12185" ph="{...}" />
+            <marker date="1529388168306" expanded="true" signature="11673:11714" ph="{...}" />
+            <marker date="1529388168306" expanded="true" signature="11870:12182" ph="{...}" />
+            <marker date="1529388168306" expanded="true" signature="11886:12135" ph="/* print(&quot;in collision function setting&quot;); ... */" />
+            <marker date="1529388168306" expanded="true" signature="12188:12317" ph="/* returns whether we are on the ground or not ... */" />
+            <marker date="1529388168306" expanded="true" signature="12344:15487" ph="{...}" />
+            <marker date="1529388168306" expanded="true" signature="12707:14630" ph="{...}" />
+            <marker date="1529388168306" expanded="true" signature="12830:14484" ph="{...}" />
+            <marker date="1529388168306" expanded="true" signature="12969:14479" ph="{...}" />
+            <marker date="1529388168306" expanded="true" signature="12996:13070" ph="/* slope control ... */" />
+            <marker date="1529388168306" expanded="true" signature="13287:13405" ph="{...}" />
+            <marker date="1529388168306" expanded="true" signature="13490:13672" ph="{...}" />
+            <marker date="1529388168306" expanded="true" signature="13814:14144" ph="{...}" />
+            <marker date="1529388168306" expanded="true" signature="14154:14205" ph="{...}" />
+            <marker date="1529388168306" expanded="true" signature="14226:14292" ph="/* yes our feet are on something ... */" />
+            <marker date="1529388168306" expanded="true" signature="14371:14473" ph="{...}" />
+            <marker date="1529388168306" expanded="true" signature="14501:14601" ph="{...}" />
+            <marker date="1529388168306" expanded="true" signature="15532:16836" ph="{...}" />
+            <marker date="1529388168306" expanded="true" signature="15906:16035" ph="{...}" />
+            <marker date="1529388168306" expanded="true" signature="16240:16833" ph="{...}" />
+            <marker date="1529388168306" expanded="true" signature="16399:16829" ph="{...}" />
+            <marker date="1529388168306" expanded="true" signature="16771:16824" ph="{...}" />
+            <marker date="1529388168306" expanded="true" signature="16906:17240" ph="{...}" />
+            <marker date="1529388168306" expanded="true" signature="17004:17084" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/Plugins/Physics Platformer Kit/Scripts/EnemyAI.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="317">
+          <caret line="101" column="23" selection-start-line="101" selection-start-column="23" selection-end-line="101" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Assets/Plugins/Physics Platformer Kit/Scripts/PlayerMove.cs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="57">
-          <caret line="77" column="10" selection-start-line="77" selection-start-column="10" selection-end-line="77" selection-end-column="10" />
+        <state relative-caret-position="180">
+          <caret line="12" column="4" selection-start-line="12" selection-start-column="4" selection-end-line="12" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/MovementStateMachine.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="11" column="9" selection-start-line="11" selection-start-column="9" selection-end-line="11" selection-end-column="9" />
           <folding>
-            <marker date="1529305158514" expanded="true" signature="6:63" ph="..." />
-            <marker date="1529305158514" expanded="true" signature="326:10759" ph="{...}" />
-            <marker date="1529305158514" expanded="true" signature="2523:3013" ph="{...}" />
-            <marker date="1529305158514" expanded="true" signature="2718:2859" ph="/* gets child objects of floorcheckers, and puts them in an array ... */" />
-            <marker date="1529305158514" expanded="true" signature="3070:3933" ph="{...}" />
-            <marker date="1529305158514" expanded="true" signature="3076:3198" ph="/* stops rigidbody &quot;sleeping&quot; if we don't move, which would stop collision detection ... */" />
-            <marker date="1529305158514" expanded="true" signature="4026:4859" ph="{...}" />
-            <marker date="1529305158514" expanded="true" signature="4080:4211" ph="/* CorrectForSlope(slopeNormal); ... */" />
-            <marker date="1529305158514" expanded="true" signature="4545:4856" ph="{...}" />
-            <marker date="1529305158514" expanded="true" signature="5016:5565" ph="{...}" />
-            <marker date="1529305158514" expanded="true" signature="5331:5562" ph="{...}" />
-            <marker date="1529305158514" expanded="true" signature="5339:5524" ph="/* it's usually not a good idea to alter a rigidbodies velocity every frame ... */" />
-            <marker date="1529305158514" expanded="true" signature="5568:5697" ph="/* returns whether we are on the ground or not ... */" />
-            <marker date="1529305158514" expanded="true" signature="5725:8107" ph="{...}" />
-            <marker date="1529305158514" expanded="true" signature="6023:7507" ph="{...}" />
-            <marker date="1529305158514" expanded="true" signature="6121:7480" ph="{...}" />
-            <marker date="1529305158514" expanded="true" signature="6182:7475" ph="{...}" />
-            <marker date="1529305158514" expanded="true" signature="6346:6457" ph="{...}" />
-            <marker date="1529305158514" expanded="true" signature="6522:6619" ph="{...}" />
-            <marker date="1529305158514" expanded="true" signature="6706:6881" ph="{...}" />
-            <marker date="1529305158514" expanded="true" signature="7020:7344" ph="{...}" />
-            <marker date="1529305158514" expanded="true" signature="7511:7975" ph="/* if (loopCount &gt; 0 &amp;&amp; numberOfHits&gt;0) { ... */" />
-            <marker date="1529305158514" expanded="true" signature="8143:8472" ph="{...}" />
-            <marker date="1529305158514" expanded="true" signature="8516:8988" ph="{...}" />
-            <marker date="1529305158514" expanded="true" signature="8522:8713" ph="/* var slopeTangent = SlopeTangentAnalysis(slopeNormal); ... */" />
-            <marker date="1529305158514" expanded="true" signature="9148:10432" ph="{...}" />
-            <marker date="1529305158514" expanded="true" signature="9443:9570" ph="{...}" />
-            <marker date="1529305158514" expanded="true" signature="9728:9758" ph="{...}" />
-            <marker date="1529305158514" expanded="true" signature="9836:10429" ph="{...}" />
-            <marker date="1529305158514" expanded="true" signature="9995:10425" ph="{...}" />
-            <marker date="1529305158514" expanded="true" signature="10367:10420" ph="{...}" />
-            <marker date="1529305158514" expanded="true" signature="10502:10757" ph="{...}" />
-            <marker date="1529305158514" expanded="true" signature="10521:10601" ph="{...}" />
+            <marker date="1529387221330" expanded="true" signature="6:78" ph="..." />
+            <marker date="1529387221330" expanded="true" signature="130:651" ph="{...}" />
+            <marker date="1529387221330" expanded="true" signature="309:519" ph="{...}" />
+            <marker date="1529387221330" expanded="true" signature="317:354" ph="{...}" />
+            <marker date="1529387221330" expanded="true" signature="361:516" ph="{...}" />
+            <marker date="1529387221330" expanded="true" signature="562:649" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/PlayerMove.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="12" selection-start-line="12" selection-end-line="12" />
+          <folding>
+            <marker date="1529393431482" expanded="true" signature="219:7491" ph="{...}" />
+            <marker date="1529393431482" expanded="true" signature="1622:2112" ph="{...}" />
+            <marker date="1529393431482" expanded="true" signature="1817:1958" ph="/* gets child objects of floorcheckers, and puts them in an array ... */" />
+            <marker date="1529393431482" expanded="true" signature="2169:3026" ph="{...}" />
+            <marker date="1529393431482" expanded="true" signature="3119:3998" ph="{...}" />
+            <marker date="1529393431482" expanded="true" signature="3684:3995" ph="{...}" />
+            <marker date="1529393431482" expanded="true" signature="4026:5999" ph="{...}" />
+            <marker date="1529393431482" expanded="true" signature="4362:5551" ph="{...}" />
+            <marker date="1529393431482" expanded="true" signature="4477:5547" ph="{...}" />
+            <marker date="1529393431482" expanded="true" signature="4832:5008" ph="{...}" />
+            <marker date="1529393431482" expanded="true" signature="5157:5476" ph="{...}" />
+            <marker date="1529393431482" expanded="true" signature="6024:6182" ph="{...}" />
+            <marker date="1529393431482" expanded="true" signature="6206:6348" ph="{...}" />
+            <marker date="1529393431482" expanded="true" signature="6535:7193" ph="{...}" />
+            <marker date="1529393431482" expanded="true" signature="6620:6747" ph="{...}" />
+            <marker date="1529393431482" expanded="true" signature="6953:7133" ph="{...}" />
+            <marker date="1529393431482" expanded="true" signature="7234:7489" ph="{...}" />
+            <marker date="1529393431482" expanded="true" signature="7253:7333" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/Plugins/Physics Platformer Kit/Scripts/CharacterMotor.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="545">
+          <caret line="69" column="5" lean-forward="true" selection-start-line="69" selection-start-column="5" selection-end-line="69" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/CharacterMotor.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="587">
+          <caret line="107" selection-start-line="107" selection-end-line="107" />
+          <folding>
+            <marker date="1529393543101" expanded="true" signature="20:200" ph="/* this class holds movement functions for a rigidbody character such as player, enemy, npc.. ... */" />
+            <marker date="1529393543101" expanded="true" signature="282:3107" ph="{...}" />
+            <marker date="1529393543101" expanded="true" signature="426:1162" ph="{...}" />
+            <marker date="1529393543101" expanded="true" signature="725:1159" ph="{...}" />
+            <marker date="1529393543101" expanded="true" signature="1327:1656" ph="{...}" />
+            <marker date="1529393543101" expanded="true" signature="1768:2126" ph="{...}" />
+            <marker date="1529393543101" expanded="true" signature="1922:2123" ph="{...}" />
+            <marker date="1529393543101" expanded="true" signature="2251:2587" ph="{...}" />
+            <marker date="1529393543101" expanded="true" signature="2313:2362" ph="{...}" />
+            <marker date="1529393543101" expanded="true" signature="2742:3105" ph="{...}" />
+            <marker date="1529393543101" expanded="true" signature="2851:3102" ph="{...}" />
+            <marker date="1529393543101" expanded="true" signature="3109:3506" ph="/* NOTE: ManageSpeed does a similar job to simply increasing the friction property of a rigidbodies &quot;physics mate ... */" />
+            <marker date="1529393543101" expanded="true" signature="3508:3795" ph="/* NOTE: when you use MoveTo, make sure the stopping distance is something like 0.3 and not 0 ... */" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/EnemyAI.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="375">
+          <caret line="26" column="37" selection-start-line="26" selection-start-column="37" selection-end-line="26" selection-end-column="37" />
+          <folding>
+            <marker date="1529393596475" expanded="false" signature="6:44" ph="..." />
+            <marker date="1529393596475" expanded="true" signature="195:4588" ph="{...}" />
+            <marker date="1529393596475" expanded="true" signature="1821:2846" ph="{...}" />
+            <marker date="1529393596475" expanded="true" signature="1962:2113" ph="{...}" />
+            <marker date="1529393596475" expanded="true" signature="2132:2320" ph="{...}" />
+            <marker date="1529393596475" expanded="true" signature="2499:2692" ph="{...}" />
+            <marker date="1529393596475" expanded="true" signature="2862:3876" ph="{...}" />
+            <marker date="1529393596475" expanded="true" signature="3008:3330" ph="{...}" />
+            <marker date="1529393596475" expanded="true" signature="3337:3535" ph="{...}" />
+            <marker date="1529393596475" expanded="true" signature="3594:3792" ph="{...}" />
+            <marker date="1529393596475" expanded="true" signature="3897:4026" ph="{...}" />
+            <marker date="1529393596475" expanded="true" signature="4098:4586" ph="{...}" />
+            <marker date="1529393596475" expanded="true" signature="4307:4452" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/Throwing.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="465">
+          <caret line="32" column="4" selection-start-line="32" selection-start-column="4" selection-end-line="32" selection-end-column="4" />
+          <folding>
+            <marker date="1529393609813" expanded="false" signature="6:44" ph="..." />
+            <marker date="1529393609813" expanded="true" signature="46:185" ph="/* this allows the player to pick up/throw, and also pull certain objects ... */" />
+            <marker date="1529393609813" expanded="true" signature="340:8157" ph="{...}" />
+            <marker date="1529393609813" expanded="true" signature="2164:3009" ph="{...}" />
+            <marker date="1529393609813" expanded="true" signature="2268:2680" ph="{...}" />
+            <marker date="1529393609813" expanded="true" signature="3046:4417" ph="{...}" />
+            <marker date="1529393609813" expanded="true" signature="3196:3254" ph="{...}" />
+            <marker date="1529393609813" expanded="true" signature="3697:4414" ph="{...}" />
+            <marker date="1529393609813" expanded="true" signature="3705:4141" ph="/* the below line would rotate the character to the thing its grabbing. Unity(5.1) physics seems to have broken t ... */" />
+            <marker date="1529393609813" expanded="true" signature="4225:4255" ph="{...}" />
+            <marker date="1529393609813" expanded="true" signature="4270:4410" ph="{...}" />
+            <marker date="1529393609813" expanded="true" signature="4469:4826" ph="{...}" />
+            <marker date="1529393609813" expanded="true" signature="4579:4823" ph="{...}" />
+            <marker date="1529393609813" expanded="true" signature="4870:5411" ph="{...}" />
+            <marker date="1529393609813" expanded="true" signature="5453:7032" ph="{...}" />
+            <marker date="1529393609813" expanded="true" signature="5987:6606" ph="{...}" />
+            <marker date="1529393609813" expanded="true" signature="6712:7029" ph="{...}" />
+            <marker date="1529393609813" expanded="true" signature="7062:7251" ph="{...}" />
+            <marker date="1529393609813" expanded="true" signature="7279:7631" ph="{...}" />
+            <marker date="1529393609813" expanded="true" signature="7299:7380" ph="{...}" />
+            <marker date="1529393609813" expanded="true" signature="7722:7956" ph="{...}" />
+            <marker date="1529393609813" expanded="true" signature="7740:7953" ph="{...}" />
+            <marker date="1529393609813" expanded="true" signature="7763:7850" ph="{...}" />
+            <marker date="1529393609813" expanded="true" signature="8076:8155" ph="{...}" />
+            <marker date="1529393609813" expanded="true" signature="8159:8524" ph="/* NOTE: to check if the player is able to lift an object, and that nothing is above their head, a sphereCheck is ... */" />
           </folding>
         </state>
       </provider>

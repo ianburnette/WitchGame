@@ -54,12 +54,30 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\CameraBase.cs" />
-    <Compile Include="Assets\CameraSelector.cs" />
-    <Compile Include="Assets\FirstPersonCamera.cs" />
-    <Compile Include="Assets\FollowCamera.cs" />
-    <Compile Include="Assets\FreeCamera.cs" />
-    <Compile Include="Assets\TargetCamera.cs" />
+    <Compile Include="Assets\Scripts\CameraBase.cs" />
+    <Compile Include="Assets\Scripts\CameraSelector.cs" />
+    <Compile Include="Assets\Scripts\CharacterMotor.cs" />
+    <Compile Include="Assets\Scripts\Checkpoint.cs" />
+    <Compile Include="Assets\Scripts\Coin.cs" />
+    <Compile Include="Assets\Scripts\DealDamage.cs" />
+    <Compile Include="Assets\Scripts\DestroyObject.cs" />
+    <Compile Include="Assets\Scripts\EnemyAI.cs" />
+    <Compile Include="Assets\Scripts\FirstPersonCamera.cs" />
+    <Compile Include="Assets\Scripts\FollowCamera.cs" />
+    <Compile Include="Assets\Scripts\FreeCamera.cs" />
+    <Compile Include="Assets\Scripts\Goal.cs" />
+    <Compile Include="Assets\Scripts\GUIManager.cs" />
+    <Compile Include="Assets\Scripts\Hazard.cs" />
+    <Compile Include="Assets\Scripts\Health.cs" />
+    <Compile Include="Assets\Scripts\MovementStateMachine.cs" />
+    <Compile Include="Assets\Scripts\MoveToPoints.cs" />
+    <Compile Include="Assets\Scripts\PlayerBroomMove.cs" />
+    <Compile Include="Assets\Scripts\PlayerMove.cs" />
+    <Compile Include="Assets\Scripts\PlayerMoveTemp.cs" />
+    <Compile Include="Assets\Scripts\TargetCamera.cs" />
+    <Compile Include="Assets\Scripts\Throwing.cs" />
+    <Compile Include="Assets\Scripts\TriggerParent.cs" />
+    <Compile Include="Assets\Scripts\Water.cs" />
     <Reference Include="UnityEditor.StandardEvents">
       <HintPath>/Users/ianburnette/WitchGame/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
     </Reference>

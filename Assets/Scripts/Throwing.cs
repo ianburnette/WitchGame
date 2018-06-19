@@ -6,7 +6,7 @@ using System.Collections;
 [RequireComponent(typeof(AudioSource))]
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(PlayerMove))]
-public class Throwing : MonoBehaviour 
+public class Throwing : MonoBehaviour
 {
 	public AudioClip pickUpSound;								//sound when you pickup/grab an object
 	public AudioClip throwSound;								//sound when you throw an object
@@ -15,13 +15,13 @@ public class Throwing : MonoBehaviour
 	public Vector3 throwForce = new Vector3(0, 5, 7);			//the throw force of the player
 	public float rotateToBlockSpeed = 3;						//how fast to face the "Pushable" object you're holding/pulling
 	public float checkRadius = 0.5f;							//how big a radius to check above the players head, to see if anything is in the way of your pickup
-	[Range(0.1f, 1f)]											//new weight of a carried object, 1 means no change, 0.1 means 10% of its original weight													
+	[Range(0.1f, 1f)]											//new weight of a carried object, 1 means no change, 0.1 means 10% of its original weight
 	public float weightChange = 0.3f;							//this is so you can easily carry objects without effecting movement if you wish to
 	[Range(10f, 1000f)]
 	public float holdingBreakForce = 45, holdingBreakTorque = 45;//force and angularForce needed to break your grip on a "Pushable" object youre holding onto
 	public Animator animator;									//object with animation controller on, which you want to animate (usually same as in PlayerMove)
 	public int armsAnimationLayer;								//index of the animation layer for "arms"
-	
+
 	[HideInInspector]
 	public GameObject heldObj;
 	private Vector3 holdPos;
@@ -29,13 +29,13 @@ public class Throwing : MonoBehaviour
 	private float timeOfPickup, timeOfThrow, defRotateSpeed;
 	private Color gizmoColor;
 	private AudioSource aSource;
-	
-	private PlayerMove playerMove;
+
+	PlayerMove playerMove;
 	//private CharacterMotor characterMotor;	line rendererd unnecessary for now. (see line 85)
 	private TriggerParent triggerParent;
 	private RigidbodyInterpolation objectDefInterpolation;
-	
-	
+
+
 	//setup
 	void Awake()
 	{
@@ -51,7 +51,7 @@ public class Throwing : MonoBehaviour
 			grabBox.layer = 2;	//ignore raycast by default
 			Debug.LogWarning("No grabBox object assigned to 'Throwing' script, one has been created and assigned for you", grabBox);
 		}
-		
+
 		playerMove = GetComponent<PlayerMove>();
 		//characterMotor = GetComponent<CharacterMotor>(); line rendererd unnecessary for now. (see line 85)
 		defRotateSpeed = playerMove.rotateSpeed;
@@ -59,14 +59,14 @@ public class Throwing : MonoBehaviour
 		if(animator)
 			animator.SetLayerWeight(armsAnimationLayer, 1);
 	}
-	
+
 	//throwing/dropping
 	void Update()
 	{
 		//when we press grab button, throw object if we're holding one
 		if (Input.GetButtonDown ("Grab") && heldObj && Time.time > timeOfPickup + 0.1f)
 		{
-			if(heldObj.tag == "Pickup") 
+			if(heldObj.tag == "Pickup")
 				ThrowPickup();
 		}
 		//set animation value for arms layer
@@ -75,12 +75,12 @@ public class Throwing : MonoBehaviour
 				animator.SetBool ("HoldingPickup", true);
 			else
 				animator.SetBool ("HoldingPickup", false);
-		
+
 			if(heldObj && heldObj.tag == "Pushable")
 				animator.SetBool ("HoldingPushable", true);
 			else
 				animator.SetBool ("HoldingPushable", false);
-		
+
 		//if we're holding a pushable, rotate to face it
 		if (heldObj && heldObj.tag == "Pushable")
 		{
@@ -95,7 +95,7 @@ public class Throwing : MonoBehaviour
 			{
 				DropPushable();
 			}
-			
+
 			if(!joint)
 			{
 				DropPushable();
@@ -103,7 +103,7 @@ public class Throwing : MonoBehaviour
 			}
 		}
 	}
-	
+
 	//pickup/grab
 	void OnTriggerStay(Collider other)
 	{
@@ -118,7 +118,7 @@ public class Throwing : MonoBehaviour
 				GrabPushable(other);
 		}
 	}
-			
+
 	private void GrabPushable(Collider other)
 	{
 		heldObj = other.gameObject;
@@ -131,14 +131,14 @@ public class Throwing : MonoBehaviour
 		//stop player rotating in direction of movement, so they can face the block theyre pulling
 		playerMove.rotateSpeed = 0;
 	}
-	
+
 	private void LiftPickup(Collider other)
 	{
 		//get where to move item once its picked up
 		Mesh otherMesh = other.GetComponent<MeshFilter>().mesh;
 		holdPos = transform.position + transform.forward * holdOffset.z + transform.right * holdOffset.x + transform.up * holdOffset.y;
 		holdPos.y += (GetComponent<Collider>().bounds.extents.y) + (otherMesh.bounds.extents.y);
-		
+
 		//if there is space above our head, pick up item (this uses the defaul CheckSphere layers, you can add a layerMask parameter here if you need to though!)
 		if(!Physics.CheckSphere(holdPos, checkRadius))
 		{
@@ -162,7 +162,7 @@ public class Throwing : MonoBehaviour
 				"the CheckSphere function, in order to make sure it isn't detecting something above the players head that is invisible");
 		}
 	}
-	
+
 	private void DropPushable()
 	{
 		heldObj.GetComponent<Rigidbody>().interpolation = objectDefInterpolation;
@@ -171,7 +171,7 @@ public class Throwing : MonoBehaviour
 		heldObj = null;
 		timeOfThrow = Time.time;
 	}
-	
+
 	public void ThrowPickup()
 	{
 		if(throwSound)
@@ -190,7 +190,7 @@ public class Throwing : MonoBehaviour
 		heldObj = null;
 		timeOfThrow = Time.time;
 	}
-	
+
 	//connect player and pickup/pushable object via a physics joint
 	private void AddJoint()
 	{
@@ -206,7 +206,7 @@ public class Throwing : MonoBehaviour
 			joint.connectedBody = GetComponent<Rigidbody>();
 		}
 	}
-	
+
 	//draws red sphere if something is in way of pickup (select player in scene view to see)
 	void OnDrawGizmosSelected()
 	{
@@ -216,5 +216,5 @@ public class Throwing : MonoBehaviour
 }
 
 /* NOTE: to check if the player is able to lift an object, and that nothing is above their head, a sphereCheck is used. (line 136)
- * this function uses the default layermask, but if you find it isn't working on the right layers for your game, you'll likely need to create your 
+ * this function uses the default layermask, but if you find it isn't working on the right layers for your game, you'll likely need to create your
  * own public LayerMask variable, and assign it to the function as a final parameter */
