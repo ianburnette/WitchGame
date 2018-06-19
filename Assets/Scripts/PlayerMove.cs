@@ -29,103 +29,98 @@ public class PlayerMove : MonoBehaviour
 	[SerializeField] float stickToGroundForce;
 
 	//jumping
-	public Vector3 jumpForce =  new Vector3(0, 13, 0);
+	public float jumpForce = 13f;
 	public float jumpLeniancy = 0.17f;
 	[HideInInspector] public int onEnemyBounce;
 
 	int onJump;
 	bool grounded;
-	Transform[] floorCheckers;
+	[SerializeField] Transform[] floorCheckers;
 	Quaternion screenMovementSpace;
-	float airPressTime, curAccel, curDecel, curRotateSpeed, slope;
-	Vector3 direction, moveDirection, screenMovementForward, screenMovementRight, movingObjSpeed;
+	float airPressTime, slope;
+	Vector3 movementDirectionRelativeToCamera, moveDirection, screenMovementForward, screenMovementRight, movingObjSpeed;
 	[SerializeField] Vector3 slopeNormal;
 	[SerializeField] protected Vector3 specificSlopeNormal;
 	[SerializeField] LayerMask groundMask;
 
-	CharacterMotor characterMotor;
-	EnemyAI enemyAI;
-	DealDamage dealDamage;
-	Rigidbody rigid;
-	AudioSource aSource;
+	[SerializeField] CharacterMotor characterMotor;
+	[SerializeField] DealDamage dealDamage;
+	[SerializeField] Rigidbody rigid;
+	[SerializeField] AudioSource aSource;
 
-	//setup
-	void Awake()
-	{
-		//usual setup
-		dealDamage = GetComponent<DealDamage>();
-		characterMotor = GetComponent<CharacterMotor>();
-		rigid = GetComponent<Rigidbody>();
-		aSource = GetComponent<AudioSource>();
+	EnemyAI currentEnemyAI;
 
-		//gets child objects of floorcheckers, and puts them in an array
-		//later these are used to raycast downward and see if we are on the ground
-		floorCheckers = new Transform[floorChecks.childCount];
-		for (int i=0; i < floorCheckers.Length; i++)
-			floorCheckers[i] = floorChecks.GetChild(i);
+	void OnEnable() {
+		PlayerInput.OnJump += JumpPressed;
+		PlayerInput.OnMove += Move;
 	}
 
-	//get state of player, values and input
-	void Update()
-	{
-		//stops rigidbody "sleeping" if we don't move, which would stop collision detection
-		rigid.WakeUp();
-		//handle jumping
-		JumpCalculations ();
-		//adjust movement values if we're in the air or on the ground
-		curAccel = (grounded) ? accel : airAccel;
-		curDecel = (grounded) ? decel : airDecel;
-		curRotateSpeed = (grounded) ? rotateSpeed : airRotateSpeed;
+	void OnDisable() {
+		PlayerInput.OnJump -= JumpPressed;
+		PlayerInput.OnMove -= Move;
+	}
 
-		//get movement axis relative to camera
+	void Update() => rigid.WakeUp();
+
+	void Move(Vector2 inputVector) {
+		MovementRelativeToCamera();
+		movementDirectionRelativeToCamera = (screenMovementForward * inputVector.y) +
+		                                    (screenMovementRight * inputVector.x);
+		moveDirection = transform.position + movementDirectionRelativeToCamera;
+	}
+
+	void MovementRelativeToCamera() {
 		screenMovementSpace = Quaternion.Euler (0, mainCam.eulerAngles.y, 0);
 		screenMovementForward = screenMovementSpace * Vector3.forward;
 		screenMovementRight = screenMovementSpace * Vector3.right;
-
-		//get movement input, set direction to move in
-		var h = Input.GetAxis ("Horizontal");
-		var v = Input.GetAxis ("Vertical");
-
-		direction = (screenMovementForward * v) + (screenMovementRight * h);
-		moveDirection = transform.position + direction;
 	}
 
 	//apply correct player movement (fixedUpdate for physics calculations)
 	void FixedUpdate()
 	{
-		//are we grounded
 		grounded = IsGrounded ();
-		CorrectForSlope();
-		StickToGround();
+		PlayLandingSoundIfNecessary();
 
-		characterMotor.MoveTo (moveDirection, curAccel, movementSensitivity, true);
-		Debug.DrawRay(transform.position, transform.position+moveDirection, Color.magenta);
-		if (rotateSpeed != 0 && direction.magnitude != 0)
-			characterMotor.RotateToVelocity(curRotateSpeed, true);//RotateToDirection (moveDirection , curRotateSpeed, true);
-		characterMotor.ManageSpeed (curDecel, maximumMovementMagnitude + movingObjSpeed.magnitude, true);
-		//set animation values
-		if(animator)
-		{
-			animator.SetFloat("DistanceToTarget", characterMotor.DistanceToTarget);
-			animator.SetBool("Grounded", grounded);
-			animator.SetFloat("YVelocity", GetComponent<Rigidbody>().velocity.y);
-			animator.SetFloat("XVelocity", new Vector3(rigid.velocity.x,0,rigid.velocity.z).normalized.magnitude + .1f);
-		}
+		rigid.AddForce(SlopeCorrection() + StickToGround());
+		UpdateCharacterMotor();
+
+		if (animator) Animate();
 	}
 
-	private bool IsGrounded()
+	void UpdateCharacterMotor() {
+		characterMotor.MoveTo (moveDirection, grounded ? accel : airAccel, movementSensitivity, true);
+		if (rotateSpeed != 0 && movementDirectionRelativeToCamera.magnitude != 0)
+			characterMotor.RotateToVelocity(grounded ? rotateSpeed : airRotateSpeed, true);
+		characterMotor.ManageSpeed (grounded ? decel : airDecel, maximumMovementMagnitude + movingObjSpeed.magnitude, true);
+	}
+
+	void Animate() {
+		animator.SetFloat("DistanceToTarget", characterMotor.DistanceToTarget);
+		animator.SetBool("Grounded", grounded);
+		animator.SetFloat("YVelocity", GetComponent<Rigidbody>().velocity.y);
+		animator.SetFloat("XVelocity", new Vector3(rigid.velocity.x,0,rigid.velocity.z).normalized.magnitude + .1f);
+	}
+
+	void PlayLandingSoundIfNecessary() {
+		if (aSource.isPlaying || !landSound || !(rigid.velocity.y < 1)) return;
+		aSource.volume = Mathf.Abs(rigid.velocity.y) / 40;
+		aSource.clip = landSound;
+		aSource.Play();
+	}
+
+	bool IsGrounded()
 	{
 		//get distance to ground, from centre of collider (where floorcheckers should be)
 		float dist = GetComponent<Collider>().bounds.extents.y;
         //check whats at players feet, at each floorcheckers position
         int connectingRays = 0;
-        Vector3 totalNormal = Vector3.zero;
+        Vector3 summedNormal = Vector3.zero;
 		foreach (Transform check in floorCheckers)
 		{
 			RaycastHit hit;
 			if(Physics.Raycast(check.position, Vector3.down * 1, out hit, dist + 0.05f, groundMask))
 			{
-				totalNormal += hit.normal.normalized; ;
+				summedNormal += hit.normal.normalized; ;
 				slope = Vector3.Angle (hit.normal, Vector3.up);
 				//slide down slopes
 				if(slope > slopeLimit && !hit.transform.CompareTag("Pushable"))
@@ -133,8 +128,8 @@ public class PlayerMove : MonoBehaviour
 				//enemy bouncing
 				if (hit.transform.CompareTag("Enemy") && rigid.velocity.y < 0)
 				{
-					enemyAI = hit.transform.GetComponent<EnemyAI>();
-					enemyAI.BouncedOn();
+					currentEnemyAI = hit.transform.GetComponent<EnemyAI>();
+					currentEnemyAI.BouncedOn();
 					onEnemyBounce ++;
 					dealDamage.Attack(hit.transform.gameObject, 1, 0f, 0f);
 				}
@@ -153,68 +148,46 @@ public class PlayerMove : MonoBehaviour
 			}
 		}
 
-        float nX = Mathf.Abs(totalNormal.x) > 0 ? totalNormal.x / connectingRays : 0;
-        float nY = Mathf.Abs(totalNormal.y) > 0 ? totalNormal.y / connectingRays : 0;
-        float nZ = Mathf.Abs(totalNormal.z) > 0 ? totalNormal.z / connectingRays : 0;
-
-        slopeNormal = new Vector3(nX, nY, nZ);
+		slopeNormal = CalculateSlopeNormal(summedNormal, connectingRays);
 
         movingObjSpeed = Vector3.zero;
 
-        if (connectingRays == 0)
-            return false;
-        else
-           return true;
-
+        return connectingRays != 0;
 	}
 
-	void CorrectForSlope()
-	{
-		Debug.DrawRay(transform.position, SlopeCorrection() * slopeCorrectionAmount, Color.red);
-		rigid.AddForce(SlopeCorrection() * slopeCorrectionAmount);
-	}
+	static Vector3 CalculateSlopeNormal(Vector3 totalNormal, int rayCount) =>
+		new Vector3(Mathf.Abs(totalNormal.x) > 0 ? totalNormal.x / rayCount : 0,
+					Mathf.Abs(totalNormal.y) > 0 ? totalNormal.y / rayCount : 0,
+					Mathf.Abs(totalNormal.z) > 0 ? totalNormal.z / rayCount : 0);
+	Vector3 StickToGround() => -slopeNormal * stickToGroundForce;
+	Vector3 SlopeCorrection() => Vector3.Cross(slopeNormal, SlopeTangent() * slopeCorrectionAmount);
+	Vector3 SlopeTangent() => new Vector3(-slopeNormal.z, 0, slopeNormal.x);
 
-	void StickToGround() {
-		Debug.DrawRay(transform.position, (slopeNormal * stickToGroundForce), Color.cyan);
-		rigid.AddForce(-slopeNormal * stickToGroundForce);
-	}
-
-	Vector3 SlopeCorrection() => Vector3.Cross(slopeNormal, SlopeTangent());
-
-	Vector3 SlopeTangent() =>
-		new Vector3(-slopeNormal.z, 0, slopeNormal.x);
-
-	private void JumpCalculations() {
-		if (!GetComponent<AudioSource>().isPlaying && landSound && rigid.velocity.y < 1) {
-			aSource.volume = Mathf.Abs(GetComponent<Rigidbody>().velocity.y) / 40;
-			aSource.clip = landSound;
-			aSource.Play();
-		}
-
-		//if we press jump in the air, save the time
-		if (Input.GetButtonDown("Jump") && !grounded)
+	void JumpPressed() {
+		if (!grounded)
 			airPressTime = Time.time;
 
-		//if were on ground within slope limit
-		if (grounded && slope < slopeLimit) {
-			//and we press jump, or we pressed jump justt before hitting the ground
-			if (Input.GetButtonDown("Jump") || airPressTime + jumpLeniancy > Time.time)
-				Jump(jumpForce);
-		} else {
-			//	movementStateMachine.ChangeState(this);
-		}
+		else if (slope < slopeLimit)
+			Jump();
+		//movementStateMachine.ChangeState(this);
+		//TODO figure out how to put the state change in here
 	}
 
-	public void Jump(Vector3 jumpVelocity)
-	{
-		if(jumpSound)
-		{
-			aSource.volume = 1;
-			aSource.clip = jumpSound;
-			aSource.Play ();
-		}
+	void Jump() {
+		if (jumpSound) PlayJumpSound();
 		rigid.velocity = new Vector3(rigid.velocity.x, 0f, rigid.velocity.z);
-		rigid.AddRelativeForce (jumpVelocity, ForceMode.Impulse);
+		rigid.AddRelativeForce (Vector3.up * jumpForce, ForceMode.Impulse);
 		airPressTime = 0f;
+	}
+
+	public void BounceOnEnemy(Vector3 bounceForce) {
+		rigid.velocity = new Vector3(rigid.velocity.x, 0f, rigid.velocity.z);
+		rigid.AddRelativeForce (bounceForce, ForceMode.Impulse);
+	}
+
+	void PlayJumpSound() {
+		aSource.volume = 1;
+		aSource.clip = jumpSound;
+		aSource.Play ();
 	}
 }

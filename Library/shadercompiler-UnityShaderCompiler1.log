@@ -1,96 +1,31 @@
 Base path: /Applications/Unity/Hub/Editor/2018.2.0b8/Unity.app/Contents
 Cmd: initializeCompiler
 Cmd: compileComputeKernel
-  api=14 insize=1386 outsize=6421 ok=1
+  api=14 insize=2023 outsize=785 ok=1
 Cmd: translateComputeKernel
-  api=14 insize=7433 outsize=3177 ok=1
+  api=14 insize=2137 outsize=3961 ok=1
 Cmd: compileComputeKernel
-  api=14 insize=3182 outsize=8177 ok=1
+  api=14 insize=7328 outsize=10681 ok=1
 Cmd: translateComputeKernel
-  api=14 insize=7885 outsize=5285 ok=1
+  api=14 insize=10681 outsize=18689 ok=1
 Cmd: compileComputeKernel
-  api=14 insize=1484 outsize=777 ok=1
+  api=14 insize=4913 outsize=6793 ok=1
 Cmd: translateComputeKernel
-  api=14 insize=7241 outsize=3121 ok=1
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
+  api=14 insize=6793 outsize=10637 ok=1
+Cmd: compileComputeKernel
+  api=14 insize=9225 outsize=9681 ok=1
+Cmd: translateComputeKernel
+  api=14 insize=9497 outsize=16277 ok=1
+Cmd: translateComputeKernel
+  api=14 insize=9909 outsize=16797 ok=1
+Cmd: compileComputeKernel
+  api=14 insize=2645 outsize=789 ok=1
+Cmd: compileComputeKernel
+  api=14 insize=1759 outsize=1137 ok=1
+Cmd: translateComputeKernel
+  api=14 insize=1137 outsize=1421 ok=1
+Cmd: compileComputeKernel
+  api=14 insize=1381 outsize=1185 ok=1
 Cmd: initializeCompiler
 Cmd: initializeCompiler
 Cmd: initializeCompiler

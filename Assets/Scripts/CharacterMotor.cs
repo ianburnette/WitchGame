@@ -9,6 +9,7 @@ public class CharacterMotor : MonoBehaviour
 	public Vector3 currentSpeed;
 	[HideInInspector]
 	public float DistanceToTarget;
+	Vector3 targetPos;
 
 	private Rigidbody rigid;
 
@@ -32,6 +33,11 @@ public class CharacterMotor : MonoBehaviour
 		}
 	}
 
+	void OnDrawGizmos() {
+		Gizmos.color = Color.green;
+		Gizmos.DrawSphere(transform.position + targetPos, .5f);
+	}
+
 	//move rigidbody to a target and return the bool "have we arrived?"
 	public bool MoveTo(Vector3 destination, float acceleration, float stopDistance, bool ignoreY)
 	{
@@ -39,6 +45,7 @@ public class CharacterMotor : MonoBehaviour
 		Vector3 relativePos = (destination - transform.position);
 		if(ignoreY)
 			relativePos.y = 0;
+		targetPos = relativePos;
 
 		DistanceToTarget = relativePos.magnitude;
 		if (DistanceToTarget <= stopDistance)

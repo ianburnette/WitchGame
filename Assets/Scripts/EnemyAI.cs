@@ -112,7 +112,7 @@ public class EnemyAI : MonoBehaviour
 		if(playerMove)
 		{
 			Vector3 bounceMultiplier = new Vector3(0f, 1.5f, 0f) * playerMove.onEnemyBounce;
-			playerMove.Jump (bounceForce + bounceMultiplier);
+			playerMove.BounceOnEnemy (bounceForce + bounceMultiplier);
 		}
 		else
 			Debug.LogWarning("'Player' tagged object landed on enemy, but without playerMove script attached, is unable to bounce");
