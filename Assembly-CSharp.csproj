@@ -54,7 +54,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\PlayerInput.cs" />
+    <Compile Include="Assets\PlayerMoveBase.cs" />
     <Compile Include="Assets\Scripts\CameraBase.cs" />
     <Compile Include="Assets\Scripts\CameraSelector.cs" />
     <Compile Include="Assets\Scripts\CharacterMotor.cs" />
@@ -73,6 +73,7 @@
     <Compile Include="Assets\Scripts\MovementStateMachine.cs" />
     <Compile Include="Assets\Scripts\MoveToPoints.cs" />
     <Compile Include="Assets\Scripts\PlayerBroomMove.cs" />
+    <Compile Include="Assets\Scripts\PlayerInput.cs" />
     <Compile Include="Assets\Scripts\PlayerMove.cs" />
     <Compile Include="Assets\Scripts\PlayerMoveTemp.cs" />
     <Compile Include="Assets\Scripts\TargetCamera.cs" />

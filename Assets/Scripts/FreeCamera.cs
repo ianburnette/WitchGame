@@ -21,17 +21,18 @@ public class FreeCamera : CameraBase {
         cameraInput = new Vector2(Input.GetAxis("RightStickX"), Input.GetAxis("RightStickY"));
     }
 
+    void OnEnable() => SetRigRotation(12);//transform.position = TargetPosition();
+
     public override void LateUpdate() {
-        SetRigPosition();
-        SetRigRotation();
+        SetRigRotation(cameraInput.x);
         SetPosition();
         SetRotation();
     }
 
-    void SetRigRotation() =>
-        transform.RotateAround(toFollow.position, toFollow.up, rotationSpeed * cameraInput.x * Time.deltaTime);
+    void SetRigRotation(float rotationInput) =>
+        transform.RotateAround(toFollow.position, toFollow.up, rotationSpeed * rotationInput * Time.deltaTime);
 
-    void SetRigPosition() {
+    Vector3 CurrentFreeCameraOffset() {
         zoomValue += -cameraInput.y * zoomSpeed;
         zoomValue = Mathf.Clamp(zoomValue, 0, 1);
 
@@ -40,14 +41,14 @@ public class FreeCamera : CameraBase {
             cameraPositionRelativeToTarget.y = 0;
         }
 
-        currentFreeCameraOffset = new Vector3(0,
+        return new Vector3(0,
             Mathf.Lerp(cameraOffset.y * minOffsetMultiplier.y, cameraOffset.y * maxOffsetMultiplier.y, zoomValue),
             Mathf.Lerp(cameraOffset.z * minOffsetMultiplier.z, cameraOffset.z * maxOffsetMultiplier.z, zoomValue));
     }
 
     public override Vector3 TargetPosition() =>
         toFollow.position +
-        toFollow.up * currentFreeCameraOffset.y -
-        cameraPositionRelativeToTarget * currentFreeCameraOffset.z;
+        toFollow.up * CurrentFreeCameraOffset().y -
+        cameraPositionRelativeToTarget * CurrentFreeCameraOffset().z;
 }
 

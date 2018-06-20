@@ -32,11 +32,8 @@ public abstract class CameraBase : MonoBehaviour {
 
     protected Vector3 CompensateForWalls(Vector3 from, Vector3 targetPosition)
     {
-        RaycastHit wallHit = new RaycastHit();
-        if (Physics.Linecast(from, targetPosition, out wallHit))
-            return new Vector3(wallHit.point.x, targetPosition.y, wallHit.point.z);
-
-        return targetPosition;
+        var wallHit = new RaycastHit();
+        return Physics.Linecast(@from, targetPosition, out wallHit) ? new Vector3(wallHit.point.x, targetPosition.y, wallHit.point.z) : targetPosition;
     }
 
     protected Vector3 SmoothePosition(Vector3 inputPosition, Vector3 targetPosition) =>
