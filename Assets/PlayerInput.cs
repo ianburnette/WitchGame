@@ -18,7 +18,7 @@ public class PlayerInput : MonoBehaviour {
         if (Input.GetButtonDown("Jump")) OnJump?.Invoke();
 
         var movementValue = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-        if (movementValue.magnitude > MovementThreshold) OnMove?.Invoke(movementValue);
+        OnMove?.Invoke(movementValue);
     }
 
 

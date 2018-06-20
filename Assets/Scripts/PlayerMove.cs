@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using JetBrains.Annotations;
+using UnityEngine;
 
 [RequireComponent(typeof(CharacterMotor))]
 [RequireComponent(typeof(DealDamage))]
@@ -36,12 +38,14 @@ public class PlayerMove : MonoBehaviour
 	int onJump;
 	bool grounded;
 	[SerializeField] Transform[] floorCheckers;
+	[SerializeField] GroundHitInfo[] groundInfo;
 	Quaternion screenMovementSpace;
 	float airPressTime, slope;
 	Vector3 movementDirectionRelativeToCamera, moveDirection, screenMovementForward, screenMovementRight, movingObjSpeed;
 	[SerializeField] Vector3 slopeNormal;
 	[SerializeField] protected Vector3 specificSlopeNormal;
 	[SerializeField] LayerMask groundMask;
+	[SerializeField] float groundCheckOffset = .05f;
 
 	[SerializeField] CharacterMotor characterMotor;
 	[SerializeField] DealDamage dealDamage;
@@ -49,10 +53,13 @@ public class PlayerMove : MonoBehaviour
 	[SerializeField] AudioSource aSource;
 
 	EnemyAI currentEnemyAI;
+	Collider col;
 
 	void OnEnable() {
 		PlayerInput.OnJump += JumpPressed;
 		PlayerInput.OnMove += Move;
+		groundInfo = new GroundHitInfo[floorCheckers.Length];
+		col = GetComponent<Collider>();
 	}
 
 	void OnDisable() {
@@ -63,33 +70,31 @@ public class PlayerMove : MonoBehaviour
 	void Update() => rigid.WakeUp();
 
 	void Move(Vector2 inputVector) {
-		MovementRelativeToCamera();
-		movementDirectionRelativeToCamera = (screenMovementForward * inputVector.y) +
-		                                    (screenMovementRight * inputVector.x);
-		moveDirection = transform.position + movementDirectionRelativeToCamera;
+		Vector3 movementDir = MovementRelativeToCamera(inputVector);
+		UpdateCharacterMotor(transform.position + movementDir, movementDir.magnitude);
 	}
 
-	void MovementRelativeToCamera() {
+	Vector3 MovementRelativeToCamera(Vector2 input) {
 		screenMovementSpace = Quaternion.Euler (0, mainCam.eulerAngles.y, 0);
 		screenMovementForward = screenMovementSpace * Vector3.forward;
 		screenMovementRight = screenMovementSpace * Vector3.right;
+		return (screenMovementForward * input.y) + (screenMovementRight * input.x);
 	}
 
-	//apply correct player movement (fixedUpdate for physics calculations)
 	void FixedUpdate()
 	{
 		grounded = IsGrounded ();
 		PlayLandingSoundIfNecessary();
 
 		rigid.AddForce(SlopeCorrection() + StickToGround());
-		UpdateCharacterMotor();
+
 
 		if (animator) Animate();
 	}
 
-	void UpdateCharacterMotor() {
+	void UpdateCharacterMotor(Vector3 moveDirection, float magnitude) {
 		characterMotor.MoveTo (moveDirection, grounded ? accel : airAccel, movementSensitivity, true);
-		if (rotateSpeed != 0 && movementDirectionRelativeToCamera.magnitude != 0)
+		if (rotateSpeed != 0 && magnitude != 0)
 			characterMotor.RotateToVelocity(grounded ? rotateSpeed : airRotateSpeed, true);
 		characterMotor.ManageSpeed (grounded ? decel : airDecel, maximumMovementMagnitude + movingObjSpeed.magnitude, true);
 	}
@@ -108,57 +113,46 @@ public class PlayerMove : MonoBehaviour
 		aSource.Play();
 	}
 
+	[CanBeNull] GroundHitInfo GetGroundHitInfo(Transform checker) {
+		RaycastHit hit;
+		var distanceToCheck = col.bounds.extents.y;
+		return Physics.Raycast(checker.position, Vector3.down * 1, out hit, distanceToCheck + groundCheckOffset, groundMask) ?
+			       new GroundHitInfo(hit.point, hit.normal, hit.transform, hit.transform.GetComponent<Rigidbody>()) :
+			       null;
+	}
+
+	[CanBeNull] GroundHitInfo EnemyBounceHit() =>
+		groundInfo.Where(info => info != null).FirstOrDefault(info => info.transform.CompareTag("Enemy"));
+
+
+	int PointsOfContact() {
+		return groundInfo.Count(t => t != null);
+	}
+
+	Vector3 AverageContactNormal() {
+		var summedNormal = groundInfo.Where(t => t != null).Aggregate(Vector3.zero, (current, t) => current + t.normal);
+		return CalculateSlopeNormal(summedNormal, PointsOfContact());
+	}
+
 	bool IsGrounded()
 	{
-		//get distance to ground, from centre of collider (where floorcheckers should be)
-		float dist = GetComponent<Collider>().bounds.extents.y;
-        //check whats at players feet, at each floorcheckers position
-        int connectingRays = 0;
-        Vector3 summedNormal = Vector3.zero;
-		foreach (Transform check in floorCheckers)
-		{
-			RaycastHit hit;
-			if(Physics.Raycast(check.position, Vector3.down * 1, out hit, dist + 0.05f, groundMask))
-			{
-				summedNormal += hit.normal.normalized; ;
-				slope = Vector3.Angle (hit.normal, Vector3.up);
-				//slide down slopes
-				if(slope > slopeLimit && !hit.transform.CompareTag("Pushable"))
-					rigid.AddForce (new Vector3(0f, -slideAmount, 0f), ForceMode.Force);
-				//enemy bouncing
-				if (hit.transform.CompareTag("Enemy") && rigid.velocity.y < 0)
-				{
-					currentEnemyAI = hit.transform.GetComponent<EnemyAI>();
-					currentEnemyAI.BouncedOn();
-					onEnemyBounce ++;
-					dealDamage.Attack(hit.transform.gameObject, 1, 0f, 0f);
-				}
-				else
-					onEnemyBounce = 0;
-				//moving platforms
-				if (hit.transform.CompareTag("MovingPlatform") || hit.transform.CompareTag("Pushable")) {
-					movingObjSpeed = hit.transform.GetComponent<Rigidbody>().velocity;
-					movingObjSpeed.y = 0f;
-					//9.5f is a magic number, if youre not moving properly on platforms, experiment with this number
-					rigid.AddForce(movingObjSpeed * movingPlatformFriction * Time.fixedDeltaTime, ForceMode.VelocityChange);
-				} else
-					movingObjSpeed = Vector3.zero;
-
-			   connectingRays++;
-			}
+		for (var i = 0; i < floorCheckers.Length; i++)
+			groundInfo[i] = GetGroundHitInfo(floorCheckers[i]);
+		if (EnemyBounceHit() != null) {
+			var enemyTransform = EnemyBounceHit().transform;
+			currentEnemyAI = enemyTransform.GetComponent<EnemyAI>();
+			currentEnemyAI.BouncedOn();
+			dealDamage.Attack(enemyTransform.gameObject, 1, 0f, 0f);
 		}
-
-		slopeNormal = CalculateSlopeNormal(summedNormal, connectingRays);
-
-        movingObjSpeed = Vector3.zero;
-
-        return connectingRays != 0;
+		slopeNormal = AverageContactNormal();
+		return PointsOfContact() != 0;
 	}
 
 	static Vector3 CalculateSlopeNormal(Vector3 totalNormal, int rayCount) =>
 		new Vector3(Mathf.Abs(totalNormal.x) > 0 ? totalNormal.x / rayCount : 0,
 					Mathf.Abs(totalNormal.y) > 0 ? totalNormal.y / rayCount : 0,
 					Mathf.Abs(totalNormal.z) > 0 ? totalNormal.z / rayCount : 0);
+
 	Vector3 StickToGround() => -slopeNormal * stickToGroundForce;
 	Vector3 SlopeCorrection() => Vector3.Cross(slopeNormal, SlopeTangent() * slopeCorrectionAmount);
 	Vector3 SlopeTangent() => new Vector3(-slopeNormal.z, 0, slopeNormal.x);
@@ -189,5 +183,19 @@ public class PlayerMove : MonoBehaviour
 		aSource.volume = 1;
 		aSource.clip = jumpSound;
 		aSource.Play ();
+	}
+}
+
+public class GroundHitInfo {
+	public Vector3 position;
+	public Vector3 normal;
+	public Transform transform;
+	public Rigidbody rigid;
+
+	public GroundHitInfo(Vector3 pos, Vector3 norm, Transform tran, [CanBeNull] Rigidbody rb) {
+		position = pos;
+		normal = norm;
+		transform = tran;
+		rigid = rb;
 	}
 }
