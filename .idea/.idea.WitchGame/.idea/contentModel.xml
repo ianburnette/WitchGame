@@ -7,7 +7,7 @@
       <e p="Assembly-CSharp-firstpass.csproj" t="IncludeRecursive" />
       <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
       <e p="Assets" t="Include">
-        <e p="PlayerInput.cs" t="Include" />
+        <e p="PlayerMoveBase.cs" t="Include" />
         <e p="Plugins" t="Include">
           <e p="Demigiant" t="Include">
             <e p="DOTween" t="Include">
@@ -341,6 +341,7 @@
           <e p="MovementStateMachine.cs" t="Include" />
           <e p="MoveToPoints.cs" t="Include" />
           <e p="PlayerBroomMove.cs" t="Include" />
+          <e p="PlayerInput.cs" t="Include" />
           <e p="PlayerMove.cs" t="Include" />
           <e p="PlayerMoveTemp.cs" t="Include" />
           <e p="TargetCamera.cs" t="Include" />

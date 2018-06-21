@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using JetBrains.Annotations;
 using UnityEngine;
 
@@ -8,7 +9,7 @@ public class PlayerMoveBase : MonoBehaviour {
     public Animator animator;
     public AudioClip jumpSound;
     public AudioClip landSound;
-    MovementStateMachine movementStateMachine;
+    public MovementStateMachine movementStateMachine;
 
     public Transform[] floorCheckers;
     public GroundHitInfo[] groundInfo;
@@ -19,7 +20,7 @@ public class PlayerMoveBase : MonoBehaviour {
     [SerializeField] float groundCheckOffset = .05f;
 
     public Rigidbody rigid;
-    Collider col;
+    public Collider col;
 
     Quaternion screenMovementSpace;
     Vector3 screenMovementForward, screenMovementRight;
@@ -34,10 +35,10 @@ public class PlayerMoveBase : MonoBehaviour {
 
     void Update() => rigid.WakeUp();
 
-    public bool IsGrounded()
+    public bool IsGrounded(float distanceToCheck)
     {
         for (var i = 0; i < floorCheckers.Length; i++)
-            groundInfo[i] = GetGroundHitInfo(floorCheckers[i]);
+            groundInfo[i] = GetGroundHitInfo(floorCheckers[i], distanceToCheck);
         if (EnemyBounceHit() != null) {
             var enemyTransform = EnemyBounceHit().transform;
             currentEnemyAI = enemyTransform.GetComponent<EnemyAI>();
@@ -50,13 +51,27 @@ public class PlayerMoveBase : MonoBehaviour {
 
     public int PointsOfContact() => groundInfo.Count(t => t != null);
 
+    void OnDrawGizmos() {
+        Gizmos.color = Color.green;
+        foreach (var info in groundInfo)
+                Gizmos.DrawSphere(info.position, .2f);
+    }
+
+    [CanBeNull]
+    public float DistanceToGround() {
+        var averageDist = groundInfo.
+                          Where(info => info != null).
+                          Sum(info => Vector3.Distance(info.position, transform.position));
+        return averageDist /= PointsOfContact();
+    }
+
     [CanBeNull] GroundHitInfo EnemyBounceHit() =>
         groundInfo.Where(info => info != null).FirstOrDefault(info => info.transform.CompareTag("Enemy"));
 
-    [CanBeNull] GroundHitInfo GetGroundHitInfo(Transform checker) {
+    [CanBeNull] GroundHitInfo GetGroundHitInfo(Transform checker, float distanceToCheck) {
         RaycastHit hit;
-        var distanceToCheck = col.bounds.extents.y;
-        return Physics.Raycast(checker.position, Vector3.down * 1, out hit, distanceToCheck + groundCheckOffset, groundMask) ?
+        Debug.DrawRay(checker.position, Vector3.down * distanceToCheck, Color.red);
+        return Physics.Raycast(checker.position, Vector3.down, out hit, distanceToCheck + groundCheckOffset, groundMask) ?
                    new GroundHitInfo(hit.point, hit.normal, hit.transform, hit.transform.GetComponent<Rigidbody>()) :
                    null;
     }

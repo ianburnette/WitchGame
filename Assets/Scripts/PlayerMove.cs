@@ -32,10 +32,13 @@ public class PlayerMove : MonoBehaviour {
 	[SerializeField] protected Vector3 specificSlopeNormal;
 	[SerializeField] CharacterMotor characterMotor;
 	[SerializeField] AudioSource aSource;
+	Vector2 currentMovementVector;
 
 	void OnEnable() {
 		PlayerInput.OnJump += JumpPressed;
 		PlayerInput.OnMove += Move;
+		MoveBase.rigid.drag = 0;
+		transform.rotation = Quaternion.Euler(0, transform.rotation.y, 0);
 	}
 
 	void OnDisable() {
@@ -45,17 +48,23 @@ public class PlayerMove : MonoBehaviour {
 
 	void Move(Vector2 inputVector) {
 		moveDirection = transform.position + MoveBase.MovementRelativeToCamera(inputVector);
-		characterMotor.MoveTo(moveDirection, grounded ? accel : airAccel, movementSensitivity, true);
-		if (rotateSpeed != 0 && MoveBase.MovementRelativeToCamera(inputVector).magnitude != 0)
-			characterMotor.RotateToVelocity(grounded ? rotateSpeed : airRotateSpeed, true);
-		characterMotor.ManageSpeed(grounded ? decel : airDecel, maximumMovementMagnitude + movingObjSpeed.magnitude, true);
+		currentMovementVector = inputVector;
 	}
 
 	void FixedUpdate() {
-		grounded = MoveBase.IsGrounded();
+		grounded = MoveBase.IsGrounded(MoveBase.col.bounds.extents.y);
 		PlayLandingSoundIfNecessary();
-		MoveBase.rigid.AddForce(SlopeCorrection() + StickToGround());
+		UpdatePlayerMovement();
 		if (MoveBase.animator) Animate();
+	}
+
+	void UpdatePlayerMovement() {
+		characterMotor.MoveTo(moveDirection, grounded ? accel : airAccel, movementSensitivity, true);
+		characterMotor.MoveRelativeToGround(SlopeCorrection()+StickToGround());
+		if (rotateSpeed != 0 && MoveBase.MovementRelativeToCamera(currentMovementVector).magnitude != 0)
+			characterMotor.RotateToVelocity(grounded ? rotateSpeed : airRotateSpeed, true);
+		characterMotor.ManageSpeed(grounded ? decel : airDecel, maximumMovementMagnitude + movingObjSpeed.magnitude, false);
+
 	}
 
 	void Animate() {
@@ -80,12 +89,13 @@ public class PlayerMove : MonoBehaviour {
 
 	void JumpPressed() {
 		if (!grounded)
-			airPressTime = Time.time;
+		//	airPressTime = Time.time;
 		//TODO make sure to put jump leniancy back in
+			MoveBase.movementStateMachine.ChangeState(this);
 
 		else if (MoveBase.SlopeAngle() < slopeLimit)
 			Jump();
-		//movementStateMachine.ChangeState(this);
+
 		//TODO figure out how to put the state change in here
 	}
 

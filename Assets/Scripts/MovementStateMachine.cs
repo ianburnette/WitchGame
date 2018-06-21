@@ -21,5 +21,7 @@ public class MovementStateMachine : MonoBehaviour {
 
 	public void ChangeState(Behaviour from) {
 		CurrentMovementState = from == playerMove ? (Behaviour)playerBroom : playerMove;
+		from.enabled = false;
+		CurrentMovementState.enabled = true;
 	}
 }
