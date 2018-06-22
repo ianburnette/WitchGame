@@ -1,0 +1,60 @@
+vbox(margin = '12 12 0 0') ::
+{
+	sp( flex = '1' )
+	
+	//----------------
+	// Bokeh
+	//----------------
+	switch(class = 'panel')(text = 'Blade' selected = '1' size = '28' next = '1')
+	vbox ::
+	{
+		hbox(size = '24' next = '3') ::
+		{
+			textField(id = 'pt_blade_num' onEnter = 'set pt_blade_num' enter = '1' maxLength = '3' textSize = '8 16' align = '2' border = '3')
+			(corner = '15')(size = '32' next = '3')
+			(hint = 'Blade Number [0 - 8]')
+
+			textField(id = 'pt_blade_rot' onEnter = 'set pt_blade_rot' enter = '1' maxLength = '4' textSize = '8 16' align = '2' border = '3')
+			(flex = '1')(corner = '5')
+			(hint = 'Rotate Angle')
+			resizer(class = 'int')(range = '-180 180' step = '1' space = '4')(size = '8')
+		}
+	}
+	
+	//----------------
+	// Bloom
+	//----------------
+	switch(class = 'panel')(text = 'Bloom' selected = '1' size = '28' next = '1')
+	vbox ::
+	{
+		hbox(size = '24' next = '3')(hint = 'Bloom Mix') ::
+		{
+			switch(class = 'toggle')(onClick = 'set pt_bloom' selected = '0' text = '\x1a' text2 = '\x1c' textSize = '12 12')
+			(size = '28' next = '7')(corner = '15')(margin = '2 2 1 1')(hint = 'Toggle Bloom Calculation')
+			slider(def = 'sl-cam' id = 'pt_bloom_mix' onChange = 'set pt_bloom_mix')(margin = '-2 -2 0 0' flex = '1')
+		}
+	
+		hbox(size = '24' next = '3')(hint = 'Scale') ::
+		{
+			label(text = 'sca')(size = '28' next = '7')
+
+			slider(def = 'sl-cam' id = 'pt_bloom_sca' onChange = 'set pt_bloom_sca')(margin = '-2 -2 0 0' flex = '1')
+		}
+
+		hbox(size = '24' next = '3')(hint = 'Aspect Ratio') ::
+		{
+			label(text = 'asp')(size = '28' next = '7')
+
+			slider(def = 'sl-cam' id = 'pt_bloom_asp' onChange = 'set pt_bloom_asp')(margin = '-2 -2 0 0' flex = '1')
+		}
+
+		hbox(size = '24' next = '3' hidden = '0')(hint = 'Threshold [0 - 100]') ::
+		{
+			label(text = 'thr')(size = '28' next = '7')
+
+			textField(id = 'pt_bloom_thr' onEnter = 'set pt_bloom_thr' enter = '1' maxLength = '5' textSize = '8 16' align = '2' border = '3')
+			(flex = '1')(corner = '5')
+			resizer(class = 'float')(range = '0 100' step = '0.1' space = '4')(size = '8')
+		}
+	}
+}

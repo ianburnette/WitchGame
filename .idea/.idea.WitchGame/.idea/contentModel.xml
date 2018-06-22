@@ -7,6 +7,8 @@
       <e p="Assembly-CSharp-firstpass.csproj" t="IncludeRecursive" />
       <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
       <e p="Assets" t="Include">
+        <e p="Ladder.cs" t="Include" />
+        <e p="PlayerLadderMove.cs" t="Include" />
         <e p="PlayerMoveBase.cs" t="Include" />
         <e p="Plugins" t="Include">
           <e p="Demigiant" t="Include">

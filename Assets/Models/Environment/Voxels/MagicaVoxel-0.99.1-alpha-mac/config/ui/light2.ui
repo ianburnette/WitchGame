@@ -1,0 +1,58 @@
+vbox(margin = '12 12 0 0') ::
+{
+	opBox(class = 'tab')(id = "light_menu" index = '0')(prev = '4' ) ::
+	{
+		vbox(bgColor = '10 10 10' corner = '15' radius = '2') ::
+		{
+			vbox(margin = '2 2 0 0') ::
+			{
+				option(class = 'cmd')(def = 'op-env' id = [['menu_uni']]	text = 'Uniform' onClick = 'set pt_env 0')(corner = '12' radius = '2')(size = '28' prev = '2' next = '2')(hint = 'Uniform Lighting')
+				option(class = 'cmd')(def = 'op-env' id = [['menu_atm']]	text = 'Atmosph' onClick = 'set pt_env 1')(corner = '3'  radius = '2')(size = '28' next = '2')(hint = 'Atmospheric Scattering')
+			}
+		}
+	}
+
+	sp(flex = '1')
+
+	//----------------
+	// Grid
+	//----------------
+	switch(class = 'panel')(text = 'Grid' selected = '1' size = '28' next = '1')
+	vbox ::
+	{
+		hbox(size = '24' next = '3')(hint = 'Grid Spacing [1 - 1024]') ::
+		{
+			label(text = 'spa')(size = '28' next = '7')
+
+			textField(id = 'pt_grid_spa' onEnter = 'set pt_grid_spa' enter = '1' maxLength = '4' textSize = '8 16' align = '2' border = '3')
+			(flex = '1')(corner = '5')
+			resizer(class = 'int')(range = '1 1024' step = '1' space = '4')(size = '8')
+		}
+
+		hbox(size = '24' next = '3' hidden = '0')(hint = 'Grid Width [0.01 - 1.0]') ::
+		{
+			label(text = 'wid')(size = '28' next = '7')
+
+			textField(id = 'pt_grid_w' onEnter = 'set pt_grid_w' enter = '1' maxLength = '5' textSize = '8 16' align = '2' border = '3')
+			(flex = '1')(corner = '5')
+			resizer(class = 'float')(range = '0.01 1.0' step = '0.01' space = '4')(size = '8')
+		}
+
+		hbox(size = '24' next = '3' hidden = '0')(hint = 'Edge Width [0.01 - 1.0]') ::
+		{
+			label(text = 'edg')(size = '28' next = '7')
+
+			textField(id = 'pt_edge_w' onEnter = 'set pt_edge_w' enter = '1' maxLength = '5' textSize = '8 16' align = '2' border = '3')
+			(flex = '1')(corner = '5')
+			resizer(class = 'float')(range = '0.01 5.0' step = '0.01' space = '4')(size = '8')
+		}
+		
+		hbox(size = '24' next = '3')(hint = 'Only Display Grid on Ground') ::
+		{
+			label(text = 'dis')(size = '28' next = '7')
+
+			switch(id = 'pt_grid_dis' selected = '0' onClick = 'set pt_grid_dis' text = 'Ground' textSize = '8 16')
+			(corner = '15' radius = '2')(margin = '2 2 3 3' flex = '1')
+		}
+	}
+}

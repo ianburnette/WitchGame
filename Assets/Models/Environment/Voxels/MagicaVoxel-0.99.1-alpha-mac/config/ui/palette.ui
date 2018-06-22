@@ -1,0 +1,107 @@
+//----------------
+// Palette
+//----------------
+vbox(id = 'v_pal') ::
+{
+	group(next = '4' size = '24') ::
+	{	
+		switch(class = 'view')(def = 'sw-view' view = [['v_1' 'v_1_h']] selected = '1' text = 'Palette' text2 = 'Palette')
+		
+		hbox(align = '1') ::
+		{
+			resizer(class = 'hbox')(view = 'v_pal' dir = '1' size = '16')
+		}
+	}
+
+	hbox(size = '18') ::
+	{
+		button(def = 'bn-save' onClick = 'ipal $/palette/pal0.png' text = '0')(flex = '1' prev = '1' next = '1')(corner = '4')(hint = 'Load Default Palette 0 : [/Palette]')
+		button(def = 'bn-save' onClick = 'ipal $/palette/pal1.png' text = '1')(flex = '1' next = '1')(hint = 'Load Default Palette 1 : [/Palette]')
+		button(def = 'bn-save' onClick = 'ipal $/palette/pal2.png' text = '2')(flex = '1' next = '1')(hint = 'Load Default Palette 2 : [/Palette]')
+		button(def = 'bn-save' onClick = 'ipal $/palette/pal3.png' text = '3')(flex = '1' next = '1')(corner = '8')(hint = 'Load Default Palette 3 : [/Palette]')
+	}
+
+	layer(id = 'l_pal' flex = '1') ::
+	{
+		vbox ::
+		{
+			palette(id = 'pal' onSelect = 'index' onCopy = 'rgb set' onGroup = 'pal grad')
+			(flex = '1' size = '260')
+			(hint = 'Copy [+CTRL] : Pick [+ALT] : Gradient [+ALT+SHIFT]')
+		}
+	}
+
+	hbox(size = '24' next = '1') ::
+	{
+		button(def = 'bn-save' onClick = 'opal' text = 'Save' delayed = '1' textSize = '8 17')(flex = '1' prev = '1' next = '1')(corner = '1')(hint = 'Save Palette')
+		button(def = 'bn-save' onClick = 'ipal' text = 'Open' delayed = '1' textSize = '8 17')(flex = '1' next = '1')(corner = '2')(hint = 'Open Palette')
+	}
+	
+	//----------------
+	// Color
+	//----------------
+	switch(class = 'panel')(id = 'v_col' selected = '1' text = 'Color' arrowColor = '220 220 220 220')(size = '28')
+	vbox ::
+	{
+		hbox(bgColor = '10 10 10')(corner = '5' radius = '4') ::
+		{
+			group(size = '25' next = '1')::
+			{
+				switch(class = 'toggle')
+				(def = 'sw-view')
+				(onClick = [[ui_view 'v_hsv' 'v_rgb' 'm_hsv' 'm_rgb']])
+				(selected = '1')
+				(corner = '5' radius = '4')
+				(hint = 'Switch between HSV/RGB Color Picker')
+
+				vbox(id = 'm_hsv') ::
+				{
+					label(text = 'H:' collid = '0' size = '18' next = '1' prev = '1')
+					label(text = 'S:' collid = '0' size = '18' next = '1')
+					label(text = 'V:' collid = '0' size = '18' next = '1')
+				}
+
+				vbox(id = 'm_rgb' hidden = '1') ::
+				{
+					label(text = 'R:' collid = '0' size = '18' next = '1' prev = '1')
+					label(text = 'G:' collid = '0' size = '18' next = '1')
+					label(text = 'B:' collid = '0' size = '18' next = '1')
+				}
+			}
+
+			vbox(corner = '5' radius = '4' flex = '1' next = '1') ::
+			{
+				hsvBox(id = 'v_hsv' onChange = 'rgb' prev = '1') ::
+				{
+					vbox ::
+					{
+						slider(class = 'nil')(id = 'h' size = '18' next = '1')(hint = 'Hue')
+						slider(class = 'nil')(id = 's' size = '18' next = '1')(hint = 'Saturation')
+						slider(class = 'nil')(id = 'v' size = '18' next = '1')(hint = 'Value')
+					}
+				}
+				rgbBox(id = 'v_rgb' onChange = 'rgb' hidden = '1' prev = '1') ::
+				{
+					vbox ::
+					{
+						slider(class = 'nil')(id = 'r' size = '18' next = '1')(hint = 'Red')
+						slider(class = 'nil')(id = 'g' size = '18' next = '1')(hint = 'Green')
+						slider(class = 'nil')(id = 'b' size = '18' next = '1')(hint = 'Blue')
+					}
+				}
+			}
+		}
+
+		hbox(size = '24' flex = '1' prev = '3' next = '3')(bgColor = '10 10 10' corner = '15' radius = '3' ) ::
+		{
+			hbox(margin = '3 0 3 3' size = '22') ::
+			{
+				colpick(id = 'pal_col' onChange = 'rgb' border = '0')(flex='1' corner = '15' radius = '2')
+				(hint = 'Pick Color from Screen [ALT+Drag]')
+			}
+			
+			textField(id = 'rgb' onEnter = 'rgb' default = 'rgb' enter = '1' align = '2' maxLength = '11' textSize = '8 16' bgColor = '0 0 0 0')
+			(flex = '1')(hint = '[R G B] : [Gray] : [#Hex]')
+		}
+	}
+}
