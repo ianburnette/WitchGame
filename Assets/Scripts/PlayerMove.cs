@@ -34,6 +34,8 @@ public class PlayerMove : MonoBehaviour {
 	Vector2 currentMovementVector;
 
 	[SerializeField] bool canGrabLadder;
+	[SerializeField] PlayerLadderMove ladderMovement;
+	Ladder nearbyLadder;
 
 	void OnEnable() {
 		PlayerInput.OnJump += JumpPressed;
@@ -53,7 +55,10 @@ public class PlayerMove : MonoBehaviour {
 		MoveBase.movementStateMachine.GetOnLadder();
 	}
 
-	public void ToggleLadder(bool state) => canGrabLadder = state;
+	public void ToggleLadder(bool state, Ladder ladder = null) {
+		canGrabLadder  = state;
+		ladderMovement.ladder = ladder;
+	}
 
 	void Move(Vector2 inputVector) {
 		moveDirection = transform.position + MoveBase.MovementRelativeToCamera(inputVector);
@@ -108,11 +113,17 @@ public class PlayerMove : MonoBehaviour {
 		//TODO figure out how to put the state change in here
 	}
 
-	void Jump() {
+	void Jump(Vector3 direction) {
 		if (MoveBase.jumpSound) PlayJumpSound();
 		MoveBase.rigid.velocity = new Vector3(MoveBase.rigid.velocity.x, 0f, MoveBase.rigid.velocity.z);
-		MoveBase.rigid.AddRelativeForce(Vector3.up * jumpForce, ForceMode.Impulse);
+		MoveBase.rigid.AddRelativeForce(direction, ForceMode.Impulse);
 		airPressTime = 0f;
+	}
+
+	void Jump() => Jump(new Vector3(MoveBase.rigid.velocity.x, jumpForce, MoveBase.rigid.velocity.z));
+
+	public void JumpInDirection(Vector3 jumpDirection, float jumpHeightModifier) {
+		Jump(new Vector3(jumpDirection.x, jumpForce * jumpHeightModifier, jumpDirection.z));
 	}
 
 	public void BounceOnEnemy(Vector3 bounceForce) {

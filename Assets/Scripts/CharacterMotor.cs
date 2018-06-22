@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using DG.Tweening;
+using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
 public class CharacterMotor : MonoBehaviour {
@@ -6,22 +7,28 @@ public class CharacterMotor : MonoBehaviour {
 	[HideInInspector] public float DistanceToTarget;
 	[SerializeField] Rigidbody rigid;
 
+	public Vector3 relativePosition;
+
 	void Awake() {
 		rigid.interpolation = RigidbodyInterpolation.Interpolate;
 		rigid.constraints = RigidbodyConstraints.FreezeRotation;
 	}
 
 	public bool MoveTo(Vector3 destination, float acceleration, float stopDistance, bool ignoreY) {
-
-		Vector3 relativePos = (destination - transform.position);
+		relativePosition = (destination - transform.position);
 		if (ignoreY)
-			relativePos.y = 0;
+			relativePosition.y = 0;
 
-		DistanceToTarget = relativePos.magnitude;
+		DistanceToTarget = relativePosition.magnitude;
 		if (DistanceToTarget <= stopDistance)
 			return true;
-		rigid.AddForce(relativePos.normalized * acceleration * Time.deltaTime, ForceMode.VelocityChange);
+		rigid.AddForce(relativePosition.normalized * acceleration * Time.deltaTime, ForceMode.VelocityChange);
 		return false;
+	}
+
+	public void MoveVertical(Vector3 destination) {
+		relativePosition = (destination - transform.position);
+		transform.Translate(destination);
 	}
 
 	public void RotateToVelocity(float turnSpeed, bool ignoreY) {
