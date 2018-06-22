@@ -1,27 +1,25 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Linq;
 using UnityEngine;
 
 public class MovementStateMachine : MonoBehaviour {
-	[SerializeField] PlayerMove playerMove;
-	[SerializeField] PlayerBroomMove playerBroom;
+
+	[SerializeField] Behaviour[] movementBehaviours;
 	[SerializeField] Behaviour currentMovementState;
+
 	public Behaviour CurrentMovementState {
 		get {
 			return currentMovementState;
 		}
 		set {
 			currentMovementState = value;
-			if (currentMovementState == playerBroom)
-				playerMove.enabled = false;
-			else
-				playerBroom.enabled = false;
+			foreach (var moveBehaviour in movementBehaviours)
+				moveBehaviour.enabled = moveBehaviour == value;
 		}
 	}
 
-	public void ChangeState(Behaviour from) {
-		CurrentMovementState = from == playerMove ? (Behaviour)playerBroom : playerMove;
-		from.enabled = false;
-		CurrentMovementState.enabled = true;
-	}
+	public void OnBroom() => CurrentMovementState = movementBehaviours.OfType<PlayerBroomMove>().First();
+
+	public void NormalMovement() => CurrentMovementState = movementBehaviours.OfType<PlayerMove>().First();
+
+	public void GetOnLadder() => CurrentMovementState = movementBehaviours.OfType<PlayerLadderMove>().First();
 }

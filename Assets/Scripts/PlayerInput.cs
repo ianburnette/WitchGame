@@ -10,12 +10,15 @@ public class PlayerInput : MonoBehaviour {
 
     public delegate void MoveDelegate(Vector2 movement);
     public static event MoveDelegate OnMove;
-    [SerializeField] const float MovementThreshold = .1f;
+
+    public delegate void GrabDelegate();
+    public static event GrabDelegate OnGrab;
 
     void Update() => GetPlayerInput();
 
     static void GetPlayerInput() {
         if (Input.GetButtonDown("Jump")) OnJump?.Invoke();
+        if (Input.GetButtonDown("Grab")) OnGrab?.Invoke();
 
         var movementValue = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         OnMove?.Invoke(movementValue);

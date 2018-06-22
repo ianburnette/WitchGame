@@ -25,6 +25,8 @@ public class PlayerMoveBase : MonoBehaviour {
     Quaternion screenMovementSpace;
     Vector3 screenMovementForward, screenMovementRight;
 
+    public CharacterMotor characterMotor;
+
     [SerializeField] DealDamage dealDamage;
     EnemyAI currentEnemyAI;
 
@@ -54,6 +56,7 @@ public class PlayerMoveBase : MonoBehaviour {
     void OnDrawGizmos() {
         Gizmos.color = Color.green;
         foreach (var info in groundInfo)
+            if (groundInfo!=null)
                 Gizmos.DrawSphere(info.position, .2f);
     }
 

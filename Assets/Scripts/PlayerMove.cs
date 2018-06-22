@@ -30,12 +30,14 @@ public class PlayerMove : MonoBehaviour {
 	float airPressTime;
 	Vector3 movementDirectionRelativeToCamera, moveDirection, movingObjSpeed;
 	[SerializeField] protected Vector3 specificSlopeNormal;
-	[SerializeField] CharacterMotor characterMotor;
 	[SerializeField] AudioSource aSource;
 	Vector2 currentMovementVector;
 
+	[SerializeField] bool canGrabLadder;
+
 	void OnEnable() {
 		PlayerInput.OnJump += JumpPressed;
+		PlayerInput.OnGrab += GrabPressed;
 		PlayerInput.OnMove += Move;
 		MoveBase.rigid.drag = 0;
 		transform.rotation = Quaternion.Euler(0, transform.rotation.y, 0);
@@ -43,8 +45,15 @@ public class PlayerMove : MonoBehaviour {
 
 	void OnDisable() {
 		PlayerInput.OnJump -= JumpPressed;
+		PlayerInput.OnGrab -= GrabPressed;
 		PlayerInput.OnMove -= Move;
 	}
+
+	void GrabPressed() {
+		MoveBase.movementStateMachine.GetOnLadder();
+	}
+
+	public void ToggleLadder(bool state) => canGrabLadder = state;
 
 	void Move(Vector2 inputVector) {
 		moveDirection = transform.position + MoveBase.MovementRelativeToCamera(inputVector);
@@ -59,16 +68,16 @@ public class PlayerMove : MonoBehaviour {
 	}
 
 	void UpdatePlayerMovement() {
-		characterMotor.MoveTo(moveDirection, grounded ? accel : airAccel, movementSensitivity, true);
-		characterMotor.MoveRelativeToGround(SlopeCorrection()+StickToGround());
+		MoveBase.characterMotor.MoveTo(moveDirection, grounded ? accel : airAccel, movementSensitivity, true);
+		MoveBase.characterMotor.MoveRelativeToGround(SlopeCorrection()+StickToGround());
 		if (rotateSpeed != 0 && MoveBase.MovementRelativeToCamera(currentMovementVector).magnitude != 0)
-			characterMotor.RotateToVelocity(grounded ? rotateSpeed : airRotateSpeed, true);
-		characterMotor.ManageSpeed(grounded ? decel : airDecel, maximumMovementMagnitude + movingObjSpeed.magnitude, false);
+			MoveBase.characterMotor.RotateToVelocity(grounded ? rotateSpeed : airRotateSpeed, true);
+		MoveBase.characterMotor.ManageSpeed(grounded ? decel : airDecel, maximumMovementMagnitude + movingObjSpeed.magnitude, false);
 
 	}
 
 	void Animate() {
-		MoveBase.animator.SetFloat("DistanceToTarget", characterMotor.DistanceToTarget);
+		MoveBase.animator.SetFloat("DistanceToTarget", MoveBase.characterMotor.DistanceToTarget);
 		MoveBase.animator.SetBool("Grounded", grounded);
 		MoveBase.animator.SetFloat("YVelocity", GetComponent<Rigidbody>().velocity.y);
 		MoveBase.animator.SetFloat("XVelocity",
@@ -91,7 +100,7 @@ public class PlayerMove : MonoBehaviour {
 		if (!grounded)
 		//	airPressTime = Time.time;
 		//TODO make sure to put jump leniancy back in
-			MoveBase.movementStateMachine.ChangeState(this);
+			MoveBase.movementStateMachine.OnBroom();
 
 		else if (MoveBase.SlopeAngle() < slopeLimit)
 			Jump();

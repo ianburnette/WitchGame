@@ -54,6 +54,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Ladder.cs" />
+    <Compile Include="Assets\PlayerLadderMove.cs" />
     <Compile Include="Assets\PlayerMoveBase.cs" />
     <Compile Include="Assets\Scripts\CameraBase.cs" />
     <Compile Include="Assets\Scripts\CameraSelector.cs" />

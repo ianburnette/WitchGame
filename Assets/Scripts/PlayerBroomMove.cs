@@ -12,15 +12,18 @@ public class PlayerBroomMove : MonoBehaviour {
     [SerializeField] float movementAcceleration;
     [SerializeField] float movementStopDistance;
     [SerializeField] float hoverHeight;
-    [SerializeField] float hoverHeightUpperLimit;
-
     [SerializeField] float rotateSpeed;
     [SerializeField] float decelSpeed;
     [SerializeField] float maxSpeed;
 
-    [SerializeField] float verticalRotationSpeedThreshold;
+    [SerializeField] float minYrotation = -1f, maxYrotation = 1f, yMultiplier = 1f;
 
     [SerializeField] float rigidbodyDrag = .5f;
+    [SerializeField] float distanceMult = 1f;
+
+    [SerializeField] bool canGlide;
+    [SerializeField] float glideSpeed = 5f;
+    [SerializeField] float glideHoverForce = 25f;
 
     void OnEnable() {
         PlayerInput.OnJump += JumpPressed;
@@ -36,30 +39,33 @@ public class PlayerBroomMove : MonoBehaviour {
     }
 
     void JumpPressed() {
-        MoveBase.movementStateMachine.ChangeState(this);
+        MoveBase.movementStateMachine.NormalMovement();
     }
 
-    void Move(Vector2 input) {
+    void Move(Vector2 movement) {
         var moveDirection = transform.position +
-                        MoveBase.MovementRelativeToCamera(input);
+                        MoveBase.MovementRelativeToCamera(movement);
         characterMotor.MoveTo(moveDirection,
                               movementAcceleration,
                               movementStopDistance,
                               true);
-        if (rotateSpeed != 0 &&
-            MoveBase.MovementRelativeToCamera(moveDirection).magnitude != 0)
-            characterMotor.RotateToVelocity(rotateSpeed, moveDirection.magnitude > verticalRotationSpeedThreshold);
-        characterMotor.ManageSpeed(decelSpeed, maxSpeed, false);
 
     }
 
     void FixedUpdate() {
-        MoveBase.IsGrounded(hoverHeight);
-        characterMotor.
-            MoveRelativeToGround(Vector3.up *
-                                 hoverForce /
-                                 (MoveBase.DistanceToGround() <
-                                  hoverHeightUpperLimit ?
-                                     MoveBase.DistanceToGround() : .001f ));
+        if (MoveBase.IsGrounded(hoverHeight))
+            Hover();
+        else if (canGlide)
+            Glide();
+
+        characterMotor.RotateToVelocity(rotateSpeed, minYrotation, maxYrotation, yMultiplier);
+        characterMotor.ManageSpeed(decelSpeed, maxSpeed, false);
+    }
+
+    void Hover() => characterMotor.MoveRelativeToGround(Vector3.up * hoverForce / (MoveBase.DistanceToGround() * distanceMult));
+
+    void Glide() {
+        Move(Vector3.forward * glideSpeed);
+        characterMotor.MoveRelativeToGround(glideHoverForce * Vector3.down);
     }
 }

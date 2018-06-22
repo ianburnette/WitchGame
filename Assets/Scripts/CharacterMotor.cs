@@ -1,27 +1,20 @@
 ﻿using UnityEngine;
 
-//this class holds movement functions for a rigidbody character such as player, enemy, npc..
-//you can then call these functions from another script, in order to move the character
 [RequireComponent(typeof(Rigidbody))]
-public class CharacterMotor : MonoBehaviour
-{
-	[HideInInspector]
-	public Vector3 currentSpeed;
-	[HideInInspector]
-	public float DistanceToTarget;
+public class CharacterMotor : MonoBehaviour {
+	[HideInInspector] public Vector3 currentSpeed;
+	[HideInInspector] public float DistanceToTarget;
 	[SerializeField] Rigidbody rigid;
 
-	void Awake()
-	{
+	void Awake() {
 		rigid.interpolation = RigidbodyInterpolation.Interpolate;
 		rigid.constraints = RigidbodyConstraints.FreezeRotation;
 	}
 
-	public bool MoveTo(Vector3 destination, float acceleration, float stopDistance, bool ignoreY)
-	{
+	public bool MoveTo(Vector3 destination, float acceleration, float stopDistance, bool ignoreY) {
 
 		Vector3 relativePos = (destination - transform.position);
-		if(ignoreY)
+		if (ignoreY)
 			relativePos.y = 0;
 
 		DistanceToTarget = relativePos.magnitude;
@@ -31,17 +24,35 @@ public class CharacterMotor : MonoBehaviour
 		return false;
 	}
 
-	public void RotateToVelocity(float turnSpeed, bool ignoreY)
-	{
+	public void RotateToVelocity(float turnSpeed, bool ignoreY) {
 		var dir = new Vector3(rigid.velocity.x, ignoreY ? 0f : rigid.velocity.y, rigid.velocity.z);
+		RotateToVelocity(turnSpeed, dir);
+	}
 
-		if (!(dir.magnitude > 0.1)) return;
-		var dirQ = Quaternion.LookRotation (dir);
-		var slerp = Quaternion.Slerp (transform.rotation, dirQ, dir.magnitude * turnSpeed * Time.deltaTime);
+	public void RotateToVelocity(float turnSpeed, Vector3 velocity) {
+		if (!(velocity.magnitude > 0.1)) return;
+		var dirQ = Quaternion.LookRotation(velocity);
+		var slerp = Quaternion.Slerp(transform.rotation, dirQ, velocity.magnitude * turnSpeed * Time.deltaTime);
 		rigid.MoveRotation(slerp);
 	}
 
-	public void RotateToDirection(Vector3 lookDir, float turnSpeed, bool ignoreY)
+	public void RotateToVelocity(float turnSpeed, float minYvel, float maxYvel, float yMultiplier) {
+		//var currentY = Mathf.Clamp(rigid.velocity.y, minYvel, maxYvel);
+		var currentY = Scale(minYvel, maxYvel, rigid.velocity.y);
+		RotateToVelocity(turnSpeed, new Vector3(rigid.velocity.x, currentY * yMultiplier * rigid.velocity.magnitude, rigid.velocity.z));
+	}
+
+	public float Scale(float newMin, float newMax, float oldValue) {
+		const float oldMax = 10f;
+		const float oldMin = 0f;
+		const float oldRange = (oldMax - oldMin);
+		var newRange = (newMax - newMin);
+		var newValue = (((oldValue - oldMin) * newRange) / oldRange) + newMin;
+
+		return(newValue);
+	}
+
+public void RotateToDirection(Vector3 lookDir, float turnSpeed, bool ignoreY)
 	{
 		var newDir = lookDir - transform.position;
 		if (ignoreY) newDir.y = 0;

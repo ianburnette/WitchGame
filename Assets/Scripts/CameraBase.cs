@@ -9,6 +9,7 @@ public abstract class CameraBase : MonoBehaviour {
     [SerializeField] float camSmoothDampTime = .1f;
     [SerializeField] public Transform toFollow;
     [SerializeField] public Transform lens;
+    [SerializeField] LayerMask cameraHitLayer;
 
     [SerializeField] protected Vector3 cameraOffset = new Vector3(0f, 3f, 10f);
 
@@ -33,7 +34,9 @@ public abstract class CameraBase : MonoBehaviour {
     protected Vector3 CompensateForWalls(Vector3 from, Vector3 targetPosition)
     {
         var wallHit = new RaycastHit();
-        return Physics.Linecast(@from, targetPosition, out wallHit) ? new Vector3(wallHit.point.x, targetPosition.y, wallHit.point.z) : targetPosition;
+        return Physics.Linecast(from, targetPosition, out wallHit, cameraHitLayer) ?
+                   new Vector3(wallHit.point.x, targetPosition.y, wallHit.point.z) :
+                   targetPosition;
     }
 
     protected Vector3 SmoothePosition(Vector3 inputPosition, Vector3 targetPosition) =>
