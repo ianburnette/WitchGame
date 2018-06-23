@@ -79,6 +79,9 @@ public class PlayerMoveBase : MonoBehaviour {
                    null;
     }
 
+    public Vector3 MovementRelativeToPlayerAndCamera(Vector2 input) =>
+        transform.position + MovementRelativeToCamera(input);
+
     public Vector3 MovementRelativeToCamera(Vector2 input) {
         screenMovementSpace = Quaternion.Euler(0, mainCam.eulerAngles.y, 0);
         screenMovementForward = screenMovementSpace * Vector3.forward;

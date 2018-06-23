@@ -44,7 +44,6 @@ public class CharacterMotor : MonoBehaviour {
 	}
 
 	public void RotateToVelocity(float turnSpeed, float minYvel, float maxYvel, float yMultiplier) {
-		//var currentY = Mathf.Clamp(rigid.velocity.y, minYvel, maxYvel);
 		var currentY = Scale(minYvel, maxYvel, rigid.velocity.y);
 		RotateToVelocity(turnSpeed, new Vector3(rigid.velocity.x, currentY * yMultiplier * rigid.velocity.magnitude, rigid.velocity.z));
 	}
@@ -83,4 +82,15 @@ public void RotateToDirection(Vector3 lookDir, float turnSpeed, bool ignoreY)
 	public void MoveRelativeToGround(Vector3 groundForce) {
 		rigid.AddForce(groundForce);
 	}
+
+	public void SetVelocity(Vector3 direction) =>
+		rigid.velocity = direction;
+
+
+	void OnDrawGizmos() {
+		Gizmos.color = Color.blue;
+		if (relativePosition != transform.position)
+			Gizmos.DrawSphere(transform.position + relativePosition, .3f);
+	}
+
 }

@@ -6,6 +6,9 @@ public class MovementStateMachine : MonoBehaviour {
 	[SerializeField] Behaviour[] movementBehaviours;
 	[SerializeField] Behaviour currentMovementState;
 
+	public bool glidingUnlocked;
+	public bool hoveringUnlocked;
+
 	public Behaviour CurrentMovementState {
 		get {
 			return currentMovementState;
@@ -17,7 +20,9 @@ public class MovementStateMachine : MonoBehaviour {
 		}
 	}
 
-	public void OnBroom() => CurrentMovementState = movementBehaviours.OfType<PlayerBroomMove>().First();
+	public void GlideMovement() => CurrentMovementState = movementBehaviours.OfType<PlayerGlideMove>().First();
+
+	public void HoverMovement() => CurrentMovementState = movementBehaviours.OfType<PlayerHoverMove>().First();
 
 	public void NormalMovement() => CurrentMovementState = movementBehaviours.OfType<PlayerMove>().First();
 

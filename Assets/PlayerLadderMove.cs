@@ -4,21 +4,32 @@ using DG.Tweening;
 using UnityEngine;
 
 public class PlayerLadderMove : MonoBehaviour {
-    [SerializeField] PlayerMoveBase MoveBase;
-    [SerializeField] PlayerMove playerMove;
+    
+    [Header("Movement Behavior")]
     [SerializeField] float climbSpeed;
 
+    [Header("Ledge Interaction Behavior")]
     [SerializeField] float ledgeJumpMultiplier = .5f;
     [SerializeField] float ledgeForwardMultiplier = 1f;
+
+    [Header("Jump Off Behavior")]
     [SerializeField] float offLaddJumpMultiplier = 1f;
     [SerializeField] float offLadderForwardMultiplier = 2f;
+
+    [Header("Drop Behavior")]
     [SerializeField] float ladderDropForwardMultiplier = .4f;
     [SerializeField] float ladderDropJumpMultiplier = -.4f;
 
+    [Header("Passive Behavior")]
+    public float ladderTopJumpLeniancyDistance = 2f;
+
+    [Header("Reference Variables")]
     public Vector3 amt;
     public Ladder ladder;
 
-    public float ladderTopJumpLeniancyDistance = 2f;
+    [Header("Class References")]
+    [SerializeField] PlayerMoveBase MoveBase;
+    [SerializeField] PlayerMove playerMove;
 
     void OnEnable() {
         PlayerInput.OnMove += Move;

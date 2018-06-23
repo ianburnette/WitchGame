@@ -6,36 +6,42 @@ using UnityEngine;
 [RequireComponent(typeof(AudioSource))]
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerMove : MonoBehaviour {
-	[SerializeField] PlayerMoveBase MoveBase;
 
-	//movement
-	public float accel = 70f;
-	public float airAccel = 18f;
-	public float decel = 7.6f;
-	public float airDecel = 1.1f;
+	[Header("Movement Behavior")]
+	public float movementSpeedOnGround = 70f;
+	public float movementSpeedInAir = 18f;
+	public float tooFastDecelSpeedOnGround = 7.6f;
+	public float tooFastDecelSpeedInAir = 1.1f;
 	[Range(0f, 5f)] public float rotateSpeed = 0.7f, airRotateSpeed = 0.4f;
-	public float maximumMovementMagnitude = 9;
-	public float slopeLimit = 60, slideAmount = 35;
-	public float
-		movingPlatformFriction = 7.7f; //you'll need to tweak this to get the player to stay on moving platforms properly
+
+	[Header("Jumping Behavior")]
+	[SerializeField] float jumpForce = 13f;
+	[SerializeField] float jumpLeniancy = 0.17f;
+
+
+	[Header("Passive Behavior")]
+	public float maxSpeed = 9;
+	public float maxWalkableSlopeAngle = 60, slideForce = 35;
+	public float movingPlatformFriction = 7.7f;
 	public float movementSensitivity = .25f;
+
+	[Header("Slope Behavior")]
 	[SerializeField] float slopeCorrectionAmount;
 	[SerializeField] float stickToGroundForce;
 
-	//jumping
-	[SerializeField] float jumpForce = 13f;
-	[SerializeField] float jumpLeniancy = 0.17f;
-	[HideInInspector] public int onEnemyBounce;
-	bool grounded;
-	float airPressTime;
-	Vector3 movementDirectionRelativeToCamera, moveDirection, movingObjSpeed;
-	[SerializeField] protected Vector3 specificSlopeNormal;
-	[SerializeField] AudioSource aSource;
-	Vector2 currentMovementVector;
+	[Header("Audio")]
+	[SerializeField] AudioSource audioSource;
 
-	[SerializeField] bool canGrabLadder;
+	[Header("Class References")]
+	[SerializeField] PlayerMoveBase MoveBase;
 	[SerializeField] PlayerLadderMove ladderMovement;
+
+	//PRIVATE VARIABLES
+	[HideInInspector] public int onEnemyBounce;
+	float airPressTime;
 	Ladder nearbyLadder;
+	Vector2 currentMovementVector;
+	Vector3 movementDirectionRelativeToCamera, moveDirection, movingObjSpeed;
 
 	void OnEnable() {
 		PlayerInput.OnJump += JumpPressed;
@@ -43,6 +49,7 @@ public class PlayerMove : MonoBehaviour {
 		PlayerInput.OnMove += Move;
 		MoveBase.rigid.drag = 0;
 		transform.rotation = Quaternion.Euler(0, transform.rotation.y, 0);
+		MoveBase.animator.SetBool("RidingBroom", false);
 	}
 
 	void OnDisable() {
@@ -52,12 +59,8 @@ public class PlayerMove : MonoBehaviour {
 	}
 
 	void GrabPressed() {
-		MoveBase.movementStateMachine.GetOnLadder();
-	}
-
-	public void ToggleLadder(bool state, Ladder ladder = null) {
-		canGrabLadder  = state;
-		ladderMovement.ladder = ladder;
+		if (ladderMovement.ladder!=null)
+			MoveBase.movementStateMachine.GetOnLadder();
 	}
 
 	void Move(Vector2 inputVector) {
@@ -66,24 +69,24 @@ public class PlayerMove : MonoBehaviour {
 	}
 
 	void FixedUpdate() {
-		grounded = MoveBase.IsGrounded(MoveBase.col.bounds.extents.y);
 		PlayLandingSoundIfNecessary();
 		UpdatePlayerMovement();
 		if (MoveBase.animator) Animate();
 	}
 
+	bool Grounded() => MoveBase.IsGrounded(MoveBase.col.bounds.extents.y);
+
 	void UpdatePlayerMovement() {
-		MoveBase.characterMotor.MoveTo(moveDirection, grounded ? accel : airAccel, movementSensitivity, true);
+		MoveBase.characterMotor.MoveTo(moveDirection, Grounded() ? movementSpeedOnGround : movementSpeedInAir, movementSensitivity, true);
 		MoveBase.characterMotor.MoveRelativeToGround(SlopeCorrection()+StickToGround());
 		if (rotateSpeed != 0 && MoveBase.MovementRelativeToCamera(currentMovementVector).magnitude != 0)
-			MoveBase.characterMotor.RotateToVelocity(grounded ? rotateSpeed : airRotateSpeed, true);
-		MoveBase.characterMotor.ManageSpeed(grounded ? decel : airDecel, maximumMovementMagnitude + movingObjSpeed.magnitude, false);
-
+			MoveBase.characterMotor.RotateToVelocity(Grounded() ? rotateSpeed : airRotateSpeed, true);
+		MoveBase.characterMotor.ManageSpeed(Grounded() ? tooFastDecelSpeedOnGround : tooFastDecelSpeedInAir, maxSpeed + movingObjSpeed.magnitude, false);
 	}
 
 	void Animate() {
 		MoveBase.animator.SetFloat("DistanceToTarget", MoveBase.characterMotor.DistanceToTarget);
-		MoveBase.animator.SetBool("Grounded", grounded);
+		MoveBase.animator.SetBool("Grounded", Grounded());
 		MoveBase.animator.SetFloat("YVelocity", GetComponent<Rigidbody>().velocity.y);
 		MoveBase.animator.SetFloat("XVelocity",
 		                           new Vector3(MoveBase.rigid.velocity.x, 0, MoveBase.rigid.velocity.z).normalized.magnitude +
@@ -91,10 +94,10 @@ public class PlayerMove : MonoBehaviour {
 	}
 
 	void PlayLandingSoundIfNecessary() {
-		if (aSource.isPlaying || !MoveBase.landSound || !(MoveBase.rigid.velocity.y < 1)) return;
-		aSource.volume = Mathf.Abs(MoveBase.rigid.velocity.y) / 40;
-		aSource.clip = MoveBase.landSound;
-		aSource.Play();
+		if (audioSource.isPlaying || !MoveBase.landSound || !(MoveBase.rigid.velocity.y < 1)) return;
+		audioSource.volume = Mathf.Abs(MoveBase.rigid.velocity.y) / 40;
+		audioSource.clip = MoveBase.landSound;
+		audioSource.Play();
 	}
 
 	Vector3 StickToGround() => -MoveBase.slopeNormal * stickToGroundForce;
@@ -102,15 +105,15 @@ public class PlayerMove : MonoBehaviour {
 	Vector3 SlopeTangent() => new Vector3(-MoveBase.slopeNormal.z, 0, MoveBase.slopeNormal.x);
 
 	void JumpPressed() {
-		if (!grounded)
-		//	airPressTime = Time.time;
-		//TODO make sure to put jump leniancy back in
-			MoveBase.movementStateMachine.OnBroom();
+		if (!Grounded()) {
 
-		else if (MoveBase.SlopeAngle() < slopeLimit)
+			//TODO make sure to put jump leniancy back in			//	airPressTime = Time.time;
+			if (MoveBase.movementStateMachine.glidingUnlocked)
+				MoveBase.movementStateMachine.GlideMovement();
+			else if (MoveBase.movementStateMachine.hoveringUnlocked)
+				MoveBase.movementStateMachine.HoverMovement();
+		} else if (MoveBase.SlopeAngle() < maxWalkableSlopeAngle)
 			Jump();
-
-		//TODO figure out how to put the state change in here
 	}
 
 	void Jump(Vector3 direction) {
@@ -132,8 +135,8 @@ public class PlayerMove : MonoBehaviour {
 	}
 
 	void PlayJumpSound() {
-		aSource.volume = 1;
-		aSource.clip = MoveBase.jumpSound;
-		aSource.Play ();
+		audioSource.volume = 1;
+		audioSource.clip = MoveBase.jumpSound;
+		audioSource.Play ();
 	}
 }

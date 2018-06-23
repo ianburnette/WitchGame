@@ -55,6 +55,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Ladder.cs" />
+    <Compile Include="Assets\PlayerGlideMove.cs" />
+    <Compile Include="Assets\PlayerInteraction.cs" />
+    <Compile Include="Assets\PlayerLadderInteraction.cs" />
     <Compile Include="Assets\PlayerLadderMove.cs" />
     <Compile Include="Assets\PlayerMoveBase.cs" />
     <Compile Include="Assets\Scripts\CameraBase.cs" />
@@ -74,14 +77,20 @@
     <Compile Include="Assets\Scripts\Health.cs" />
     <Compile Include="Assets\Scripts\MovementStateMachine.cs" />
     <Compile Include="Assets\Scripts\MoveToPoints.cs" />
-    <Compile Include="Assets\Scripts\PlayerBroomMove.cs" />
+    <Compile Include="Assets\Scripts\PlayerHoverMove.cs" />
     <Compile Include="Assets\Scripts\PlayerInput.cs" />
     <Compile Include="Assets\Scripts\PlayerMove.cs" />
     <Compile Include="Assets\Scripts\PlayerMoveTemp.cs" />
+    <Compile Include="Assets\Scripts\PlayerObjectInteraction.cs" />
     <Compile Include="Assets\Scripts\TargetCamera.cs" />
-    <Compile Include="Assets\Scripts\Throwing.cs" />
     <Compile Include="Assets\Scripts\TriggerParent.cs" />
     <Compile Include="Assets\Scripts\Water.cs" />
+    <None Include="Assets\Models\Environment\Voxels\MagicaVoxel-0.99.1-alpha-mac\shader\wave.txt" />
+    <None Include="Assets\Models\Environment\Voxels\MagicaVoxel-0.99.1-alpha-mac\shader\poly.txt" />
+    <None Include="Assets\Models\Environment\Voxels\MagicaVoxel-0.99.1-alpha-mac\readme.txt" />
+    <None Include="Assets\Models\Environment\Voxels\MagicaVoxel-0.99.1-alpha-mac\config\config.txt" />
+    <None Include="Assets\Models\Environment\Voxels\MagicaVoxel-0.99.1-alpha-mac\shader\mand.txt" />
+    <None Include="Assets\Models\Environment\Voxels\MagicaVoxel-0.99.1-alpha-mac\shader\sphere.txt" />
     <Reference Include="UnityEditor.StandardEvents">
       <HintPath>/Users/ianburnette/WitchGame/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
     </Reference>

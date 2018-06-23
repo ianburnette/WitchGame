@@ -111,7 +111,7 @@ public class EnemyAI : MonoBehaviour
 			AudioSource.PlayClipAtPoint(bounceSound, transform.position);
 		if(playerMove)
 		{
-			Vector3 bounceMultiplier = new Vector3(0f, 1.5f, 0f) * playerMove.onEnemyBounce;
+			var bounceMultiplier = new Vector3(0f, 1.5f, 0f) * playerMove.onEnemyBounce;
 			playerMove.BounceOnEnemy (bounceForce + bounceMultiplier);
 		}
 		else

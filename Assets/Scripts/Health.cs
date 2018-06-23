@@ -28,7 +28,7 @@ public class Health : MonoBehaviour
 	private int defHealth, h, hitForce;
 	private bool hitColor = false;
 	private float nextFlash, stopFlashTime;
-	private Throwing throwing;
+	private PlayerObjectInteraction playerObjectInteraction;
 	private Renderer flashRender;
 	private AudioSource aSource;
 
@@ -93,9 +93,9 @@ public class Health : MonoBehaviour
 	{
 		//player drop item
 		if(tag == "Player")
-			throwing = GetComponent<Throwing>();
-		if(throwing && throwing.heldObj && throwing.heldObj.tag == "Pickup")
-			throwing.ThrowPickup();
+			playerObjectInteraction = GetComponent<PlayerObjectInteraction>();
+		if(playerObjectInteraction && playerObjectInteraction.heldObj && playerObjectInteraction.heldObj.tag == "Pickup")
+			playerObjectInteraction.ThrowPickup();
 
 		if (deadSound)
 			AudioSource.PlayClipAtPoint(deadSound, transform.position);

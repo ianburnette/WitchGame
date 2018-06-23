@@ -8,6 +8,27 @@
       <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
       <e p="Assets" t="Include">
         <e p="Ladder.cs" t="Include" />
+        <e p="Models" t="Include">
+          <e p="Environment" t="Include">
+            <e p="Voxels" t="Include">
+              <e p="MagicaVoxel-0.99.1-alpha-mac" t="Include">
+                <e p="config" t="Include">
+                  <e p="config.txt" t="Include" />
+                </e>
+                <e p="readme.txt" t="Include" />
+                <e p="Shader" t="Include">
+                  <e p="mand.txt" t="Include" />
+                  <e p="poly.txt" t="Include" />
+                  <e p="sphere.txt" t="Include" />
+                  <e p="wave.txt" t="Include" />
+                </e>
+              </e>
+            </e>
+          </e>
+        </e>
+        <e p="PlayerGlideMove.cs" t="Include" />
+        <e p="PlayerInteraction.cs" t="Include" />
+        <e p="PlayerLadderInteraction.cs" t="Include" />
         <e p="PlayerLadderMove.cs" t="Include" />
         <e p="PlayerMoveBase.cs" t="Include" />
         <e p="Plugins" t="Include">
@@ -342,12 +363,12 @@
           <e p="Health.cs" t="Include" />
           <e p="MovementStateMachine.cs" t="Include" />
           <e p="MoveToPoints.cs" t="Include" />
-          <e p="PlayerBroomMove.cs" t="Include" />
+          <e p="PlayerHoverMove.cs" t="Include" />
           <e p="PlayerInput.cs" t="Include" />
           <e p="PlayerMove.cs" t="Include" />
           <e p="PlayerMoveTemp.cs" t="Include" />
+          <e p="PlayerObjectInteraction.cs" t="Include" />
           <e p="TargetCamera.cs" t="Include" />
-          <e p="Throwing.cs" t="Include" />
           <e p="TriggerParent.cs" t="Include" />
           <e p="Water.cs" t="Include" />
         </e>

@@ -14,6 +14,8 @@ public class PlayerInput : MonoBehaviour {
     public delegate void GrabDelegate();
     public static event GrabDelegate OnGrab;
 
+    [SerializeField] static float movementDeadZone = .1f;
+
     void Update() => GetPlayerInput();
 
     static void GetPlayerInput() {
@@ -21,7 +23,7 @@ public class PlayerInput : MonoBehaviour {
         if (Input.GetButtonDown("Grab")) OnGrab?.Invoke();
 
         var movementValue = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-        OnMove?.Invoke(movementValue);
+        OnMove?.Invoke(movementValue.magnitude > movementDeadZone ? movementValue : Vector2.zero);
     }
 
 
