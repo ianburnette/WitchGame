@@ -5,8 +5,10 @@
 [RequireComponent(typeof(AudioSource))]
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(PlayerMove))]
-public class PlayerObjectInteraction : MonoBehaviour
-{
+public class PlayerObjectInteraction : MonoBehaviour {
+
+	[SerializeField] Rigidbody grabRigidbody;
+
 	public AudioClip pickUpSound;								//sound when you pickup/grab an object
 	public AudioClip throwSound;								//sound when you throw an object
 	public GameObject grabBox;									//objects inside this trigger box can be picked up by the player (think of this as your reach)
@@ -23,6 +25,8 @@ public class PlayerObjectInteraction : MonoBehaviour
 
 	public Collider objectEligibleForPickup;
 	public Collider objectEligibleForPushing;
+	public Collider currentlyHeldObject;
+	public Collider currentlyPushedObject;
 	[SerializeField] LayerMask collisionMask;
 
 	[HideInInspector]
@@ -95,7 +99,6 @@ public class PlayerObjectInteraction : MonoBehaviour
 		}
 	}
 
-	//pickup/grab
 	void OnTriggerEnter (Collider other) {
 		if (other.CompareTag("Pickup"))
 			objectEligibleForPickup = other;
@@ -116,15 +119,21 @@ public class PlayerObjectInteraction : MonoBehaviour
 		*/
 	}
 
-	public bool AttemptToPickUpObject() {
-		if (objectEligibleForPickup == null) return false;
-		LiftPickup(objectEligibleForPickup);
+	public bool PickupObjectInteraction() {
+		if (objectEligibleForPickup == null && currentlyHeldObject == null) return false;
+		if (currentlyHeldObject!=null)
+			ThrowPickup();
+		else
+			LiftPickup(objectEligibleForPickup);
 		return true;
 	}
 
-	public bool AttemptToGrabPushableObject() {
-		if (objectEligibleForPushing == null) return false;
-		GrabPushable(objectEligibleForPushing);
+	public bool PushableObjectInteraction() {
+		if (objectEligibleForPushing == null && currentlyPushedObject == null) return false;
+		if (currentlyPushedObject!=null)
+			DropPushable();
+		else
+			GrabPushable(objectEligibleForPushing);
 		return true;
 	}
 
@@ -210,17 +219,15 @@ public class PlayerObjectInteraction : MonoBehaviour
 	//connect player and pickup/pushable object via a physics joint
 	private void AddJoint()
 	{
-		if (heldObj)
+		if (!heldObj) return;
+		if(pickUpSound)
 		{
-			if(pickUpSound)
-			{
-				aSource.volume = 1;
-				aSource.clip = pickUpSound;
-				aSource.Play ();
-			}
-			joint = heldObj.AddComponent<FixedJoint>();
-			joint.connectedBody = GetComponent<Rigidbody>();
+			aSource.volume = 1;
+			aSource.clip = pickUpSound;
+			aSource.Play ();
 		}
+		joint = heldObj.AddComponent<FixedJoint>();
+		joint.connectedBody = grabRigidbody;
 	}
 
 	//draws red sphere if something is in way of pickup (select player in scene view to see)

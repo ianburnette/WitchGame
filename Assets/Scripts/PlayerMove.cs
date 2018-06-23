@@ -45,7 +45,6 @@ public class PlayerMove : MonoBehaviour {
 
 	void OnEnable() {
 		PlayerInput.OnJump += JumpPressed;
-		PlayerInput.OnGrab += GrabPressed;
 		PlayerInput.OnMove += Move;
 		MoveBase.rigid.drag = 0;
 		transform.rotation = Quaternion.Euler(0, transform.rotation.y, 0);
@@ -54,14 +53,9 @@ public class PlayerMove : MonoBehaviour {
 
 	void OnDisable() {
 		PlayerInput.OnJump -= JumpPressed;
-		PlayerInput.OnGrab -= GrabPressed;
 		PlayerInput.OnMove -= Move;
 	}
 
-	void GrabPressed() {
-		if (ladderMovement.ladder!=null)
-			MoveBase.movementStateMachine.GetOnLadder();
-	}
 
 	void Move(Vector2 inputVector) {
 		moveDirection = transform.position + MoveBase.MovementRelativeToCamera(inputVector);
