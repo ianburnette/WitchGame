@@ -14,6 +14,9 @@ public class PlayerInput : MonoBehaviour {
     public delegate void GrabDelegate();
     public static event GrabDelegate OnGrab;
 
+    public delegate void AttackDelegate();
+    public static event AttackDelegate OnAttack;
+
     [SerializeField] static float movementDeadZone = .1f;
 
     void Update() => GetPlayerInput();
@@ -21,6 +24,7 @@ public class PlayerInput : MonoBehaviour {
     static void GetPlayerInput() {
         if (Input.GetButtonDown("Jump")) OnJump?.Invoke();
         if (Input.GetButtonDown("Grab")) OnGrab?.Invoke();
+        if (Input.GetButtonDown("Attack")) OnAttack?.Invoke();
 
         var movementValue = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         OnMove?.Invoke(movementValue.magnitude > movementDeadZone ? movementValue : Vector2.zero);

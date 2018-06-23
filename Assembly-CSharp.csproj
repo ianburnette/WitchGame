@@ -55,6 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Ladder.cs" />
+    <Compile Include="Assets\PlayerAttack.cs" />
     <Compile Include="Assets\PlayerGlideMove.cs" />
     <Compile Include="Assets\PlayerInteraction.cs" />
     <Compile Include="Assets\PlayerLadderInteraction.cs" />
@@ -85,6 +86,7 @@
     <Compile Include="Assets\Scripts\TargetCamera.cs" />
     <Compile Include="Assets\Scripts\TriggerParent.cs" />
     <Compile Include="Assets\Scripts\Water.cs" />
+    <Compile Include="Assets\Weapon.cs" />
     <None Include="Assets\Models\Environment\Voxels\MagicaVoxel-0.99.1-alpha-mac\shader\wave.txt" />
     <None Include="Assets\Models\Environment\Voxels\MagicaVoxel-0.99.1-alpha-mac\shader\poly.txt" />
     <None Include="Assets\Models\Environment\Voxels\MagicaVoxel-0.99.1-alpha-mac\readme.txt" />

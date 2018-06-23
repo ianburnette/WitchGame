@@ -32,6 +32,12 @@ public class Health : MonoBehaviour
 	private Renderer flashRender;
 	private AudioSource aSource;
 
+	public int CurrentHealth { get { return currentHealth; }
+		set {
+			if (!flashing)
+				currentHealth = value;
+		} }
+
 	//setup
 	void Awake()
 	{

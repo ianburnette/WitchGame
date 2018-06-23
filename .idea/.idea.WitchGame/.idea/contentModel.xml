@@ -26,6 +26,7 @@
             </e>
           </e>
         </e>
+        <e p="PlayerAttack.cs" t="Include" />
         <e p="PlayerGlideMove.cs" t="Include" />
         <e p="PlayerInteraction.cs" t="Include" />
         <e p="PlayerLadderInteraction.cs" t="Include" />
@@ -372,6 +373,7 @@
           <e p="TriggerParent.cs" t="Include" />
           <e p="Water.cs" t="Include" />
         </e>
+        <e p="Weapon.cs" t="Include" />
       </e>
       <e p="Library" t="ExcludeRecursive" />
       <e p="obj" t="ExcludeRecursive" />
