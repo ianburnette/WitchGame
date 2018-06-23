@@ -94,7 +94,7 @@ public class Health : MonoBehaviour
 		//player drop item
 		if(tag == "Player")
 			playerObjectInteraction = GetComponent<PlayerObjectInteraction>();
-		if(playerObjectInteraction && playerObjectInteraction.heldObj && playerObjectInteraction.heldObj.tag == "Pickup")
+		if(playerObjectInteraction && playerObjectInteraction.currentlyHeldObject != null)
 			playerObjectInteraction.ThrowPickup();
 
 		if (deadSound)
