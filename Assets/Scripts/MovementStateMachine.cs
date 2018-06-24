@@ -27,4 +27,6 @@ public class MovementStateMachine : MonoBehaviour {
 	public void NormalMovement() => CurrentMovementState = movementBehaviours.OfType<PlayerMove>().First();
 
 	public void GetOnLadder() => CurrentMovementState = movementBehaviours.OfType<PlayerLadderMove>().First();
+
+	public void GetInWater() => CurrentMovementState = movementBehaviours.OfType<PlayerSwim>().First();
 }

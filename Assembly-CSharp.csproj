@@ -61,6 +61,7 @@
     <Compile Include="Assets\PlayerLadderInteraction.cs" />
     <Compile Include="Assets\PlayerLadderMove.cs" />
     <Compile Include="Assets\PlayerMoveBase.cs" />
+    <Compile Include="Assets\PlayerSwim.cs" />
     <Compile Include="Assets\Scripts\CameraBase.cs" />
     <Compile Include="Assets\Scripts\CameraSelector.cs" />
     <Compile Include="Assets\Scripts\CharacterMotor.cs" />

@@ -4,17 +4,17 @@ using System.Collections.Generic;
 
 //class to handle buoyancy of objects whilst in a "Water" tagged object
 [RequireComponent(typeof(BoxCollider))]
-public class Water : MonoBehaviour 
+public class Water : MonoBehaviour
 {
 	public AudioClip splashSound;						//played when objects enter water
 	public Vector3 force = new Vector3(0, 16.5f, 0);	//pushForce of the water. This is a vector3 so you can have force in any direction, for example a current or river
 	public bool effectPlayerDrag;						//should the players rigidbody be effected by the drag/angular drag values of the water?
 	public float resistance = 0.4f;						//the drag applied to rigidbodies in the water (but not player)
 	public float angularResistance = 0.2f;				//the angular drag applied to rigidbodies in the water (but not player)
-	
+
 	private Dictionary<GameObject, float> dragStore = new Dictionary<GameObject, float>();
 	private Dictionary<GameObject, float> angularStore = new Dictionary<GameObject, float>();
-	
+
 	void Awake()
 	{
 		if(tag != "Water")
@@ -24,7 +24,7 @@ public class Water : MonoBehaviour
 		}
 		GetComponent<Collider>().isTrigger = true;
 	}
-	
+
 	//apply buoyancy
 	void OnTriggerStay(Collider other)
 	{
@@ -43,7 +43,7 @@ public class Water : MonoBehaviour
 				rigid.AddForce (force * (depth * 2), ForceMode.Force);
 		}
 	}
-	
+
 	//sets drag on objects entering water
 	void OnTriggerEnter(Collider other)
 	{
@@ -59,11 +59,13 @@ public class Water : MonoBehaviour
 			//stop if we arent effecting player
 			if (r.tag == "Player" && !effectPlayerDrag)
 				return;
-	
+
+			other.GetComponent<MovementStateMachine>().GetInWater();
+
 			//store objects default drag values
 			dragStore.Add (r.gameObject, r.drag);
 			angularStore.Add(r.gameObject, r.angularDrag);
-			
+
 			//apply new drag values to object
 			r.drag = resistance;
 			r.angularDrag = angularResistance;
@@ -71,7 +73,7 @@ public class Water : MonoBehaviour
 		else if(splashSound)
 			AudioSource.PlayClipAtPoint(splashSound, other.transform.position);
 	}
-	
+
 	//reset drag on objects leaving water
 	void OnTriggerExit(Collider other)
 	{
@@ -82,7 +84,9 @@ public class Water : MonoBehaviour
 			//stop if we arent effecting player
 			if(r.tag == "Player" && !effectPlayerDrag)
 				return;
-			
+
+			other.GetComponent<MovementStateMachine>().NormalMovement();
+
 			//see if we've stored this objects default drag values
 			if (dragStore.ContainsKey(r.gameObject) && angularStore.ContainsKey(r.gameObject))
 			{

@@ -18,7 +18,6 @@ public class PlayerMove : MonoBehaviour {
 	[SerializeField] float jumpForce = 13f;
 	[SerializeField] float jumpLeniancy = 0.17f;
 
-
 	[Header("Passive Behavior")]
 	public float maxSpeed = 9;
 	public float maxWalkableSlopeAngle = 60, slideForce = 35;
@@ -36,11 +35,11 @@ public class PlayerMove : MonoBehaviour {
 	[SerializeField] PlayerMoveBase MoveBase;
 	[SerializeField] PlayerLadderMove ladderMovement;
 
-	//PRIVATE VARIABLES
+	[Header("Private Variables")]
 	[HideInInspector] public int onEnemyBounce;
 	float airPressTime;
 	Ladder nearbyLadder;
-	Vector2 currentMovementVector;
+	Vector2 currentInputVector;
 	Vector3 movementDirectionRelativeToCamera, moveDirection, movingObjSpeed;
 
 	void OnEnable() {
@@ -56,10 +55,9 @@ public class PlayerMove : MonoBehaviour {
 		PlayerInput.OnMove -= Move;
 	}
 
-
 	void Move(Vector2 inputVector) {
 		moveDirection = transform.position + MoveBase.MovementRelativeToCamera(inputVector);
-		currentMovementVector = inputVector;
+		currentInputVector = inputVector;
 	}
 
 	void FixedUpdate() {
@@ -73,7 +71,7 @@ public class PlayerMove : MonoBehaviour {
 	void UpdatePlayerMovement() {
 		MoveBase.characterMotor.MoveTo(moveDirection, Grounded() ? movementSpeedOnGround : movementSpeedInAir, movementSensitivity, true);
 		MoveBase.characterMotor.MoveRelativeToGround(SlopeCorrection()+StickToGround());
-		if (rotateSpeed != 0 && MoveBase.MovementRelativeToCamera(currentMovementVector).magnitude != 0)
+		if (rotateSpeed != 0 && MoveBase.MovementRelativeToCamera(currentInputVector).magnitude != 0)
 			MoveBase.characterMotor.RotateToVelocity(Grounded() ? rotateSpeed : airRotateSpeed, true);
 		MoveBase.characterMotor.ManageSpeed(Grounded() ? tooFastDecelSpeedOnGround : tooFastDecelSpeedInAir, maxSpeed + movingObjSpeed.magnitude, false);
 	}
@@ -100,7 +98,6 @@ public class PlayerMove : MonoBehaviour {
 
 	void JumpPressed() {
 		if (!Grounded()) {
-
 			//TODO make sure to put jump leniancy back in			//	airPressTime = Time.time;
 			if (MoveBase.movementStateMachine.glidingUnlocked)
 				MoveBase.movementStateMachine.GlideMovement();
