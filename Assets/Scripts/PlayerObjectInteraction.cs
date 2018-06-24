@@ -44,9 +44,10 @@ public class PlayerObjectInteraction : MonoBehaviour {
 	void Update() {
 		if (currentlyHeldObject != null)
 			UpdateObjectPosition(currentlyHeldObject.transform,
-			                     movementStateMachine.CurrentMovementState == playerWalkMove
+			                     movementStateMachine.CurrentMovementState == MoveState.Walk
 				                     ? transform.position + holdPos
 				                     : BroomHoldPosition());
+		//TODO make this responsive to other movement states
 		if (animator) Animate();
 	}
 
@@ -57,7 +58,7 @@ public class PlayerObjectInteraction : MonoBehaviour {
 
 	void Animate() => animator.SetBool("HoldingPickup",
 	                                   (currentlyHeldObject != null &&
-	                                    movementStateMachine.CurrentMovementState == playerWalkMove));
+	                                    movementStateMachine.CurrentMovementState == MoveState.Walk));
 
 	void OnTriggerEnter (Collider other) =>
 		objectEligibleForPickup = other.CompareTag("Pickup") ? other : null;

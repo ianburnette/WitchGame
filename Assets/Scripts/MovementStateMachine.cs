@@ -2,57 +2,29 @@
 using System.Linq;
 using UnityEngine;
 
-public enum MoveState { Walk, Glide, Hover, Swim, Ladder }
+public enum MoveState { Walk = 0, Glide, Hover, Swim, Ladder, Invalid }
 
 public class MovementStateMachine : MonoBehaviour {
 
 	[SerializeField] Behaviour[] movementBehaviours;
-	[SerializeField] Behaviour currentMovementState;
+	[SerializeField] Behaviour currentMovementBehavior;
 
 	public bool glidingUnlocked;
 	public bool hoveringUnlocked;
 
-	public Dictionary<MoveState, Behaviour> MovementBehaviourDictionary = new Dictionary<MoveState, Behaviour>();
-
 	public MoveState CurrentMovementState {
 		get {
-			return currentMovementState;
+			for (var i = 0; i<movementBehaviours.Length; i++)
+				if (movementBehaviours[i] == currentMovementBehavior)
+					return (MoveState)i;
+			return MoveState.Invalid;
 		}
 		set {
-			switch (value) {
-				case MoveState.Glide:
-					currentMovementState = movementBehaviours.OfType<PlayerGlideMove>().First();
-					break;
-				case MoveState.Walk:
-					currentMovementState = movementBehaviours.OfType<PlayerWalkMove>().First();
-					break;
-				case MoveState.Hover:
-					currentMovementState = movementBehaviours.OfType<PlayerHoverMove>().First();
-					break;
-				case MoveState.Ladder:
-					currentMovementState = movementBehaviours.OfType<PlayerLadderMove>().First();
-					break;
-				case MoveState.Swim:
-					currentMovementState = movementBehaviours.OfType<PlayerWaterMove>().First();
-					break;
-			}
-			currentMovementState = value;
-			foreach (var moveBehaviour in movementBehaviours)
-				moveBehaviour.enabled = moveBehaviour == value;
+			currentMovementBehavior = movementBehaviours[(int)value];
+			foreach (var movementBehavior in movementBehaviours)
+				movementBehavior.enabled = movementBehavior == currentMovementBehavior;
 		}
 	}
-
-	/*
-	public void GlideMovement() => CurrentMovementState = movementBehaviours.OfType<PlayerGlideMove>().First();
-
-	public void HoverMovement() => CurrentMovementState = movementBehaviours.OfType<PlayerHoverMove>().First();
-
-	public void NormalMovement() => CurrentMovementState = movementBehaviours.OfType<PlayerMove>().First();
-
-	public void GetOnLadder() => CurrentMovementState = movementBehaviours.OfType<PlayerLadderMove>().First();
-
-	public void GetInWater() => CurrentMovementState = movementBehaviours.OfType<PlayerSwim>().First();
-	*/
 
 	public void GlideMovement() => CurrentMovementState = MoveState.Glide;
 	public void HoverMovement() => CurrentMovementState = MoveState.Hover;
