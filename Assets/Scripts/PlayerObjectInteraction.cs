@@ -4,7 +4,7 @@
 //you need to add the tags "Pickup" or "Pushable" to these objects
 [RequireComponent(typeof(AudioSource))]
 [RequireComponent(typeof(Rigidbody))]
-[RequireComponent(typeof(PlayerMove))]
+[RequireComponent(typeof(PlayerWalkMove))]
 public class PlayerObjectInteraction : MonoBehaviour {
 
 	[Header("Behavior variables")]
@@ -16,7 +16,7 @@ public class PlayerObjectInteraction : MonoBehaviour {
 	[Header("External References")]
 	[SerializeField] Animator animator;
 	[SerializeField] int armsAnimationLayer;
-	[SerializeField] PlayerMove playerMove;
+	[SerializeField] PlayerWalkMove playerWalkMove;
 	[SerializeField] MovementStateMachine movementStateMachine;
 
 	[Header("Internal References")]
@@ -44,7 +44,7 @@ public class PlayerObjectInteraction : MonoBehaviour {
 	void Update() {
 		if (currentlyHeldObject != null)
 			UpdateObjectPosition(currentlyHeldObject.transform,
-			                     movementStateMachine.CurrentMovementState == playerMove
+			                     movementStateMachine.CurrentMovementState == playerWalkMove
 				                     ? transform.position + holdPos
 				                     : BroomHoldPosition());
 		if (animator) Animate();
@@ -57,7 +57,7 @@ public class PlayerObjectInteraction : MonoBehaviour {
 
 	void Animate() => animator.SetBool("HoldingPickup",
 	                                   (currentlyHeldObject != null &&
-	                                    movementStateMachine.CurrentMovementState == playerMove));
+	                                    movementStateMachine.CurrentMovementState == playerWalkMove));
 
 	void OnTriggerEnter (Collider other) =>
 		objectEligibleForPickup = other.CompareTag("Pickup") ? other : null;

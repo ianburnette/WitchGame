@@ -82,7 +82,7 @@ public class Water : MonoBehaviour
 		if(r)
 		{
 			//stop if we arent effecting player
-			if(r.tag == "Player" && !effectPlayerDrag)
+			if(r.CompareTag("Player") && !effectPlayerDrag)
 				return;
 
 			other.GetComponent<MovementStateMachine>().NormalMovement();

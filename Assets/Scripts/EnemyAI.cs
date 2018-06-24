@@ -25,7 +25,7 @@ public class EnemyAI : MonoBehaviour
 
 	private TriggerParent sightTrigger;
 	private TriggerParent attackTrigger;
-	PlayerMove playerMove;
+	PlayerWalkMove playerWalkMove;
 	private CharacterMotor characterMotor;
 	private DealDamage dealDamage;
 
@@ -105,14 +105,14 @@ public class EnemyAI : MonoBehaviour
 	//bounce player when they land on this enemy
 	public void BouncedOn()
 	{
-		if(!playerMove)
-			playerMove = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMove>();
+		if(!playerWalkMove)
+			playerWalkMove = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerWalkMove>();
 		if (bounceSound)
 			AudioSource.PlayClipAtPoint(bounceSound, transform.position);
-		if(playerMove)
+		if(playerWalkMove)
 		{
-			var bounceMultiplier = new Vector3(0f, 1.5f, 0f) * playerMove.onEnemyBounce;
-			playerMove.BounceOnEnemy (bounceForce + bounceMultiplier);
+			var bounceMultiplier = new Vector3(0f, 1.5f, 0f) * playerWalkMove.onEnemyBounce;
+			playerWalkMove.BounceOnEnemy (bounceForce + bounceMultiplier);
 		}
 		else
 			Debug.LogWarning("'Player' tagged object landed on enemy, but without playerMove script attached, is unable to bounce");

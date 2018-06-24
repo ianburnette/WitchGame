@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(CharacterMotor))]
 [RequireComponent(typeof(AudioSource))]
 [RequireComponent(typeof(Rigidbody))]
-public class PlayerMove : MonoBehaviour {
+public class PlayerWalkMove : MonoBehaviour {
 
 	[Header("Movement Behavior")]
 	public float movementSpeedOnGround = 70f;
@@ -56,7 +56,8 @@ public class PlayerMove : MonoBehaviour {
 	}
 
 	void Move(Vector2 inputVector) {
-		moveDirection = transform.position + MoveBase.MovementRelativeToCamera(inputVector);
+		moveDirection = transform.position +
+		                MoveBase.MovementRelativeToCamera(inputVector);
 		currentInputVector = inputVector;
 	}
 

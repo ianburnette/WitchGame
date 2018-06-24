@@ -9,7 +9,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <ProjectGuid>{B9D63043-40DA-AD21-2C2F-0EA340DE1E66}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -54,14 +55,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\CloudColumn.cs" />
     <Compile Include="Assets\Ladder.cs" />
     <Compile Include="Assets\PlayerAttack.cs" />
+    <Compile Include="Assets\PlayerCloudColumn.cs" />
     <Compile Include="Assets\PlayerGlideMove.cs" />
     <Compile Include="Assets\PlayerInteraction.cs" />
     <Compile Include="Assets\PlayerLadderInteraction.cs" />
     <Compile Include="Assets\PlayerLadderMove.cs" />
     <Compile Include="Assets\PlayerMoveBase.cs" />
-    <Compile Include="Assets\PlayerSwim.cs" />
+    <Compile Include="Assets\PlayerWaterMove.cs" />
     <Compile Include="Assets\Scripts\CameraBase.cs" />
     <Compile Include="Assets\Scripts\CameraSelector.cs" />
     <Compile Include="Assets\Scripts\CharacterMotor.cs" />
@@ -81,7 +84,7 @@
     <Compile Include="Assets\Scripts\MoveToPoints.cs" />
     <Compile Include="Assets\Scripts\PlayerHoverMove.cs" />
     <Compile Include="Assets\Scripts\PlayerInput.cs" />
-    <Compile Include="Assets\Scripts\PlayerMove.cs" />
+    <Compile Include="Assets\Scripts\PlayerWalkMove.cs" />
     <Compile Include="Assets\Scripts\PlayerMoveTemp.cs" />
     <Compile Include="Assets\Scripts\PlayerObjectInteraction.cs" />
     <Compile Include="Assets\Scripts\TargetCamera.cs" />

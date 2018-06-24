@@ -4,7 +4,7 @@ using DG.Tweening;
 using UnityEngine;
 
 public class PlayerLadderMove : MonoBehaviour {
-    
+
     [Header("Movement Behavior")]
     [SerializeField] float climbSpeed;
 
@@ -29,7 +29,7 @@ public class PlayerLadderMove : MonoBehaviour {
 
     [Header("Class References")]
     [SerializeField] PlayerMoveBase MoveBase;
-    [SerializeField] PlayerMove playerMove;
+    [SerializeField] PlayerWalkMove playerWalkMove;
 
     void OnEnable() {
         PlayerInput.OnMove += Move;
@@ -66,18 +66,18 @@ public class PlayerLadderMove : MonoBehaviour {
 
     void Grab() {
         MoveBase.movementStateMachine.NormalMovement();
-        playerMove.JumpInDirection(-ladder.transform.forward * ladderDropForwardMultiplier, ladderDropJumpMultiplier);
+        playerWalkMove.JumpInDirection(-ladder.transform.forward * ladderDropForwardMultiplier, ladderDropJumpMultiplier);
     }
 
     void JumpToLedge() {
         MoveBase.movementStateMachine.NormalMovement();
-        playerMove.JumpInDirection(-ladder.transform.forward * ledgeForwardMultiplier, ledgeJumpMultiplier);
+        playerWalkMove.JumpInDirection(-ladder.transform.forward * ledgeForwardMultiplier, ledgeJumpMultiplier);
     }
 
     void JumpOff() {
         MoveBase.movementStateMachine.NormalMovement();
         transform.rotation = RotateAngle180(transform.rotation);
-        playerMove.JumpInDirection(-ladder.transform.forward * offLadderForwardMultiplier, offLaddJumpMultiplier);
+        playerWalkMove.JumpInDirection(-ladder.transform.forward * offLadderForwardMultiplier, offLaddJumpMultiplier);
     }
 
     static Quaternion RotateAngle180(Quaternion angleToRotate) {

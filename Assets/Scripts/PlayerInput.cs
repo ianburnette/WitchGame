@@ -17,6 +17,9 @@ public class PlayerInput : MonoBehaviour {
     public delegate void AttackDelegate();
     public static event AttackDelegate OnAttack;
 
+    public delegate void MagicDelegate();
+    public static event MagicDelegate OnMagic;
+
     [SerializeField] static float movementDeadZone = .1f;
 
     void Update() => GetPlayerInput();
@@ -25,6 +28,7 @@ public class PlayerInput : MonoBehaviour {
         if (Input.GetButtonDown("Jump")) OnJump?.Invoke();
         if (Input.GetButtonDown("Grab")) OnGrab?.Invoke();
         if (Input.GetButtonDown("Attack")) OnAttack?.Invoke();
+        if (Input.GetButtonDown("Magic")) OnMagic?.Invoke();
 
         var movementValue = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         OnMove?.Invoke(movementValue.magnitude > movementDeadZone ? movementValue : Vector2.zero);
