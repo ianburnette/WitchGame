@@ -11,6 +11,7 @@ public class MovementStateMachine : MonoBehaviour {
 
 	public bool glidingUnlocked;
 	public bool hoveringUnlocked;
+	public bool cloudWalkingUnlocked;
 
 	public MoveState CurrentMovementState {
 		get {

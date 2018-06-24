@@ -18,6 +18,9 @@ public class PlayerWalkMove : MonoBehaviour {
 	[SerializeField] float jumpForce = 13f;
 	[SerializeField] float jumpLeniancy = 0.17f;
 
+	[Header("Cloud Walking Behavior")] [SerializeField]
+	float cloudWalkUpForce;
+
 	[Header("Passive Behavior")]
 	public float maxSpeed = 9;
 	public float maxWalkableSlopeAngle = 60, slideForce = 35;
@@ -59,6 +62,8 @@ public class PlayerWalkMove : MonoBehaviour {
 		moveDirection = transform.position +
 		                MoveBase.MovementRelativeToCamera(inputVector);
 		currentInputVector = inputVector;
+		if (MoveBase.movementStateMachine.cloudWalkingUnlocked)
+			moveDirection += AccountForCloudWalking();
 	}
 
 	void FixedUpdate() {
@@ -75,6 +80,12 @@ public class PlayerWalkMove : MonoBehaviour {
 		if (rotateSpeed != 0 && MoveBase.MovementRelativeToCamera(currentInputVector).magnitude != 0)
 			MoveBase.characterMotor.RotateToVelocity(Grounded() ? rotateSpeed : airRotateSpeed, true);
 		MoveBase.characterMotor.ManageSpeed(Grounded() ? tooFastDecelSpeedOnGround : tooFastDecelSpeedInAir, maxSpeed + movingObjSpeed.magnitude, false);
+	}
+
+	Vector3 AccountForCloudWalking() {
+		if (MoveBase.CurrentGroundType() == GroundType.Cloud)
+			return Vector3.up * cloudWalkUpForce;
+			return Vector3.zero;
 	}
 
 	void Animate() {

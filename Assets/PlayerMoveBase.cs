@@ -32,6 +32,7 @@ public class PlayerMoveBase : MonoBehaviour {
     EnemyAI currentEnemyAI;
 
     public bool currentlyGrounded;
+    public GroundType myGroundType;
 
     void OnEnable() {
         col = GetComponent<Collider>();
@@ -40,8 +41,7 @@ public class PlayerMoveBase : MonoBehaviour {
 
     void Update() => rigid.WakeUp();
 
-    public bool IsGrounded(float distanceToCheck)
-    {
+    public bool IsGrounded(float distanceToCheck) {
         for (var i = 0; i < floorCheckers.Length; i++)
             groundInfo[i] = GetGroundHitInfo(floorCheckers[i], distanceToCheck);
         if (EnemyBounceHit() != null) {
@@ -53,6 +53,23 @@ public class PlayerMoveBase : MonoBehaviour {
         slopeNormal = AverageContactNormal();
         currentlyGrounded = PointsOfContact() != 0;
         return currentlyGrounded;
+    }
+
+    public GroundType CurrentGroundType() {
+        //myGroundType = GroundType.None;
+        var groundHits = 0;
+        var cloudHits = 0;
+        foreach (var t in groundInfo) {
+            if (t.groundType == GroundType.Ground)
+                groundHits++;
+            if (t.groundType == GroundType.Cloud)
+                cloudHits++;
+        }
+
+        if (groundHits > 0) myGroundType = GroundType.Ground;
+        if (groundHits > 0) myGroundType = GroundType.Cloud;
+        myGroundType = GroundType.None;
+        return myGroundType;
     }
 
     public int PointsOfContact() => groundInfo.Count(t => t != null);
@@ -78,9 +95,12 @@ public class PlayerMoveBase : MonoBehaviour {
     [CanBeNull] GroundHitInfo GetGroundHitInfo(Transform checker, float distanceToCheck) {
         RaycastHit hit;
         Debug.DrawRay(checker.position, Vector3.down * distanceToCheck, Color.red);
-        return Physics.Raycast(checker.position, Vector3.down, out hit, distanceToCheck + groundCheckOffset, groundMask) ?
-                   new GroundHitInfo(hit.point, hit.normal, hit.transform, hit.transform.GetComponent<Rigidbody>()) :
-                   null;
+        return Physics.Raycast(checker.position, Vector3.down, out hit, distanceToCheck + groundCheckOffset, groundMask)
+                   ? new GroundHitInfo(hit.point, hit.normal, hit.transform, hit.transform.GetComponent<Rigidbody>(),
+                                       transform.CompareTag("SolidCloud")
+                                           ? GroundType.Cloud
+                                           : GroundType.Ground)
+                   : null;
     }
 
     public Vector3 MovementRelativeToPlayerAndCamera(Vector2 input) =>
@@ -93,9 +113,7 @@ public class PlayerMoveBase : MonoBehaviour {
         return (screenMovementForward * input.y) + (screenMovementRight * input.x);
     }
 
-
     public float SlopeAngle() => Vector3.Angle (slopeNormal, Vector3.up);
-
 
     static Vector3 CalculateSlopeNormal(Vector3 totalNormal, int rayCount) =>
         new Vector3(Mathf.Abs(totalNormal.x) > 0 ? totalNormal.x / rayCount : 0,
@@ -113,11 +131,19 @@ public class GroundHitInfo {
     public Vector3 normal;
     public Transform transform;
     public Rigidbody rigid;
+    public GroundType groundType;
 
-    public GroundHitInfo(Vector3 pos, Vector3 norm, Transform tran, [CanBeNull] Rigidbody rb) {
+    public GroundHitInfo(Vector3 pos, Vector3 norm, Transform tran, [CanBeNull] Rigidbody rb, GroundType type) {
         position = pos;
         normal = norm;
         transform = tran;
         rigid = rb;
+        groundType = type;
     }
+}
+
+public enum GroundType {
+    Ground,
+    Cloud,
+    None
 }
