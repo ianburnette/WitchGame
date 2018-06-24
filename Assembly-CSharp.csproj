@@ -55,6 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\CloudColumn.cs" />
+    <Compile Include="Assets\CloudColumnGroundCollider.cs" />
     <Compile Include="Assets\CloudColumnWorldCollider.cs" />
     <Compile Include="Assets\Ladder.cs" />
     <Compile Include="Assets\PlayerAttack.cs" />

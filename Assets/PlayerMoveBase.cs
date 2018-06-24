@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using JetBrains.Annotations;
+using RootMotion.FinalIK;
 using UnityEngine;
 
 [RequireComponent(typeof(DealDamage))]
@@ -30,6 +31,8 @@ public class PlayerMoveBase : MonoBehaviour {
     [SerializeField] DealDamage dealDamage;
     EnemyAI currentEnemyAI;
 
+    public bool currentlyGrounded;
+
     void OnEnable() {
         col = GetComponent<Collider>();
         groundInfo = new GroundHitInfo[floorCheckers.Length];
@@ -48,7 +51,8 @@ public class PlayerMoveBase : MonoBehaviour {
             dealDamage.Attack(enemyTransform.gameObject, 1, 0f, 0f);
         }
         slopeNormal = AverageContactNormal();
-        return PointsOfContact() != 0;
+        currentlyGrounded = PointsOfContact() != 0;
+        return currentlyGrounded;
     }
 
     public int PointsOfContact() => groundInfo.Count(t => t != null);

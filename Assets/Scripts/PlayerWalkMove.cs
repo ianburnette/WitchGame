@@ -67,7 +67,7 @@ public class PlayerWalkMove : MonoBehaviour {
 		if (MoveBase.animator) Animate();
 	}
 
-	bool Grounded() => MoveBase.IsGrounded(MoveBase.col.bounds.extents.y);
+	public bool Grounded() => MoveBase.IsGrounded(MoveBase.col.bounds.extents.y);
 
 	void UpdatePlayerMovement() {
 		MoveBase.characterMotor.MoveTo(moveDirection, Grounded() ? movementSpeedOnGround : movementSpeedInAir, movementSensitivity, true);
