@@ -18,8 +18,11 @@ public class PlayerWalkMove : MonoBehaviour {
 	[SerializeField] float jumpForce = 13f;
 	[SerializeField] float jumpLeniancy = 0.17f;
 
-	[Header("Cloud Walking Behavior")] [SerializeField]
-	float cloudWalkUpForce;
+	[Header("Cloud Walking Behavior")]
+	[SerializeField] float cloudWalkUpForce;
+	[SerializeField] float cloudWalkStopDist;
+	[SerializeField] float cloudMomentumMult;
+	[SerializeField] bool onCloud;
 
 	[Header("Passive Behavior")]
 	public float maxSpeed = 9;
@@ -62,17 +65,16 @@ public class PlayerWalkMove : MonoBehaviour {
 		moveDirection = transform.position +
 		                MoveBase.MovementRelativeToCamera(inputVector);
 		currentInputVector = inputVector;
-		if (MoveBase.movementStateMachine.cloudWalkingUnlocked)
-			moveDirection += AccountForCloudWalking();
 	}
 
 	void FixedUpdate() {
 		PlayLandingSoundIfNecessary();
+		if (OnCloud) AccountForCloudWalking();
 		UpdatePlayerMovement();
 		if (MoveBase.animator) Animate();
 	}
 
-	public bool Grounded() => MoveBase.IsGrounded(MoveBase.col.bounds.extents.y);
+	public bool Grounded() => OnCloud ? OnCloud : MoveBase.IsGrounded(MoveBase.col.bounds.extents.y);
 
 	void UpdatePlayerMovement() {
 		MoveBase.characterMotor.MoveTo(moveDirection, Grounded() ? movementSpeedOnGround : movementSpeedInAir, movementSensitivity, true);
@@ -82,10 +84,25 @@ public class PlayerWalkMove : MonoBehaviour {
 		MoveBase.characterMotor.ManageSpeed(Grounded() ? tooFastDecelSpeedOnGround : tooFastDecelSpeedInAir, maxSpeed + movingObjSpeed.magnitude, false);
 	}
 
-	Vector3 AccountForCloudWalking() {
-		if (MoveBase.CurrentGroundType() == GroundType.Cloud)
-			return Vector3.up * cloudWalkUpForce;
-			return Vector3.zero;
+	public void AccountForCloudWalking() {
+		MoveBase.characterMotor.MoveTo(transform.position + Vector3.up,
+		                               cloudWalkUpForce + (MoveBase.RigidbodyXZMagnitude(1) * cloudMomentumMult * Time.deltaTime),
+		                               cloudWalkStopDist,
+		                               false);
+	}
+
+	public bool OnCloud {
+		get { return onCloud; }
+		set {
+			if (MoveBase.movementStateMachine.cloudWalkingUnlocked) {
+				onCloud = value;
+				//CloudDamp();
+			}
+		}
+	}
+
+	void CloudDamp() {
+		MoveBase.rigid.velocity = new Vector3(MoveBase.rigid.velocity.x, 0, MoveBase.rigid.velocity.z);
 	}
 
 	void Animate() {

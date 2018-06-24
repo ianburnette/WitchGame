@@ -55,7 +55,7 @@ public class PlayerMoveBase : MonoBehaviour {
         return currentlyGrounded;
     }
 
-    public GroundType CurrentGroundType() {
+    /*public GroundType CurrentGroundType() {
         //myGroundType = GroundType.None;
         var groundHits = 0;
         var cloudHits = 0;
@@ -70,7 +70,7 @@ public class PlayerMoveBase : MonoBehaviour {
         if (groundHits > 0) myGroundType = GroundType.Cloud;
         myGroundType = GroundType.None;
         return myGroundType;
-    }
+    }*/
 
     public int PointsOfContact() => groundInfo.Count(t => t != null);
 
@@ -123,6 +123,11 @@ public class PlayerMoveBase : MonoBehaviour {
     Vector3 AverageContactNormal() {
         var summedNormal = groundInfo.Where(t => t != null).Aggregate(Vector3.zero, (current, t) => current + t.normal);
         return CalculateSlopeNormal(summedNormal, PointsOfContact());
+    }
+
+    public float RigidbodyXZMagnitude(float min) {
+        var mag = new Vector3(rigid.velocity.x, 0, rigid.velocity.z).magnitude;
+        return mag > min ? mag : min;
     }
 }
 
