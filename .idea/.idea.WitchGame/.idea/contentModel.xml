@@ -9,6 +9,7 @@
       <e p="Assets" t="Include">
         <e p="Cloud.cs" t="Include" />
         <e p="CloudColumn.cs" t="Include" />
+        <e p="CloudColumnGeneration.cs" t="Include" />
         <e p="CloudColumnGroundCollider.cs" t="Include" />
         <e p="CloudColumnWorldCollider.cs" t="Include" />
         <e p="Ladder.cs" t="Include" />
