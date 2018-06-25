@@ -76,6 +76,7 @@ public class PlayerMoveBase : MonoBehaviour {
 
     void OnDrawGizmos() {
         Gizmos.color = Color.green;
+        if (groundInfo.Length == 0) return;
         foreach (var info in groundInfo)
             if (groundInfo!=null && info!=null)
                 Gizmos.DrawSphere(info.position, .2f);
