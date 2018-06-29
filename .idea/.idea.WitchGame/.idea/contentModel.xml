@@ -7,12 +7,6 @@
       <e p="Assembly-CSharp-firstpass.csproj" t="IncludeRecursive" />
       <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
       <e p="Assets" t="Include">
-        <e p="Cloud.cs" t="Include" />
-        <e p="CloudColumn.cs" t="Include" />
-        <e p="CloudColumnGeneration.cs" t="Include" />
-        <e p="CloudColumnGroundCollider.cs" t="Include" />
-        <e p="CloudColumnWorldCollider.cs" t="Include" />
-        <e p="Ladder.cs" t="Include" />
         <e p="Models" t="Include">
           <e p="Environment" t="Include">
             <e p="Voxels" t="Include">
@@ -31,14 +25,6 @@
             </e>
           </e>
         </e>
-        <e p="PlayerAttack.cs" t="Include" />
-        <e p="PlayerCloudColumn.cs" t="Include" />
-        <e p="PlayerGlideMove.cs" t="Include" />
-        <e p="PlayerInteraction.cs" t="Include" />
-        <e p="PlayerLadderInteraction.cs" t="Include" />
-        <e p="PlayerLadderMove.cs" t="Include" />
-        <e p="PlayerMoveBase.cs" t="Include" />
-        <e p="PlayerWaterMove.cs" t="Include" />
         <e p="Plugins" t="Include">
           <e p="Demigiant" t="Include">
             <e p="DOTween" t="Include">
@@ -652,6 +638,12 @@
           <e p="CameraSelector.cs" t="Include" />
           <e p="CharacterMotor.cs" t="Include" />
           <e p="Checkpoint.cs" t="Include" />
+          <e p="Cloud.cs" t="Include" />
+          <e p="CloudBase.cs" t="Include" />
+          <e p="CloudColumn.cs" t="Include" />
+          <e p="CloudColumnGeneration.cs" t="Include" />
+          <e p="CloudColumnGroundCollider.cs" t="Include" />
+          <e p="CloudColumnWorldCollider.cs" t="Include" />
           <e p="Coin.cs" t="Include" />
           <e p="DealDamage.cs" t="Include" />
           <e p="DestroyObject.cs" t="Include" />
@@ -663,18 +655,29 @@
           <e p="GUIManager.cs" t="Include" />
           <e p="Hazard.cs" t="Include" />
           <e p="Health.cs" t="Include" />
+          <e p="ICloudInteractible.cs" t="Include" />
+          <e p="Ladder.cs" t="Include" />
           <e p="MovementStateMachine.cs" t="Include" />
           <e p="MoveToPoints.cs" t="Include" />
+          <e p="Pickup.cs" t="Include" />
+          <e p="PlayerAttack.cs" t="Include" />
+          <e p="PlayerCloudColumn.cs" t="Include" />
+          <e p="PlayerGlideMove.cs" t="Include" />
           <e p="PlayerHoverMove.cs" t="Include" />
           <e p="PlayerInput.cs" t="Include" />
+          <e p="PlayerInteraction.cs" t="Include" />
+          <e p="PlayerLadderInteraction.cs" t="Include" />
+          <e p="PlayerLadderMove.cs" t="Include" />
+          <e p="PlayerMoveBase.cs" t="Include" />
           <e p="PlayerMoveTemp.cs" t="Include" />
           <e p="PlayerObjectInteraction.cs" t="Include" />
           <e p="PlayerWalkMove.cs" t="Include" />
+          <e p="PlayerWaterMove.cs" t="Include" />
           <e p="TargetCamera.cs" t="Include" />
           <e p="TriggerParent.cs" t="Include" />
           <e p="Water.cs" t="Include" />
+          <e p="Weapon.cs" t="Include" />
         </e>
-        <e p="Weapon.cs" t="Include" />
       </e>
       <e p="Library" t="ExcludeRecursive" />
       <e p="obj" t="ExcludeRecursive" />

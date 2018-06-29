@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(CharacterMotor))]
 [RequireComponent(typeof(AudioSource))]
 [RequireComponent(typeof(Rigidbody))]
-public class PlayerWalkMove : MonoBehaviour {
+public class PlayerWalkMove : MonoBehaviour, ICloudInteractible {
 
 	[Header("Movement Behavior")]
 	public float movementSpeedOnGround = 70f;
@@ -22,7 +22,8 @@ public class PlayerWalkMove : MonoBehaviour {
 	[SerializeField] float cloudWalkUpForce;
 	[SerializeField] float cloudWalkStopDist;
 	[SerializeField] float cloudMomentumMult;
-	[SerializeField] bool onCloud;
+	[SerializeField] float cloudMovementDecel;
+	[SerializeField] bool inCloud;
 
 	[Header("Passive Behavior")]
 	public float maxSpeed = 9;
@@ -47,6 +48,7 @@ public class PlayerWalkMove : MonoBehaviour {
 	Ladder nearbyLadder;
 	Vector2 currentInputVector;
 	Vector3 movementDirectionRelativeToCamera, moveDirection, movingObjSpeed;
+	ICloudInteractible cloudInteractibleImplementation;
 
 	void OnEnable() {
 		PlayerInput.OnJump += JumpPressed;
@@ -69,16 +71,17 @@ public class PlayerWalkMove : MonoBehaviour {
 
 	void FixedUpdate() {
 		PlayLandingSoundIfNecessary();
-		if (OnCloud) AccountForCloudWalking();
+		if (InCloud) AccountForCloudWalking();
 		UpdatePlayerMovement();
 		if (MoveBase.animator) Animate();
 	}
 
-	public bool Grounded() => OnCloud ? OnCloud : MoveBase.IsGrounded(MoveBase.col.bounds.extents.y);
+	public bool Grounded() => InCloud ? InCloud : MoveBase.IsGrounded(MoveBase.col.bounds.extents.y);
 
 	void UpdatePlayerMovement() {
 		MoveBase.characterMotor.MoveTo(moveDirection, Grounded() ? movementSpeedOnGround : movementSpeedInAir, movementSensitivity, true);
-		MoveBase.characterMotor.MoveRelativeToGround(SlopeCorrection()+StickToGround());
+		if (!inCloud)
+			MoveBase.characterMotor.MoveRelativeToGround(SlopeCorrection()+StickToGround());
 		if (rotateSpeed != 0 && MoveBase.MovementRelativeToCamera(currentInputVector).magnitude != 0)
 			MoveBase.characterMotor.RotateToVelocity(Grounded() ? rotateSpeed : airRotateSpeed, true);
 		MoveBase.characterMotor.ManageSpeed(Grounded() ? tooFastDecelSpeedOnGround : tooFastDecelSpeedInAir, maxSpeed + movingObjSpeed.magnitude, false);
@@ -86,24 +89,30 @@ public class PlayerWalkMove : MonoBehaviour {
 
 	public void AccountForCloudWalking() {
 		MoveBase.characterMotor.MoveTo(transform.position + Vector3.up,
-		                               cloudWalkUpForce + (MoveBase.RigidbodyXZMagnitude(1) * cloudMomentumMult * Time.deltaTime),
+		                               cloudWalkUpForce + (MoveBase.RigidbodyXZMagnitude(1) * cloudMomentumMult) * Time.deltaTime,
 		                               cloudWalkStopDist,
 		                               false);
+		MoveBase.characterMotor.ManageSpeed(cloudMovementDecel, maxSpeed, true);
 	}
 
-	public bool OnCloud {
-		get { return onCloud; }
+	public void EnterCloud() {
+		if (!inCloud)
+			CloudDamp();
+	}
+
+	public void StayInCloud() => InCloud = true;
+	public void ExitCloud() => InCloud = false;
+
+	public bool InCloud {
+		get { return inCloud; }
 		set {
 			if (MoveBase.movementStateMachine.cloudWalkingUnlocked) {
-				onCloud = value;
-				//CloudDamp();
+				inCloud = value;
 			}
 		}
 	}
 
-	void CloudDamp() {
-		MoveBase.rigid.velocity = new Vector3(MoveBase.rigid.velocity.x, 0, MoveBase.rigid.velocity.z);
-	}
+	void CloudDamp() => MoveBase.rigid.velocity = new Vector3(MoveBase.rigid.velocity.x, 0, MoveBase.rigid.velocity.z);
 
 	void Animate() {
 		MoveBase.animator.SetFloat("DistanceToTarget", MoveBase.characterMotor.DistanceToTarget);

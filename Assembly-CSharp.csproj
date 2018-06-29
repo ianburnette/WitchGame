@@ -9,7 +9,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <ProjectGuid>{B9D63043-40DA-AD21-2C2F-0EA340DE1E66}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -55,11 +56,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Cloud.cs" />
+    <Compile Include="Assets\CloudBase.cs" />
     <Compile Include="Assets\CloudColumn.cs" />
     <Compile Include="Assets\CloudColumnGeneration.cs" />
     <Compile Include="Assets\CloudColumnGroundCollider.cs" />
     <Compile Include="Assets\CloudColumnWorldCollider.cs" />
     <Compile Include="Assets\Ladder.cs" />
+    <Compile Include="Assets\Pickup.cs" />
     <Compile Include="Assets\PlayerAttack.cs" />
     <Compile Include="Assets\PlayerCloudColumn.cs" />
     <Compile Include="Assets\PlayerGlideMove.cs" />
@@ -83,6 +86,7 @@
     <Compile Include="Assets\Scripts\GUIManager.cs" />
     <Compile Include="Assets\Scripts\Hazard.cs" />
     <Compile Include="Assets\Scripts\Health.cs" />
+    <Compile Include="Assets\Scripts\ICloudInteractible.cs" />
     <Compile Include="Assets\Scripts\MovementStateMachine.cs" />
     <Compile Include="Assets\Scripts\MoveToPoints.cs" />
     <Compile Include="Assets\Scripts\PlayerHoverMove.cs" />
