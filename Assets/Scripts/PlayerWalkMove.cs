@@ -17,6 +17,7 @@ public class PlayerWalkMove : MonoBehaviour, ICloudInteractible {
 	[Header("Jumping Behavior")]
 	[SerializeField] float jumpForce = 13f;
 	[SerializeField] float jumpLeniancy = 0.17f;
+	[SerializeField] float jumpReleaseYVelocity = 0.2f;
 
 	[Header("Cloud Walking Behavior")]
 	[SerializeField] float cloudWalkUpForce;
@@ -52,9 +53,10 @@ public class PlayerWalkMove : MonoBehaviour, ICloudInteractible {
 
 	void OnEnable() {
 		PlayerInput.OnJump += JumpPressed;
+		PlayerInput.OnJumpRelease += JumpReleased;
 		PlayerInput.OnMove += Move;
 		MoveBase.rigid.drag = 0;
-		transform.rotation = Quaternion.Euler(0, transform.rotation.y, 0);
+		transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
 		MoveBase.animator.SetBool("RidingBroom", false);
 	}
 
@@ -112,7 +114,7 @@ public class PlayerWalkMove : MonoBehaviour, ICloudInteractible {
 		}
 	}
 
-	void CloudDamp() => MoveBase.rigid.velocity = new Vector3(MoveBase.rigid.velocity.x, 0, MoveBase.rigid.velocity.z);
+	void CloudDamp() => MoveBase.OverrideYVelocity(0);//MoveBase.rigid.velocity = new Vector3(MoveBase.rigid.velocity.x, 0, MoveBase.rigid.velocity.z);
 
 	void Animate() {
 		MoveBase.animator.SetFloat("DistanceToTarget", MoveBase.characterMotor.DistanceToTarget);
@@ -145,14 +147,19 @@ public class PlayerWalkMove : MonoBehaviour, ICloudInteractible {
 			Jump();
 	}
 
+	void JumpReleased() {
+		if (MoveBase.rigid.velocity.y > jumpReleaseYVelocity)
+			MoveBase.OverrideYVelocity(jumpReleaseYVelocity);
+	}
+
 	void Jump(Vector3 direction) {
 		if (MoveBase.jumpSound) PlayJumpSound();
-		MoveBase.rigid.velocity = new Vector3(MoveBase.rigid.velocity.x, 0f, MoveBase.rigid.velocity.z);
+		MoveBase.OverrideYVelocity(0);//MoveBase.rigid.velocity = new Vector3(MoveBase.rigid.velocity.x, 0f, MoveBase.rigid.velocity.z);
 		MoveBase.rigid.AddRelativeForce(direction, ForceMode.Impulse);
 		airPressTime = 0f;
 	}
 
-	void Jump() => Jump(new Vector3(MoveBase.rigid.velocity.x, jumpForce, MoveBase.rigid.velocity.z));
+	void Jump() => Jump(new Vector3(0, jumpForce, 0));
 
 	public void JumpInDirection(Vector3 jumpDirection, float jumpHeightModifier) {
 		Jump(new Vector3(jumpDirection.x, jumpForce * jumpHeightModifier, jumpDirection.z));

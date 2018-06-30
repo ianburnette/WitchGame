@@ -33,10 +33,10 @@ public class CharacterMotor : MonoBehaviour {
 
 	public void RotateToVelocity(float turnSpeed, bool ignoreY) {
 		var dir = new Vector3(rigid.velocity.x, ignoreY ? 0f : rigid.velocity.y, rigid.velocity.z);
-		RotateToVelocity(turnSpeed, dir);
+		RotateToDirection(turnSpeed, dir);
 	}
 
-	public void RotateToVelocity(float turnSpeed, Vector3 velocity) {
+	public void RotateToDirection(float turnSpeed, Vector3 velocity) {
 		if (!(velocity.magnitude > 0.1)) return;
 		var dirQ = Quaternion.LookRotation(velocity);
 		var slerp = Quaternion.Slerp(transform.rotation, dirQ, velocity.magnitude * turnSpeed * Time.deltaTime);
@@ -45,7 +45,7 @@ public class CharacterMotor : MonoBehaviour {
 
 	public void RotateToVelocity(float turnSpeed, float minYvel, float maxYvel, float yMultiplier) {
 		var currentY = Scale(minYvel, maxYvel, rigid.velocity.y);
-		RotateToVelocity(turnSpeed, new Vector3(rigid.velocity.x, currentY * yMultiplier * rigid.velocity.magnitude, rigid.velocity.z));
+		RotateToDirection(turnSpeed, new Vector3(rigid.velocity.x, currentY * yMultiplier * rigid.velocity.magnitude, rigid.velocity.z));
 	}
 
 	public float Scale(float newMin, float newMax, float oldValue) {

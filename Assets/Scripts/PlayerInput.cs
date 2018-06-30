@@ -8,6 +8,9 @@ public class PlayerInput : MonoBehaviour {
     public delegate void JumpDelegate();
     public static event JumpDelegate OnJump;
 
+    public delegate void JumpReleaseDelegate();
+    public static event JumpReleaseDelegate OnJumpRelease;
+
     public delegate void MoveDelegate(Vector2 movement);
     public static event MoveDelegate OnMove;
 
@@ -26,6 +29,7 @@ public class PlayerInput : MonoBehaviour {
 
     static void GetPlayerInput() {
         if (Input.GetButtonDown("Jump")) OnJump?.Invoke();
+        if (Input.GetButtonUp("Jump")) OnJumpRelease?.Invoke();
         if (Input.GetButtonDown("Grab")) OnGrab?.Invoke();
         if (Input.GetButtonDown("Attack")) OnAttack?.Invoke();
         if (Input.GetButtonDown("Magic")) OnMagic?.Invoke();
