@@ -8,7 +8,7 @@ public class CameraSelector : MonoBehaviour {
 
     [SerializeField] CamState currentCamState;
     [SerializeField] Behaviour[] toDisableInFirstPerson;
-    public enum CamState { Behind, Target, FirstPerson, Free/*, Nodes*/ }
+    public enum CamState { Behind, Target, FirstPerson, Free, Nodes }
 
     public CamState CurrentCamState
     {

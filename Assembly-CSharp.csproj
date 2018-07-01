@@ -54,6 +54,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\CameraNodes.cs" />
+    <Compile Include="Assets\DialogueBase.cs" />
+    <Compile Include="Assets\Node.cs" />
+    <Compile Include="Assets\NodeSystem.cs" />
+    <Compile Include="Assets\NpcDialogue.cs" />
+    <Compile Include="Assets\NpcNavigation.cs" />
     <Compile Include="Assets\PlayerCameraReference.cs" />
     <Compile Include="Assets\Scripts\CameraBase.cs" />
     <Compile Include="Assets\Scripts\CameraSelector.cs" />
@@ -100,11 +106,26 @@
     <Compile Include="Assets\Scripts\Water.cs" />
     <Compile Include="Assets\Scripts\Weapon.cs" />
     <None Include="Assets\Models\Environment\Voxels\MagicaVoxel-0.99.1-alpha-mac\shader\wave.txt" />
+    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface-Mobile.shader" />
+    <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
     <None Include="Assets\Models\Environment\Voxels\MagicaVoxel-0.99.1-alpha-mac\shader\poly.txt" />
     <None Include="Assets\Models\Environment\Voxels\MagicaVoxel-0.99.1-alpha-mac\readme.txt" />
+    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro_Properties.cginc" />
     <None Include="Assets\Models\Environment\Voxels\MagicaVoxel-0.99.1-alpha-mac\config\config.txt" />
     <None Include="Assets\Models\Environment\Voxels\MagicaVoxel-0.99.1-alpha-mac\shader\mand.txt" />
+    <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
+    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile Masking.shader" />
     <None Include="Assets\Models\Environment\Voxels\MagicaVoxel-0.99.1-alpha-mac\shader\sphere.txt" />
+    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap-Mobile.shader" />
+    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF Overlay.shader" />
+    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro_Surface.cginc" />
+    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile Overlay.shader" />
+    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap.shader" />
+    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro.cginc" />
+    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF.shader" />
+    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile.shader" />
+    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Sprite.shader" />
+    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface.shader" />
     <Reference Include="UnityEditor.StandardEvents">
       <HintPath>/Users/ianburnette/WitchGame/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
     </Reference>
