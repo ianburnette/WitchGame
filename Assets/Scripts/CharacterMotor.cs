@@ -79,9 +79,7 @@ public void RotateToDirection(Vector3 lookDir, float turnSpeed, bool ignoreY)
 			rigid.AddForce ((currentSpeed * -1) * deceleration * Time.deltaTime, ForceMode.VelocityChange);
 	}
 
-	public void MoveRelativeToGround(Vector3 groundForce) {
-		rigid.AddForce(groundForce);
-	}
+	public void MoveRelativeToGround(Vector3 groundForce) => rigid.AddForce(groundForce);
 
 	public void SetVelocity(Vector3 direction) =>
 		rigid.velocity = direction;

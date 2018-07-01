@@ -5,7 +5,7 @@ static class GroundChecking {
     [CanBeNull]
     public static GroundHitInfo GetGroundHitInfo(Transform checker, float distanceToCheck, LayerMask groundMask) {
         RaycastHit hit;
-        Debug.DrawRay(checker.position, Vector3.down * distanceToCheck, Color.red);
+        //Debug.DrawRay(checker.position, Vector3.down * distanceToCheck, Color.red);
         return Physics.Raycast(checker.position, Vector3.down, out hit, distanceToCheck, groundMask)
                    ? new GroundHitInfo(hit.point, hit.normal, hit.transform, hit.transform.GetComponent<Rigidbody>(),
                                        hit.transform.CompareTag("SolidCloud")

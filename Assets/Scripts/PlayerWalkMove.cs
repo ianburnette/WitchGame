@@ -19,6 +19,9 @@ public class PlayerWalkMove : MonoBehaviour, ICloudInteractible {
 	[SerializeField] float jumpForce = 13f;
 	[SerializeField] float jumpLeniancy = 0.17f;
 	[SerializeField] float jumpReleaseYVelocity = 0.2f;
+	[SerializeField] float slowFallSpeed;
+	[SerializeField] float slowFallDecel;
+	[SerializeField] float maxYvelocityBeforeSlowing;
 
 	[Header("Cloud Walking Behavior")]
 	[SerializeField] float cloudWalkUpForce;
@@ -29,14 +32,18 @@ public class PlayerWalkMove : MonoBehaviour, ICloudInteractible {
 
 	[Header("Passive Behavior")]
 	public float maxSpeed = 9;
-
+	public bool currentlyGrounded;
 	public float movingPlatformFriction = 7.7f;
 	public float movementSensitivity = .25f;
 
 	[Header("Slope Behavior")]
 	[SerializeField] float slopeCorrectionAmount;
+	[SerializeField] float slopeMovementCorrectionAmount;
 	[SerializeField] float stickToGroundForce;
-	public float maxWalkableSlopeAngle = 60, slideForce = 35;
+	[SerializeField] float maxWalkableSlopeAngle = 60, slideForce = 35;
+	[SerializeField] float inputToSlopeAngle;
+	[SerializeField] AnimationCurve slopeMovementAdjustmentCurve;
+	[SerializeField] float slopeMovementMultiplier;
 
 	[Header("Audio")]
 	[SerializeField] AudioSource audioSource;
@@ -44,6 +51,11 @@ public class PlayerWalkMove : MonoBehaviour, ICloudInteractible {
 	[Header("Class References")]
 	[SerializeField] PlayerMoveBase MoveBase;
 	[SerializeField] PlayerLadderMove ladderMovement;
+
+	[Header("Debug")]
+	[SerializeField] Vector3 inputRelativeToWorld;
+	[SerializeField] float slopeAdjustedMovementSpeed;
+	[SerializeField] float animationCurveResult;
 
 	[Header("Private Variables")]
 	[HideInInspector] public int onEnemyBounce;
@@ -70,27 +82,50 @@ public class PlayerWalkMove : MonoBehaviour, ICloudInteractible {
 	void Move(Vector2 inputVector) {
 		moveDirection = transform.position +
 		                MoveBase.MovementRelativeToCamera(inputVector);
+
 		currentInputVector = inputVector;
 	}
 
 	void FixedUpdate() {
-		PlayLandingSoundIfNecessary();
 		if (InCloud) AccountForCloudWalking();
+		CalculateGroundedState();
 		UpdatePlayerMovement();
 		if (MoveBase.animator) Animate();
 	}
 
-	public bool Grounded() => InCloud ? InCloud : MoveBase.IsGrounded(MoveBase.col.bounds.extents.y);
+	void CalculateGroundedState() {
+		currentlyGrounded = InCloud ? InCloud : MoveBase.IsGrounded(MoveBase.col.bounds.extents.y);
+	}
 
 	void UpdatePlayerMovement() {
-		MoveBase.characterMotor.MoveTo(moveDirection + (inCloud ? Vector3.zero : SlopeCorrection()),
-		                               Grounded() ? movementSpeedOnGround : movementSpeedInAir, movementSensitivity,
+		inputRelativeToWorld = MoveBase.MovementRelativeToCamera(currentInputVector);
+		MoveBase.characterMotor.MoveTo(moveDirection,
+		                               currentlyGrounded ? MovementSpeedOnGround() : movementSpeedInAir, movementSensitivity,
 		                               true);
+		if (!inCloud) {
+			MoveBase.characterMotor.MoveRelativeToGround(StickToGround());
+			MoveBase.characterMotor.MoveRelativeToGround(SlopeCorrection());
+		}
+
 		if (rotateSpeed != 0 && MoveBase.MovementRelativeToCamera(currentInputVector).magnitude != 0)
-			MoveBase.characterMotor.RotateToVelocity(Grounded() ? rotateSpeed : airRotateSpeed, true);
-		MoveBase.characterMotor.ManageSpeed(Grounded() ? tooFastDecelSpeedOnGround : tooFastDecelSpeedInAir,
+			MoveBase.characterMotor.RotateToVelocity(currentlyGrounded ? rotateSpeed : airRotateSpeed, true);
+		MoveBase.characterMotor.ManageSpeed(currentlyGrounded ? tooFastDecelSpeedOnGround : tooFastDecelSpeedInAir,
 		                                    maxSpeed + movingObjSpeed.magnitude, false);
 	}
+
+	float MovementSpeedOnGround() {
+		inputToSlopeAngle = Vector3.Angle(inputRelativeToWorld, SlopeCorrection());
+		if (inputRelativeToWorld.magnitude != 0 && inputToSlopeAngle > 30 &&
+		    inputToSlopeAngle < 90) {
+			animationCurveResult = slopeMovementAdjustmentCurve.Evaluate(inputToSlopeAngle);
+		} else
+			animationCurveResult = 1;
+
+		slopeAdjustedMovementSpeed = movementSpeedOnGround * (animationCurveResult * slopeMovementMultiplier);
+		return slopeAdjustedMovementSpeed;
+	}
+
+
 
 	public void AccountForCloudWalking() {
 		MoveBase.characterMotor.MoveTo(transform.position + Vector3.up,
@@ -117,33 +152,23 @@ public class PlayerWalkMove : MonoBehaviour, ICloudInteractible {
 
 	void Animate() {
 		MoveBase.animator.SetFloat("DistanceToTarget", MoveBase.characterMotor.DistanceToTarget);
-		MoveBase.animator.SetBool("Grounded", Grounded());
+		MoveBase.animator.SetBool("Grounded", currentlyGrounded);
 		MoveBase.animator.SetFloat("YVelocity", GetComponent<Rigidbody>().velocity.y);
 		MoveBase.animator.SetFloat("XVelocity",
 		                           new Vector3(MoveBase.rigid.velocity.x, 0, MoveBase.rigid.velocity.z).normalized.magnitude +
 		                           .1f);
 	}
 
-	void PlayLandingSoundIfNecessary() {
-		if (audioSource.isPlaying || !MoveBase.landSound || !(MoveBase.rigid.velocity.y < 1)) return;
-		audioSource.volume = Mathf.Abs(MoveBase.rigid.velocity.y) / 40;
-		audioSource.clip = MoveBase.landSound;
-		audioSource.Play();
-	}
-
-	Vector3 SlopeCorrection() {
-		if (MoveBase.slopeAngle > maxWalkableSlopeAngle)
-			return SlopeCorrection(slideForce); //MoveBase.characterMotor.MoveRelativeToGround(SlopeCorrection(slideForce));
-		return SlopeCorrection(slopeCorrectionAmount) + StickToGround();
-		//MoveBase.characterMotor.MoveRelativeToGround(SlopeCorrection(slopeCorrectionAmount) + StickToGround());
-	}
+	Vector3 SlopeCorrection() => MoveBase.slopeAngle > maxWalkableSlopeAngle ?
+		                             SlopeCorrection(slideForce) :
+		                             (SlopeCorrection(slopeCorrectionAmount));
 
 	Vector3 StickToGround() => -MoveBase.slopeNormal * stickToGroundForce;
 	Vector3 SlopeCorrection(float force) => Vector3.Cross(MoveBase.slopeNormal, SlopeTangent() * force);
 	Vector3 SlopeTangent() => new Vector3(-MoveBase.slopeNormal.z, 0, MoveBase.slopeNormal.x);
 
 	void JumpPressed() {
-		if (!Grounded()) {
+		if (!currentlyGrounded) {
 			//TODO make sure to put jump leniancy back in			//	airPressTime = Time.time;
 			if (MoveBase.movementStateMachine.glidingUnlocked)
 				MoveBase.movementStateMachine.GlideMovement();
