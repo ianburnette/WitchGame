@@ -31,6 +31,7 @@
         <e p="NodeSystem.cs" t="Include" />
         <e p="NpcDialogue.cs" t="Include" />
         <e p="NpcNavigation.cs" t="Include" />
+        <e p="PlayerAbilities.cs" t="Include" />
         <e p="PlayerCameraReference.cs" t="Include" />
         <e p="Plugins" t="Include">
           <e p="Demigiant" t="Include">

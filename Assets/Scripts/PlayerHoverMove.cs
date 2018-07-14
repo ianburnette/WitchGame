@@ -6,6 +6,7 @@ using UnityEngine;
 public class PlayerHoverMove : MonoBehaviour {
 
     [Header("Movement Behavior")]
+    [SerializeField] LayerMask groundMask;
     [SerializeField] float movementSpeed;
     [SerializeField] float groundRepelForce;
     [Range(.01f, 1)] [SerializeField] float movementSensitivity;
@@ -47,9 +48,9 @@ public class PlayerHoverMove : MonoBehaviour {
                                             (MoveBase.DistanceToGround() * distanceFromGroundForceMult));
 
     void FixedUpdate() {
-        if (MoveBase.IsGrounded(heightBelowWhichToApplyHoverForce))
+        if (MoveBase.IsGrounded(heightBelowWhichToApplyHoverForce, groundMask))
             Hover();
-        else if (!MoveBase.IsGrounded(heightAboveWhichToGlide))
+        else if (!MoveBase.IsGrounded(heightAboveWhichToGlide, groundMask))
             SwitchToGlide();
         characterMotor.RotateToVelocity(rotateSpeed, minYrotation, maxYrotation, yMultiplier);
         characterMotor.ManageSpeed(tooFastDecelSpeed, maxSpeed, false);

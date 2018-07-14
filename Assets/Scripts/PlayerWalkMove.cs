@@ -9,6 +9,7 @@ using UnityEngine;
 public class PlayerWalkMove : MonoBehaviour, ICloudInteractible {
 
 	[Header("Movement Behavior")]
+	[SerializeField] LayerMask groundMask;
 	public float movementSpeedOnGround = 70f;
 	public float movementSpeedInAir = 18f;
 	public float tooFastDecelSpeedOnGround = 7.6f;
@@ -93,9 +94,8 @@ public class PlayerWalkMove : MonoBehaviour, ICloudInteractible {
 		if (MoveBase.animator) Animate();
 	}
 
-	void CalculateGroundedState() {
-		currentlyGrounded = InCloud ? InCloud : MoveBase.IsGrounded(MoveBase.col.bounds.extents.y);
-	}
+	void CalculateGroundedState() =>
+		currentlyGrounded = InCloud ? InCloud : MoveBase.IsGrounded(MoveBase.col.bounds.extents.y, groundMask);
 
 	void UpdatePlayerMovement() {
 		inputRelativeToWorld = MoveBase.MovementRelativeToCamera(currentInputVector);
@@ -143,7 +143,7 @@ public class PlayerWalkMove : MonoBehaviour, ICloudInteractible {
 	public bool InCloud {
 		get { return inCloud; }
 		set {
-			if (MoveBase.movementStateMachine.cloudWalkingUnlocked) {
+			if (MoveBase.playerAbilities.cloudWalkingUnlocked) {
 				inCloud = value;
 			}
 		}
@@ -170,9 +170,9 @@ public class PlayerWalkMove : MonoBehaviour, ICloudInteractible {
 	void JumpPressed() {
 		if (!currentlyGrounded) {
 			//TODO make sure to put jump leniancy back in			//	airPressTime = Time.time;
-			if (MoveBase.movementStateMachine.glidingUnlocked)
+			if (MoveBase.playerAbilities.glidingUnlocked)
 				MoveBase.movementStateMachine.GlideMovement();
-			else if (MoveBase.movementStateMachine.hoveringUnlocked)
+			else if (MoveBase.playerAbilities.hoveringUnlocked)
 				MoveBase.movementStateMachine.HoverMovement();
 		} else if (MoveBase.SlopeAngle() < maxWalkableSlopeAngle)
 			Jump();
@@ -185,7 +185,7 @@ public class PlayerWalkMove : MonoBehaviour, ICloudInteractible {
 
 	void Jump(Vector3 direction) {
 		if (MoveBase.jumpSound) PlayJumpSound();
-		MoveBase.OverrideYVelocity(0);//MoveBase.rigid.velocity = new Vector3(MoveBase.rigid.velocity.x, 0f, MoveBase.rigid.velocity.z);
+		MoveBase.OverrideYVelocity(0);
 		MoveBase.rigid.AddRelativeForce(direction, ForceMode.Impulse);
 		airPressTime = 0f;
 	}

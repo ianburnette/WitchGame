@@ -8,6 +8,7 @@ public class PlayerGlideMove : MonoBehaviour {
     [SerializeField] float glideSpeed = 5f;
     [SerializeField] float turnSpeed;
     [SerializeField] float groundRepelForce = 25f;
+    [SerializeField] LayerMask groundMask;
 
     [Header("Passive Behavior")]
     [SerializeField] float heightToSwitchToHover;
@@ -37,17 +38,17 @@ public class PlayerGlideMove : MonoBehaviour {
     void JumpPressed() => MoveBase.movementStateMachine.NormalMovement();
 
     void Glide() {
-        if (!MoveBase.IsGrounded(MinimumHeightToGlideAbove)) {
+        if (!MoveBase.IsGrounded(MinimumHeightToGlideAbove, groundMask)) {
             characterMotor.SetVelocity(transform.forward * glideSpeed);
             characterMotor.MoveRelativeToGround(groundRepelForce * Vector3.down);
-        } else if (MoveBase.movementStateMachine.hoveringUnlocked)
+        } else if (MoveBase.playerAbilities.hoveringUnlocked)
             MoveBase.movementStateMachine.HoverMovement();
         else
             MoveBase.movementStateMachine.NormalMovement();
     }
 
     public float MinimumHeightToGlideAbove {
-        get { return MoveBase.movementStateMachine.hoveringUnlocked ? heightToSwitchToHover : heightToSwitchToWalking; }
+        get { return MoveBase.playerAbilities.hoveringUnlocked ? heightToSwitchToHover : heightToSwitchToWalking; }
     }
 
     void Move(Vector2 movement) {

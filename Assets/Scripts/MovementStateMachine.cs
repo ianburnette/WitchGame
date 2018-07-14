@@ -9,10 +9,6 @@ public class MovementStateMachine : MonoBehaviour {
 	[SerializeField] Behaviour[] movementBehaviours;
 	[SerializeField] Behaviour currentMovementBehavior;
 
-	public bool glidingUnlocked;
-	public bool hoveringUnlocked;
-	public bool cloudWalkingUnlocked;
-
 	public MoveState CurrentMovementState {
 		get {
 			for (var i = 0; i<movementBehaviours.Length; i++)

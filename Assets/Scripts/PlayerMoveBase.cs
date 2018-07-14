@@ -11,6 +11,7 @@ public class PlayerMoveBase : MonoBehaviour {
     public AudioClip jumpSound;
     public AudioClip landSound;
     public MovementStateMachine movementStateMachine;
+    public PlayerAbilities playerAbilities;
 
     public Transform[] floorCheckers;
     public GroundHitInfo[] groundInfo;
@@ -18,7 +19,6 @@ public class PlayerMoveBase : MonoBehaviour {
     public Vector3 slopeNormal;
     public float slopeAngle;
 
-    [SerializeField] LayerMask groundMask;
     [SerializeField] float groundCheckOffset = .05f;
 
     public Rigidbody rigid;
@@ -30,7 +30,7 @@ public class PlayerMoveBase : MonoBehaviour {
     public CharacterMotor characterMotor;
 
     [SerializeField] DealDamage dealDamage;
-    EnemyAI currentEnemyAI;
+    EnemyAI currentEnemyAi;
 
     public bool currentlyGrounded;
     public GroundType myGroundType;
@@ -42,13 +42,13 @@ public class PlayerMoveBase : MonoBehaviour {
 
     void Update() => rigid.WakeUp();
 
-    public bool IsGrounded(float distanceToCheck) {
+    public bool IsGrounded(float distanceToCheck, LayerMask groundMask) {
         for (var i = 0; i < floorCheckers.Length; i++)
             groundInfo[i] = GroundChecking.GetGroundHitInfo(floorCheckers[i], distanceToCheck + groundCheckOffset, groundMask);
         if (EnemyBounceHit() != null) {
             var enemyTransform = EnemyBounceHit().transform;
-            currentEnemyAI = enemyTransform.GetComponent<EnemyAI>();
-            currentEnemyAI.BouncedOn();
+            currentEnemyAi = enemyTransform.GetComponent<EnemyAI>();
+            currentEnemyAi.BouncedOn();
             dealDamage.Attack(enemyTransform.gameObject, 1, 0f, 0f);
         }
         slopeNormal = AverageContactNormal();
