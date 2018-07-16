@@ -51,7 +51,7 @@ public class Water : MonoBehaviour
 		if (rb == null)
 			return;
 		if (rb.transform.CompareTag("Player")) {
-			other.GetComponent<MovementStateMachine>()?.WaterMovement();
+			other.GetComponent<MovementStateMachine>()?.GetInWater();
 			if (other.GetComponent<PlayerAbilities>().underwaterUnlocked) {
 				rigidbodiesInWaterSink.Add(rb);
 				return;
@@ -68,7 +68,7 @@ public class Water : MonoBehaviour
 			rigidbodiesInWaterFloat.Remove(rb);
 		if (rigidbodiesInWaterSink.Contains(rb))
 			rigidbodiesInWaterSink.Remove(rb);
-		other.GetComponent<MovementStateMachine>()?.NormalMovement();
+		other.GetComponent<MovementStateMachine>()?.GetOutOfWater();
 	}
 
 	//sets drag on objects entering water

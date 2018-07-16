@@ -17,11 +17,12 @@ public class PlayerUnderwaterMove : MonoBehaviour {
 	[SerializeField] bool ascending;
 	[SerializeField] bool descending;
 	[SerializeField] float ascendSpeed, descendSpeed;
+	[SerializeField] float maxWaterExitYVelocity;
 
 	[Header("Passive Behavior")]
 	[SerializeField] float tooFastDecelSpeed;
 	[SerializeField] float heightBelowWhichToApplyHoverForce;
-	[SerializeField] float rigidbodyDrag = .5f;
+	[SerializeField] float rigidbodyDrag = 1f;
 	[SerializeField] float distanceFromGroundForceMult = 2f;
 
 	[Header("Animation Variables")]
@@ -29,7 +30,7 @@ public class PlayerUnderwaterMove : MonoBehaviour {
 	[SerializeField] float maxYrotation = 1f;
 	[SerializeField] float yMultiplier = 1f;
 
-	[Header("Class References")]
+	[Header("Class and Component References")]
 	[SerializeField] PlayerMoveBase MoveBase;
 	[SerializeField] CharacterMotor characterMotor;
 
@@ -41,6 +42,8 @@ public class PlayerUnderwaterMove : MonoBehaviour {
 		PlayerInput.OnAttack += AttackPressed;
 		PlayerInput.OnAttackRelease += AttackReleased;
 
+		MoveBase.rigid.drag = rigidbodyDrag;
+		MoveBase.rigid.useGravity = false;
 		MoveBase.animator.SetBool("RidingBroom", true);
 	}
 
@@ -48,6 +51,11 @@ public class PlayerUnderwaterMove : MonoBehaviour {
 		PlayerInput.OnJump -= JumpPressed;
 		PlayerInput.OnMove -= Move;
 		PlayerInput.OnBroom -= BroomPressed;
+
+		if (MoveBase.rigid.velocity.y > maxWaterExitYVelocity)
+			MoveBase.OverrideYVelocity(maxWaterExitYVelocity);
+		MoveBase.rigid.drag = 0;
+		MoveBase.rigid.useGravity = true;
 	}
 
 	void JumpPressed() => ascending = true;
@@ -55,7 +63,7 @@ public class PlayerUnderwaterMove : MonoBehaviour {
 	void AttackPressed() => @descending = true;
 	void AttackReleased() => @descending = false;
 
-	void BroomPressed() => MoveBase.movementStateMachine.WaterMovement();
+	void BroomPressed() => MoveBase.movementStateMachine.GetInWater();
 
 	void Move(Vector2 movement) => characterMotor.MoveTo(MoveBase.MovementRelativeToPlayerAndCamera(movement),
 	                                                     movementSpeed,

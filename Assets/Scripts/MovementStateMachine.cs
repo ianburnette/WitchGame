@@ -8,6 +8,7 @@ public class MovementStateMachine : MonoBehaviour {
 
 	[SerializeField] Behaviour[] movementBehaviours;
 	[SerializeField] Behaviour currentMovementBehavior;
+	[SerializeField] PlayerAbilities playerAbilities;
 
 	public MoveState CurrentMovementState {
 		get {
@@ -27,7 +28,12 @@ public class MovementStateMachine : MonoBehaviour {
 	public void HoverMovement() => CurrentMovementState = MoveState.Hover;
 	public void NormalMovement() => CurrentMovementState = MoveState.Walk;
 	public void GetOnLadder() => CurrentMovementState = MoveState.Ladder;
-	public void WaterMovement() => CurrentMovementState = MoveState.Swim;
+	public void GetInWater() => CurrentMovementState =
+		                            playerAbilities.underwaterUnlocked ?
+										MoveState.Underwater : MoveState.Swim;
+	public void GetOutOfWater() => CurrentMovementState =
+		                               CurrentMovementState == MoveState.Underwater ?
+			                               MoveState.Hover : MoveState.Walk;
 	public void GoUnderwater() => CurrentMovementState = MoveState.Underwater;
 }
 
