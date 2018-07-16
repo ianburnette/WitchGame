@@ -11,7 +11,8 @@ public class Water : MonoBehaviour
 	public float resistance = 0.4f;						//the drag applied to rigidbodies in the water (but not player)
 	public float angularResistance = 0.2f;				//the angular drag applied to rigidbodies in the water (but not player)
 
-	List<Rigidbody> objectsInWater = new List<Rigidbody>();
+	List<Rigidbody> rigidbodiesInWaterFloat = new List<Rigidbody>();
+	List<Rigidbody> rigidbodiesInWaterSink = new List<Rigidbody>();
 
 	Collider col;
 
@@ -21,8 +22,8 @@ public class Water : MonoBehaviour
 
 	[SerializeField] ParticleSystem particles;
 
-	private Dictionary<GameObject, float> dragStore = new Dictionary<GameObject, float>();
-	private Dictionary<GameObject, float> angularStore = new Dictionary<GameObject, float>();
+	//Dictionary<GameObject, float> dragStore = new Dictionary<GameObject, float>();
+	//Dictionary<GameObject, float> angularStore = new Dictionary<GameObject, float>();
 
 
 	void OnEnable() {
@@ -33,7 +34,7 @@ public class Water : MonoBehaviour
 		particlesMain.startSpeed = particleForce.magnitude * particleSpeedMult;
 	}
 
-	void FixedUpdate() => objectsInWater.ForEach(ApplyWaterForce);
+	void FixedUpdate() => rigidbodiesInWaterFloat.ForEach(ApplyWaterForce);
 
 	void ApplyWaterForce(Rigidbody rb) => rb.AddForce(force * DepthCorrectIfNeccessary(rb.transform.position.y),
 	                                                  ForceMode.Force);
@@ -49,16 +50,24 @@ public class Water : MonoBehaviour
 		var rb = other.GetComponent<Rigidbody>();
 		if (rb == null)
 			return;
-		objectsInWater.Add(other.GetComponent<Rigidbody>());
-		other.GetComponent<MovementStateMachine>()?.GetInWater();
+		if (rb.transform.CompareTag("Player")) {
+			other.GetComponent<MovementStateMachine>()?.WaterMovement();
+			if (other.GetComponent<PlayerAbilities>().underwaterUnlocked) {
+				rigidbodiesInWaterSink.Add(rb);
+				return;
+			}
+		}
+		rigidbodiesInWaterFloat.Add(rb);
 	}
 
 	void OnTriggerExit(Collider other) {
 		var rb = other.GetComponent<Rigidbody>();
 		if (rb == null)
 			return;
-		if (objectsInWater.Contains(rb))
-			objectsInWater.Remove(rb);
+		if (rigidbodiesInWaterFloat.Contains(rb))
+			rigidbodiesInWaterFloat.Remove(rb);
+		if (rigidbodiesInWaterSink.Contains(rb))
+			rigidbodiesInWaterSink.Remove(rb);
 		other.GetComponent<MovementStateMachine>()?.NormalMovement();
 	}
 

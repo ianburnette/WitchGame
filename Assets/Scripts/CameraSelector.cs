@@ -8,7 +8,7 @@ public class CameraSelector : MonoBehaviour {
 
     [SerializeField] CamState currentCamState;
     [SerializeField] Behaviour[] toDisableInFirstPerson;
-    public enum CamState { Behind, Target, FirstPerson, Free, Nodes }
+    public enum CamState { Center, Follow, FirstPerson, Free, Nodes }
 
     public CamState CurrentCamState
     {
@@ -22,13 +22,27 @@ public class CameraSelector : MonoBehaviour {
         }
     }
 
-    private void Update() => GetCamState();
-
-    void GetCamState()
-    {
-        if (Input.GetButtonDown("CamToggle"))
-            CurrentCamState = (int)CurrentCamState < LengthOfCamEnum() ? CurrentCamState + 1 : 0;
+    void OnEnable() {
+        PlayerInput.OnCameraFollow += SetCamFollow;
+        PlayerInput.OnCameraCenter += SetCamCenter;
+        PlayerInput.OnCameraFree += SetCamFree;
+        PlayerInput.OnCameraNodes += SetCamNodes;
+        PlayerInput.OnCameraFirstPerson += SetCamFirstPerson;
     }
+
+    void OnDisable() {
+        PlayerInput.OnCameraFollow -= SetCamFollow;
+        PlayerInput.OnCameraCenter -= SetCamCenter;
+        PlayerInput.OnCameraFree -= SetCamFree;
+        PlayerInput.OnCameraNodes -= SetCamNodes;
+        PlayerInput.OnCameraFirstPerson -= SetCamFirstPerson;
+    }
+
+    void SetCamFollow() => CurrentCamState = CamState.Follow;
+    void SetCamCenter() => CurrentCamState = CamState.Center;
+    void SetCamFree() => CurrentCamState = CamState.Free;
+    void SetCamNodes() => CurrentCamState = CamState.Nodes;
+    void SetCamFirstPerson() => CurrentCamState = CamState.FirstPerson;
 
     int LengthOfCamEnum() => camScripts.Length - 1;//System.Enum.GetValues(typeof(CamState)).Length;
 }

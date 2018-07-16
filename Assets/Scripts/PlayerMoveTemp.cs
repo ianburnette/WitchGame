@@ -174,7 +174,7 @@ public class PlayerMoveTemp : MonoBehaviour
            Debug.DrawRay(new Vector3(root.position.x, root.position.y + 1f, root.position.z), rootDirection, Color.red);
            Debug.DrawRay(new Vector3(root.position.x, root.position.y + 1f, root.position.z), stickDirection, Color.blue);
 
-        rotateSpeed = cameraScript.CurrentCamState == CameraSelector.CamState.Target ? 0f : customRotateSpeed;
+        rotateSpeed = cameraScript.CurrentCamState == CameraSelector.CamState.Follow ? 0f : customRotateSpeed;
 		var angleRootToMove = Vector3.Angle(rootDirection, moveDirection) * (axisSign.y >= 0 ? -1f : 1f);
 		angleRootToMove /= 180f;
 		directionOut = moveDirection;

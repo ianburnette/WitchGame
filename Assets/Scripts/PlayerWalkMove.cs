@@ -70,6 +70,8 @@ public class PlayerWalkMove : MonoBehaviour, ICloudInteractible {
 		PlayerInput.OnJump += JumpPressed;
 		PlayerInput.OnJumpRelease += JumpReleased;
 		PlayerInput.OnMove += Move;
+		PlayerInput.OnBroom += Broom;
+
 		MoveBase.rigid.drag = 0;
 		transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
 		MoveBase.animator.SetBool("RidingBroom", false);
@@ -168,13 +170,7 @@ public class PlayerWalkMove : MonoBehaviour, ICloudInteractible {
 	Vector3 SlopeTangent() => new Vector3(-MoveBase.slopeNormal.z, 0, MoveBase.slopeNormal.x);
 
 	void JumpPressed() {
-		if (!currentlyGrounded) {
-			//TODO make sure to put jump leniancy back in			//	airPressTime = Time.time;
-			if (MoveBase.playerAbilities.glidingUnlocked)
-				MoveBase.movementStateMachine.GlideMovement();
-			else if (MoveBase.playerAbilities.hoveringUnlocked)
-				MoveBase.movementStateMachine.HoverMovement();
-		} else if (MoveBase.SlopeAngle() < maxWalkableSlopeAngle)
+		if (currentlyGrounded && MoveBase.SlopeAngle() < maxWalkableSlopeAngle)
 			Jump();
 	}
 
@@ -191,6 +187,13 @@ public class PlayerWalkMove : MonoBehaviour, ICloudInteractible {
 	}
 
 	void Jump() => Jump(new Vector3(0, jumpForce, 0));
+
+	void Broom() {
+		if (currentlyGrounded && MoveBase.playerAbilities.hoveringUnlocked)
+			MoveBase.movementStateMachine.HoverMovement();
+		else if (!currentlyGrounded && MoveBase.playerAbilities.glidingUnlocked)
+			MoveBase.movementStateMachine.GlideMovement();
+	}
 
 	public void JumpInDirection(Vector3 jumpDirection, float jumpHeightModifier) {
 		Jump(new Vector3(jumpDirection.x, jumpForce * jumpHeightModifier, jumpDirection.z));

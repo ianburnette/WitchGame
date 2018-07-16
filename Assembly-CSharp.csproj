@@ -62,6 +62,7 @@
     <Compile Include="Assets\NpcNavigation.cs" />
     <Compile Include="Assets\PlayerAbilities.cs" />
     <Compile Include="Assets\PlayerCameraReference.cs" />
+    <Compile Include="Assets\PlayerUnderwaterMove.cs" />
     <Compile Include="Assets\Scripts\CameraBase.cs" />
     <Compile Include="Assets\Scripts\CameraSelector.cs" />
     <Compile Include="Assets\Scripts\CharacterMotor.cs" />

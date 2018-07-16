@@ -2,7 +2,7 @@
 using System.Linq;
 using UnityEngine;
 
-public enum MoveState { Walk = 0, Glide, Hover, Swim, Ladder, Invalid }
+public enum MoveState { Walk = 0, Glide, Hover, Swim, Ladder, Underwater, Invalid }
 
 public class MovementStateMachine : MonoBehaviour {
 
@@ -27,7 +27,8 @@ public class MovementStateMachine : MonoBehaviour {
 	public void HoverMovement() => CurrentMovementState = MoveState.Hover;
 	public void NormalMovement() => CurrentMovementState = MoveState.Walk;
 	public void GetOnLadder() => CurrentMovementState = MoveState.Ladder;
-	public void GetInWater() => CurrentMovementState = MoveState.Swim;
+	public void WaterMovement() => CurrentMovementState = MoveState.Swim;
+	public void GoUnderwater() => CurrentMovementState = MoveState.Underwater;
 }
 
 

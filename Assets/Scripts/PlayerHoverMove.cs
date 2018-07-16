@@ -32,6 +32,7 @@ public class PlayerHoverMove : MonoBehaviour {
     void OnEnable() {
         PlayerInput.OnJump += JumpPressed;
         PlayerInput.OnMove += Move;
+        PlayerInput.OnBroom += BroomPressed;
         MoveBase.rigid.drag = rigidbodyDrag;
         MoveBase.animator.SetBool("RidingBroom", true);
     }
@@ -39,9 +40,11 @@ public class PlayerHoverMove : MonoBehaviour {
     void OnDisable() {
         PlayerInput.OnJump -= JumpPressed;
         PlayerInput.OnMove -= Move;
+        PlayerInput.OnBroom -= BroomPressed;
     }
 
     void JumpPressed() => MoveBase.movementStateMachine.NormalMovement();
+    void BroomPressed() => MoveBase.movementStateMachine.NormalMovement();
     void SwitchToGlide() => MoveBase.movementStateMachine.GlideMovement();
     void Hover() =>
         characterMotor.MoveRelativeToGround(Vector3.up * groundRepelForce /

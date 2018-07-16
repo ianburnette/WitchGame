@@ -1,0 +1,163 @@
+fileFormatVersion: 2
+guid: 6089559b5affc4551918c455a81f1316
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: Armature
+    100002: armL1
+    100004: armL2
+    100006: armL3
+    100008: armL3_end
+    100010: armR1
+    100012: armR2
+    100014: armR3
+    100016: armR3_end
+    100018: Camera
+    100020: Cone.000
+    100022: Cone.001
+    100024: Cone.002
+    100026: Cone.003
+    100028: hat
+    100030: hat_end
+    100032: head
+    100034: Lamp
+    100036: legL1
+    100038: legL2
+    100040: legL3
+    100042: legL3_end
+    100044: legR1
+    100046: legR2
+    100048: legR3
+    100050: legR3_end
+    100052: root
+    100054: spine
+    100056: //RootNode
+    400000: Armature
+    400002: armL1
+    400004: armL2
+    400006: armL3
+    400008: armL3_end
+    400010: armR1
+    400012: armR2
+    400014: armR3
+    400016: armR3_end
+    400018: Camera
+    400020: Cone.000
+    400022: Cone.001
+    400024: Cone.002
+    400026: Cone.003
+    400028: hat
+    400030: hat_end
+    400032: head
+    400034: Lamp
+    400036: legL1
+    400038: legL2
+    400040: legL3
+    400042: legL3_end
+    400044: legR1
+    400046: legR2
+    400048: legR3
+    400050: legR3_end
+    400052: root
+    400054: spine
+    400056: //RootNode
+    2000000: Camera
+    2100000: No Name
+    4300000: Cone.003
+    4300002: Cone.002
+    4300004: Cone.000
+    4300006: Cone.001
+    7400000: Armature|Idle
+    7400002: Armature|Run
+    7400004: Armature|Run2
+    7400006: Armature|Walk
+    9500000: //RootNode
+    10800000: Lamp
+    13700000: Cone.000
+    13700002: Cone.001
+    13700004: Cone.002
+    13700006: Cone.003
+    2186277476908879412: ImportLogs
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    previousCalculatedGlobalScale: 0.01
+    hasPreviousCalculatedGlobalScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
