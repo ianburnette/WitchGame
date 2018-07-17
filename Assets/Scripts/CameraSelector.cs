@@ -16,7 +16,7 @@ public class CameraSelector : MonoBehaviour {
         set {
             currentCamState = value;
             for (var i = 0; i <= LengthOfCamEnum(); i++)
-                camScripts[i].enabled = i == (int)value ? true : false;
+                camScripts[i].enabled = i == (int)value;
             foreach (var behaviour in toDisableInFirstPerson)
                 behaviour.enabled = currentCamState != CamState.FirstPerson;
         }

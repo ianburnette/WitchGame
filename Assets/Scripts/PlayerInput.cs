@@ -8,7 +8,7 @@ using static CameraSelector;
 public class PlayerInput : MonoBehaviour {
 
     public bool debug;
-    public float camSwitchThreshold;
+    public float camSwitchThreshold, camCenterThreshold;
     public CamState lastCameraStateInput;
 
     public delegate void JumpDelegate();
@@ -64,23 +64,23 @@ public class PlayerInput : MonoBehaviour {
         if (Input.GetButtonUp("Attack")) OnAttackRelease?.Invoke();
         if (Input.GetButtonDown("Magic")) OnMagic?.Invoke();
 
-        if (Input.GetButton("Rise")) OnRise?.Invoke();
-        if (Input.GetButton("Lower")) OnLower?.Invoke();
-
-        if (Input.GetAxisRaw("CameraChangeVertical") > camSwitchThreshold) InvokeFollow(CamState.Follow);
-        if (Input.GetAxisRaw("CameraCenter") > camSwitchThreshold)InvokeFollow(CamState.Center);
-        if (Input.GetAxisRaw("CameraChangeHorizontal") < -camSwitchThreshold) InvokeFollow(CamState.Free);
-        if (Input.GetAxisRaw("CameraChangeHorizontal") > camSwitchThreshold) InvokeFollow(CamState.Nodes);
-        if (Input.GetAxisRaw("CameraChangeVertical") < -camSwitchThreshold) InvokeFollow(CamState.FirstPerson);
+        if (Input.GetAxisRaw("CameraChangeVertical") > camSwitchThreshold) ChangeCameraState(CamState.Follow);
+        if (Input.GetAxisRaw("CameraChangeHorizontal") < -camSwitchThreshold) ChangeCameraState(CamState.Free);
+        if (Input.GetAxisRaw("CameraChangeHorizontal") > camSwitchThreshold) ChangeCameraState(CamState.Nodes);
+        if (Input.GetAxisRaw("CameraChangeVertical") < -camSwitchThreshold) ChangeCameraState(CamState.FirstPerson);
+        if (Input.GetButtonDown("CameraCenter")) ChangeCameraState(CamState.Center);
+        if (Input.GetButtonUp("CameraCenter")) ChangeCameraState(lastCameraStateInput);
 
         print(Input.GetAxis("CameraChangeHorizontal"));
 
         var movementValue = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         OnMove?.Invoke(movementValue.magnitude > MovementDeadZone ? movementValue : Vector2.zero);
+
+
     }
 
-    void InvokeFollow(CamState inputState) {
-        if (lastCameraStateInput != inputState)
+    void ChangeCameraState(CamState inputState) {
+        //if (lastCameraStateInput != inputState)
             switch (inputState) {
                 case CamState.Follow: OnCameraFollow?.Invoke(); break;
                 case CamState.Center: OnCameraCenter?.Invoke(); break;
