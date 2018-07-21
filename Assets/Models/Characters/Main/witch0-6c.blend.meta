@@ -1,0 +1,165 @@
+fileFormatVersion: 2
+guid: c0cbd69b5945c413cb9601131fc50e07
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: Armature
+    100002: armL1
+    100004: armL2
+    100006: armL3
+    100008: armR1
+    100010: armR2
+    100012: armR3
+    100014: brimBackL
+    100016: brimBackR
+    100018: brimFrontL
+    100020: brimFrontR
+    100022: brimRear
+    100024: dress-deform
+    100026: hat
+    100028: hatTip
+    100030: head
+    100032: legL1
+    100034: legL2
+    100036: legL3
+    100038: legR1
+    100040: legR2
+    100042: legR3
+    100044: root
+    100046: shoulderL
+    100048: shoulderR
+    100050: spine
+    100052: witch
+    100054: //RootNode
+    400000: Armature
+    400002: armL1
+    400004: armL2
+    400006: armL3
+    400008: armR1
+    400010: armR2
+    400012: armR3
+    400014: brimBackL
+    400016: brimBackR
+    400018: brimFrontL
+    400020: brimFrontR
+    400022: brimRear
+    400024: dress-deform
+    400026: hat
+    400028: hatTip
+    400030: head
+    400032: legL1
+    400034: legL2
+    400036: legL3
+    400038: legR1
+    400040: legR2
+    400042: legR3
+    400044: root
+    400046: shoulderL
+    400048: shoulderR
+    400050: spine
+    400052: witch
+    400054: //RootNode
+    2100000: Material_001__Untitled_001
+    4300000: witch
+    7400000: Default Take
+    7400002: Attack
+    7400004: Fall
+    7400006: Holding
+    7400008: Idle
+    7400010: Jump
+    7400012: OnBroom
+    7400014: PickUp
+    7400016: Run
+    7400018: Run2
+    7400020: SwimForward
+    7400022: SwimIdle
+    7400024: Throw
+    7400026: Walk
+    7400028: PoundInAir
+    7400030: Pound
+    9500000: //RootNode
+    13700000: witch
+    2186277476908879412: ImportLogs
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    previousCalculatedGlobalScale: 1
+    hasPreviousCalculatedGlobalScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
