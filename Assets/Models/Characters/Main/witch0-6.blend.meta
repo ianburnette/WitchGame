@@ -32,6 +32,7 @@ ModelImporter:
     100052: brimFrontR
     100054: brimRear
     100056: hatTip
+    100058: witchModel
     400000: Armature
     400002: armL1
     400004: armL2
@@ -61,14 +62,17 @@ ModelImporter:
     400052: brimFrontR
     400054: brimRear
     400056: hatTip
+    400058: witchModel
     2100000: unnamed
     2100002: None__Untitled
     2100004: Material_001__Untitled
+    2100006: Material_001__Untitled_001
     4300000: Cone
     4300002: Cone_003
     4300004: Cone_002
     4300006: Cone_000
     4300008: Cone_001
+    4300010: witchModel
     7400000: Default Take
     7400002: Idle
     7400004: Walk
@@ -81,6 +85,7 @@ ModelImporter:
     13700004: Cone_001
     13700006: Cone_002
     13700008: Cone_003
+    13700010: witchModel
     2186277476908879412: ImportLogs
   externalObjects: {}
   materials:

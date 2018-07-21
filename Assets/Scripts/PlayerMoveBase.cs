@@ -57,23 +57,6 @@ public class PlayerMoveBase : MonoBehaviour {
         return currentlyGrounded;
     }
 
-    /*public GroundType CurrentGroundType() {
-        //myGroundType = GroundType.None;
-        var groundHits = 0;
-        var cloudHits = 0;
-        foreach (var t in groundInfo) {
-            if (t.groundType == GroundType.Ground)
-                groundHits++;
-            if (t.groundType == GroundType.Cloud)
-                cloudHits++;
-        }
-
-        if (groundHits > 0) myGroundType = GroundType.Ground;
-        if (groundHits > 0) myGroundType = GroundType.Cloud;
-        myGroundType = GroundType.None;
-        return myGroundType;
-    }*/
-
     public int PointsOfContact() => groundInfo.Count(t => t != null);
 
     /*
@@ -127,4 +110,6 @@ public class PlayerMoveBase : MonoBehaviour {
         var mag = new Vector3(rigid.velocity.x, 0, rigid.velocity.z).magnitude;
         return mag > min ? mag : min;
     }
+
+    public Vector3 PlanarVelocity() => new Vector3(rigid.velocity.x, 0, rigid.velocity.z);
 }

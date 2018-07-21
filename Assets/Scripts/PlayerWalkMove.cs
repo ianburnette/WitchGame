@@ -58,6 +58,10 @@ public class PlayerWalkMove : MonoBehaviour, ICloudInteractible {
 	[SerializeField] float slopeAdjustedMovementSpeed;
 	[SerializeField] float animationCurveResult;
 
+	[Header("Animation")]
+	[SerializeField] float movementSmoothingSpeed;
+	[SerializeField] float smoothedPlanarVelocity;
+
 	[Header("Private Variables")]
 	[HideInInspector] public int onEnemyBounce;
 	float airPressTime;
@@ -153,12 +157,15 @@ public class PlayerWalkMove : MonoBehaviour, ICloudInteractible {
 	void CloudDamp() => MoveBase.OverrideYVelocity(0);
 
 	void Animate() {
-		MoveBase.animator.SetFloat("DistanceToTarget", MoveBase.characterMotor.DistanceToTarget);
+		smoothedPlanarVelocity = Mathf.Lerp(smoothedPlanarVelocity,
+		                                    MoveBase.PlanarVelocity().magnitude,
+		                                    movementSmoothingSpeed * Time.deltaTime);
+		MoveBase.animator.SetFloat("XVelocity", smoothedPlanarVelocity);
 		MoveBase.animator.SetBool("Grounded", currentlyGrounded);
 		MoveBase.animator.SetFloat("YVelocity", GetComponent<Rigidbody>().velocity.y);
-		MoveBase.animator.SetFloat("XVelocity",
-		                           new Vector3(MoveBase.rigid.velocity.x, 0, MoveBase.rigid.velocity.z).normalized.magnitude +
-		                           .1f);
+		//MoveBase.animator.SetFloat("XVelocity",
+		//                           new Vector3(MoveBase.rigid.velocity.x, 0, MoveBase.rigid.velocity.z).normalized.magnitude +
+		//                           .1f);
 	}
 
 	Vector3 SlopeCorrection() => MoveBase.slopeAngle > maxWalkableSlopeAngle ?

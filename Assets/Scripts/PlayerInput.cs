@@ -43,7 +43,7 @@ public class PlayerInput : MonoBehaviour {
     public delegate void CameraFollowDelegate();
     public static event CameraFollowDelegate OnCameraFollow;
     public delegate void CameraCenterDelegate();
-    public static event CameraCenterDelegate OnCameraCenter;
+    public static event CameraCenterDelegate OnCameraTarget;
     public delegate void CameraFreeDelegate();
     public static event CameraFreeDelegate OnCameraFree;
     public delegate void CameraNodesDelegate();
@@ -68,7 +68,7 @@ public class PlayerInput : MonoBehaviour {
         if (Input.GetAxisRaw("CameraChangeHorizontal") < -camSwitchThreshold) ChangeCameraState(CamState.Free);
         if (Input.GetAxisRaw("CameraChangeHorizontal") > camSwitchThreshold) ChangeCameraState(CamState.Nodes);
         if (Input.GetAxisRaw("CameraChangeVertical") < -camSwitchThreshold) ChangeCameraState(CamState.FirstPerson);
-        if (Input.GetButtonDown("CameraCenter")) ChangeCameraState(CamState.Center);
+        if (Input.GetButtonDown("CameraCenter")) ChangeCameraState(CamState.Target);
         if (Input.GetButtonUp("CameraCenter")) ChangeCameraState(lastCameraStateInput);
 
         print(Input.GetAxis("CameraChangeHorizontal"));
@@ -83,12 +83,13 @@ public class PlayerInput : MonoBehaviour {
         //if (lastCameraStateInput != inputState)
             switch (inputState) {
                 case CamState.Follow: OnCameraFollow?.Invoke(); break;
-                case CamState.Center: OnCameraCenter?.Invoke(); break;
+                case CamState.Target: OnCameraTarget?.Invoke(); break;
                 case CamState.Free: OnCameraFree?.Invoke(); break;
                 case CamState.Nodes: OnCameraNodes?.Invoke(); break;
                 case CamState.FirstPerson: OnCameraFirstPerson?.Invoke(); break;
             }
-        lastCameraStateInput = inputState;
+        if (inputState != CamState.Target)
+            lastCameraStateInput = inputState;
     }
 
     void OnEnable() {
@@ -103,7 +104,7 @@ public class PlayerInput : MonoBehaviour {
         OnLower += LowerDebug;
 
         OnCameraFollow += FollowDebug;
-        OnCameraCenter += CenterDebug;
+        OnCameraTarget += TargetDebug;
         OnCameraFree += FreeDebug;
         OnCameraNodes += NodesDebug;
         OnCameraFirstPerson += FirstPersonDebug;
@@ -118,7 +119,7 @@ public class PlayerInput : MonoBehaviour {
     void RiseDebug() {if (debug) { print("rise pressed") ;}}
     void LowerDebug() {if (debug) {  print("lower pressed") ;}}
     void FollowDebug() {if (debug) {   print("follow pressed") ;}}
-    void CenterDebug() {if (debug) {   print("center pressed") ;}}
+    void TargetDebug() {if (debug) {   print("center pressed") ;}}
     void FreeDebug() {if (debug) {     print("free pressed") ;}}
     void NodesDebug() {if (debug) {  print("nodes pressed");}}
     void FirstPersonDebug() {if (debug) {    print("first person pressed");}}

@@ -8,7 +8,7 @@ public class CameraSelector : MonoBehaviour {
 
     [SerializeField] CamState currentCamState;
     [SerializeField] Behaviour[] toDisableInFirstPerson;
-    public enum CamState { Center, Follow, FirstPerson, Free, Nodes }
+    public enum CamState { Follow, Target, FirstPerson, Free, Nodes }
 
     public CamState CurrentCamState
     {
@@ -24,7 +24,7 @@ public class CameraSelector : MonoBehaviour {
 
     void OnEnable() {
         PlayerInput.OnCameraFollow += SetCamFollow;
-        PlayerInput.OnCameraCenter += SetCamCenter;
+        PlayerInput.OnCameraTarget += SetCamTarget;
         PlayerInput.OnCameraFree += SetCamFree;
         PlayerInput.OnCameraNodes += SetCamNodes;
         PlayerInput.OnCameraFirstPerson += SetCamFirstPerson;
@@ -32,14 +32,14 @@ public class CameraSelector : MonoBehaviour {
 
     void OnDisable() {
         PlayerInput.OnCameraFollow -= SetCamFollow;
-        PlayerInput.OnCameraCenter -= SetCamCenter;
+        PlayerInput.OnCameraTarget -= SetCamTarget;
         PlayerInput.OnCameraFree -= SetCamFree;
         PlayerInput.OnCameraNodes -= SetCamNodes;
         PlayerInput.OnCameraFirstPerson -= SetCamFirstPerson;
     }
 
     void SetCamFollow() => CurrentCamState = CamState.Follow;
-    void SetCamCenter() => CurrentCamState = CamState.Center;
+    void SetCamTarget() => CurrentCamState = CamState.Target;
     void SetCamFree() => CurrentCamState = CamState.Free;
     void SetCamNodes() => CurrentCamState = CamState.Nodes;
     void SetCamFirstPerson() => CurrentCamState = CamState.FirstPerson;

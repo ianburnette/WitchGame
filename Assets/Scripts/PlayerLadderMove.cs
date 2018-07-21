@@ -38,9 +38,7 @@ public class PlayerLadderMove : MonoBehaviour {
         MoveBase.rigid.isKinematic = true;
     }
 
-    void Update() {
-        transform.rotation = RotateAngle180(ladder.transform.rotation);
-    }
+    void Update() => transform.rotation = RotateAngle180(ladder.transform.rotation);
 
     void OnDisable() {
         PlayerInput.OnMove -= Move;
@@ -66,19 +64,24 @@ public class PlayerLadderMove : MonoBehaviour {
 
     void Grab() {
         MoveBase.movementStateMachine.NormalMovement();
-        playerWalkMove.JumpInDirection(-ladder.transform.forward * ladderDropForwardMultiplier, ladderDropJumpMultiplier);
+        JumpInDirection(new Vector2(ladderDropForwardMultiplier, ladderDropJumpMultiplier));
+        //playerWalkMove.JumpInDirection(-ladder.transform.forward * ladderDropForwardMultiplier, ladderDropJumpMultiplier);
     }
 
     void JumpToLedge() {
         MoveBase.movementStateMachine.NormalMovement();
-        playerWalkMove.JumpInDirection(-ladder.transform.forward * ledgeForwardMultiplier, ledgeJumpMultiplier);
+        JumpInDirection(new Vector2(ledgeForwardMultiplier, ledgeJumpMultiplier));
+        //playerWalkMove.JumpInDirection(-ladder.transform.forward * ledgeForwardMultiplier, ledgeJumpMultiplier);
     }
 
     void JumpOff() {
         MoveBase.movementStateMachine.NormalMovement();
         transform.rotation = RotateAngle180(transform.rotation);
-        playerWalkMove.JumpInDirection(-ladder.transform.forward * offLadderForwardMultiplier, offLaddJumpMultiplier);
+        JumpInDirection(new Vector2(offLadderForwardMultiplier, offLaddJumpMultiplier));
+        //playerWalkMove.JumpInDirection(-ladder.transform.forward * offLadderForwardMultiplier, offLaddJumpMultiplier);
     }
+
+    void JumpInDirection(Vector2 mult) => playerWalkMove.JumpInDirection(-ladder.transform.forward * mult.x, mult.y);
 
     static Quaternion RotateAngle180(Quaternion angleToRotate) {
         var newRotation = angleToRotate.eulerAngles;
