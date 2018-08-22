@@ -12,10 +12,14 @@ public class PlayerAttack : MonoBehaviour {
 
     void OnEnable() {
         PlayerInput.OnAttack += AttackPressed;
+
+        PlayerInput.OnMove += Move;
     }
 
     void OnDisable() {
         PlayerInput.OnAttack -= AttackPressed;
+
+        PlayerInput.OnMove -= Move;
     }
 
     public void AttackPressed() {
@@ -24,5 +28,9 @@ public class PlayerAttack : MonoBehaviour {
 
     public void HitOther(Collider other) {
         damage.Attack(other.gameObject, 1, pushHeight, pushForce);
+    }
+
+    void Move(Vector2 movement) {
+
     }
 }

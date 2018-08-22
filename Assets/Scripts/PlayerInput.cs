@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 using static CameraSelector;
 
 public class PlayerInput : MonoBehaviour {
@@ -53,10 +55,15 @@ public class PlayerInput : MonoBehaviour {
 
     [SerializeField] const float MovementDeadZone = .1f;
 
+    public Text TextPromptA;
+
     void Update() => GetPlayerInput();
 
     void GetPlayerInput() {
         if (Input.GetButtonDown("Jump")) OnJump?.Invoke();
+        //TextPromptA.text = "A - " + (OnJump.GetInvocationList().Length > 0 ?
+        //                                 OnJump.GetInvocationList().Length.Method.Name :
+        //                                 "...");
         if (Input.GetButtonDown("Broom")) OnBroom?.Invoke();
         if (Input.GetButtonUp("Jump")) OnJumpRelease?.Invoke();
         if (Input.GetButtonDown("Interact")) OnGrab?.Invoke();
@@ -93,21 +100,21 @@ public class PlayerInput : MonoBehaviour {
     }
 
     void OnEnable() {
-        OnJump += JumpDebug;
-        OnBroom += BroomDebug;
-        OnJumpRelease += JumpReleaseDebug;
-        OnGrab += GrabDebug;
-        OnAttack += AttackDebug;
-        OnMagic += MagicDebug;
-
-        OnRise += RiseDebug;
-        OnLower += LowerDebug;
-
-        OnCameraFollow += FollowDebug;
-        OnCameraTarget += TargetDebug;
-        OnCameraFree += FreeDebug;
-        OnCameraNodes += NodesDebug;
-        OnCameraFirstPerson += FirstPersonDebug;
+      //  OnJump += JumpDebug;
+      //  OnBroom += BroomDebug;
+      //  OnJumpRelease += JumpReleaseDebug;
+      //  OnGrab += GrabDebug;
+      //  OnAttack += AttackDebug;
+      //  OnMagic += MagicDebug;
+//
+      //  OnRise += RiseDebug;
+      //  OnLower += LowerDebug;
+//
+      //  OnCameraFollow += FollowDebug;
+      //  OnCameraTarget += TargetDebug;
+      //  OnCameraFree += FreeDebug;
+      //  OnCameraNodes += NodesDebug;
+      //  OnCameraFirstPerson += FirstPersonDebug;
     }
 
     void JumpDebug() {if (debug) { print("jump pressed");}}

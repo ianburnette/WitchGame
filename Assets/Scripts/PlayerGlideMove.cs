@@ -20,21 +20,18 @@ public class PlayerGlideMove : MonoBehaviour {
     [SerializeField] CharacterMotor characterMotor;
 
     void OnEnable() {
-        PlayerInput.OnJump += JumpPressed;
+        PlayerInput.OnBroom += JumpPressed;
         PlayerInput.OnMove += Move;
         MoveBase.rigid.drag = RigidbodyDrag;
         MoveBase.animator.SetBool("RidingBroom", true);
     }
 
     void OnDisable() {
-        PlayerInput.OnJump -= JumpPressed;
+        PlayerInput.OnBroom -= JumpPressed;
         PlayerInput.OnMove -= Move;
     }
 
-    void FixedUpdate() {
-        Glide();
-    }
-
+    void FixedUpdate() => Glide();
     void JumpPressed() => MoveBase.movementStateMachine.NormalMovement();
 
     void Glide() {

@@ -17,6 +17,9 @@ public class Water : MonoBehaviour
 	Collider col;
 
 	[SerializeField] float maxDepth = .4f;
+	[SerializeField] float surfaceOffset = -0.4f;
+
+	[SerializeField] float maxUpwardCorrectiveSpeed, maxDownwardCorrectiveSpeed;
 	[SerializeField] float depthCorrectionSpeed = 2f;
 	[SerializeField] float particleSpeedMult = 2f;
 
@@ -36,15 +39,19 @@ public class Water : MonoBehaviour
 
 	void FixedUpdate() => rigidbodiesInWaterFloat.ForEach(ApplyWaterForce);
 
-	void ApplyWaterForce(Rigidbody rb) => rb.AddForce(force * DepthCorrectIfNeccessary(rb.transform.position.y),
+	void ApplyWaterForce(Rigidbody rb) => rb.AddForce(force + SurfaceCorrection(rb.transform.position.y),
 	                                                  ForceMode.Force);
 
-	float DepthCorrectIfNeccessary(float height) {
+	Vector3 SurfaceCorrection(float height) {
 		var depth = Depth(height);
-		return depth > maxDepth ? depth * depthCorrectionSpeed : 1;
+		return Vector3.up * Mathf.Clamp(-depth * depthCorrectionSpeed,
+		                                maxDownwardCorrectiveSpeed,
+		                                maxUpwardCorrectiveSpeed);
+		//return depth > maxDepth ? depth * depthCorrectionSpeed : 1;
 	}
 
-	float Depth(float baseHeight) => baseHeight + col.bounds.extents.y;
+	float Depth(float baseHeight) => baseHeight + HeightOfWaterSurface - surfaceOffset;
+	float HeightOfWaterSurface => col.bounds.extents.y;
 
 	void OnTriggerEnter(Collider other) {
 		var rb = other.GetComponent<Rigidbody>();
