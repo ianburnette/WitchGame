@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ContentModelStore">
-    <e p="$USER_HOME$/Library/Caches/Rider2018.1/resharper-host/local/Transient/ReSharperHost/v12/SolutionCaches/_WitchGame.-477424355.00" t="ExcludeRecursive" />
+    <e p="$USER_HOME$/Library/Caches/Rider2018.2/extResources" t="IncludeRecursive" />
+    <e p="$USER_HOME$/Library/Caches/Rider2018.2/resharper-host/local/Transient/ReSharperHost/v182/SolutionCaches/_WitchGame.-477424355.00" t="ExcludeRecursive" />
     <e p="$PROJECT_DIR$" t="IncludeRecursive">
       <e p="Assembly-CSharp-Editor-firstpass.csproj" t="IncludeRecursive" />
       <e p="Assembly-CSharp-firstpass.csproj" t="IncludeRecursive" />
@@ -656,6 +657,7 @@
           <e p="Coin.cs" t="Include" />
           <e p="DealDamage.cs" t="Include" />
           <e p="DestroyObject.cs" t="Include" />
+          <e p="Dialogue.cs" t="Include" />
           <e p="EnemyAI.cs" t="Include" />
           <e p="FirstPersonCamera.cs" t="Include" />
           <e p="FollowCamera.cs" t="Include" />
@@ -666,6 +668,7 @@
           <e p="Hazard.cs" t="Include" />
           <e p="Health.cs" t="Include" />
           <e p="ICloudInteractible.cs" t="Include" />
+          <e p="IPromptable.cs" t="Include" />
           <e p="Ladder.cs" t="Include" />
           <e p="MovementStateMachine.cs" t="Include" />
           <e p="MoveToPoints.cs" t="Include" />
@@ -709,6 +712,12 @@
             </e>
           </e>
         </e>
+        <e p="UI" t="Include">
+          <e p="Xelu_FREE_keyboard&amp;amp" t="Include" />
+        </e>
+      </e>
+      <e p="controller_prompts_pack" t="Include">
+        <e p="readme.txt" t="Include" />
       </e>
       <e p="Library" t="ExcludeRecursive" />
       <e p="obj" t="ExcludeRecursive" />
