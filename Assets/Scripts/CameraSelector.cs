@@ -46,3 +46,4 @@ public class CameraSelector : MonoBehaviour {
 
     int LengthOfCamEnum() => camScripts.Length - 1;//System.Enum.GetValues(typeof(CamState)).Length;
 }
+K
