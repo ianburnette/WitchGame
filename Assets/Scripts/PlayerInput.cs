@@ -78,7 +78,7 @@ public class PlayerInput : MonoBehaviour {
         if (Input.GetButtonDown("CameraCenter")) ChangeCameraState(CamState.Target);
         if (Input.GetButtonUp("CameraCenter")) ChangeCameraState(lastCameraStateInput);
 
-        print(Input.GetAxis("CameraChangeHorizontal"));
+//        print(Input.GetAxis("CameraChangeHorizontal"));
 
         var movementValue = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         OnMove?.Invoke(movementValue.magnitude > MovementDeadZone ? movementValue : Vector2.zero);
