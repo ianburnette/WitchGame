@@ -81,7 +81,7 @@ public class PlayerInput : MonoBehaviour {
 //        print(Input.GetAxis("CameraChangeHorizontal"));
 
         var movementValue = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-        OnMove?.Invoke(movementValue.magnitude > MovementDeadZone ? movementValue : Vector2.zero);
+        OnMove?.Invoke(movementValue.magnitude > MovementDeadZone ? movementValue.normalized : Vector2.zero);
 
 
     }

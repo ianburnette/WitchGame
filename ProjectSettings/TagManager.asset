@@ -13,6 +13,9 @@ TagManager:
   - Checkpoint
   - Waypoint
   - SolidCloud
+  - Character 1
+  - Character 2
+  - DoNotOcclude
   layers:
   - Default
   - TransparentFX

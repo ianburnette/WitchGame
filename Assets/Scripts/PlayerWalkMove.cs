@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using JetBrains.Annotations;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [RequireComponent(typeof(CharacterMotor))]
 [RequireComponent(typeof(AudioSource))]
@@ -17,11 +18,15 @@ public class PlayerWalkMove : MonoBehaviour, ICloudInteractible {
 
 	[Header("Jumping Behavior")]
 	[SerializeField] float jumpForce = 13f;
-	[SerializeField] float jumpLeniancy = 0.17f;
 	[SerializeField] float jumpReleaseYVelocity = 0.2f;
 	[SerializeField] float slowFallSpeed;
 	[SerializeField] float slowFallDecel;
 	[SerializeField] float maxYvelocityBeforeSlowing;
+	
+	[Header("Jump Leniency")]
+	[SerializeField] private bool recentlyGrounded;
+	[SerializeField] private bool recentValidSlopeAngle;
+	[FormerlySerializedAs("jumpLeniancy")] [SerializeField] float jumpLeniency = 0.17f;
 
 	[Header("Cloud Walking Behavior")]
 	[SerializeField] float cloudWalkUpForce;
@@ -99,8 +104,22 @@ public class PlayerWalkMove : MonoBehaviour, ICloudInteractible {
 		if (MoveBase.animator) Animate();
 	}
 
-	void CalculateGroundedState() =>
+	void CalculateGroundedState()
+	{
+		var tempGroundedState = currentlyGrounded;
 		currentlyGrounded = InCloud ? InCloud : MoveBase.IsGrounded(MoveBase.col.bounds.extents.y, groundMask);
+		if (!currentlyGrounded && tempGroundedState)
+			EnactJumpLeniency();
+	}
+
+	private void EnactJumpLeniency()
+	{
+		recentlyGrounded = true;
+		recentValidSlopeAngle = MoveBase.SlopeAngle() < maxWalkableSlopeAngle;
+		Invoke(nameof(StopJumpLeniency), jumpLeniency);
+	}
+
+	void StopJumpLeniency() => recentlyGrounded = false;
 
 	void UpdatePlayerMovement() {
 		inputRelativeToWorld = MoveBase.MovementRelativeToCamera(currentInputVector);
@@ -129,8 +148,6 @@ public class PlayerWalkMove : MonoBehaviour, ICloudInteractible {
 		slopeAdjustedMovementSpeed = movementSpeedOnGround * (animationCurveResult * slopeMovementMultiplier);
 		return slopeAdjustedMovementSpeed;
 	}
-
-
 
 	public void AccountForCloudWalking() {
 		MoveBase.characterMotor.MoveTo(transform.position + Vector3.up,
@@ -175,10 +192,15 @@ public class PlayerWalkMove : MonoBehaviour, ICloudInteractible {
 	Vector3 SlopeCorrection(float force) => Vector3.Cross(MoveBase.slopeNormal, SlopeTangent() * force);
 	Vector3 SlopeTangent() => new Vector3(-MoveBase.slopeNormal.z, 0, MoveBase.slopeNormal.x);
 
-	void JumpPressed() {
-		if (currentlyGrounded && MoveBase.SlopeAngle() < maxWalkableSlopeAngle)
-			Jump();
+	private void JumpPressed() {
+		if (!EligibleForJummp()) return;
+		StopJumpLeniency();
+		Jump();
 	}
+
+	private bool EligibleForJummp() =>
+		(currentlyGrounded && MoveBase.SlopeAngle() < maxWalkableSlopeAngle) ||
+		(recentlyGrounded && recentValidSlopeAngle);
 
 	void JumpReleased() {
 		if (MoveBase.rigid.velocity.y > jumpReleaseYVelocity)
@@ -186,7 +208,7 @@ public class PlayerWalkMove : MonoBehaviour, ICloudInteractible {
 	}
 
 	void Jump(Vector3 direction) {
-		if (MoveBase.jumpSound) PlayJumpSound();
+		//if (MoveBase.jumpSound) PlayJumpSound();
 		MoveBase.OverrideYVelocity(0);
 		MoveBase.rigid.AddRelativeForce(direction, ForceMode.Impulse);
 		airPressTime = 0f;
