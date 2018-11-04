@@ -48,7 +48,7 @@ public class Health : MonoBehaviour
 		if(flashObject == null)
 			flashObject = transform;
 		flashRender = flashObject.GetComponent<Renderer>();
-		originalColor = flashRender.material.color;
+//		originalColor = flashRender.material.color;
 		defHealth = currentHealth;
 		respawnPos = transform.position;
 	}

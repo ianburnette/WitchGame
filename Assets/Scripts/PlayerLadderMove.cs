@@ -26,6 +26,7 @@ public class PlayerLadderMove : MonoBehaviour {
     [Header("Reference Variables")]
     public Vector3 amt;
     public Ladder ladder;
+    public Ladder mostRecentLadder;
 
     [Header("Class References")]
     [SerializeField] PlayerMoveBase MoveBase;
@@ -38,7 +39,7 @@ public class PlayerLadderMove : MonoBehaviour {
         MoveBase.rigid.isKinematic = true;
     }
 
-    void Update() => transform.rotation = RotateAngle180(ladder.transform.rotation);
+    void Update() => transform.rotation = RotateAngle180(CurrentOrMostRecentLadder().transform.rotation);
 
     void OnDisable() {
         PlayerInput.OnMove -= Move;
@@ -54,12 +55,25 @@ public class PlayerLadderMove : MonoBehaviour {
             MoveBase.characterMotor.MoveVertical(Vector3.up * movementInput.y * climbSpeed * Time.deltaTime);
     }
 
-    void Jump() {
-        if (Vector3.Distance(transform.position, ladder.transform.position + Vector3.up * ladder.MaxHeight) <
+    void Jump()
+    {
+        var tempLadder = CurrentOrMostRecentLadder();
+
+        if (Vector3.Distance(transform.position, tempLadder.transform.position + Vector3.up * tempLadder.MaxHeight) <
             ladderTopJumpLeniancyDistance)
             JumpToLedge();
         else
             JumpOff();
+    }
+
+    private Ladder CurrentOrMostRecentLadder()
+    {
+        Ladder tempLadder;
+        if (ladder == null)
+            tempLadder = ladder;
+        else
+            tempLadder = mostRecentLadder;
+        return tempLadder;
     }
 
     void Grab() {
@@ -81,7 +95,8 @@ public class PlayerLadderMove : MonoBehaviour {
         //playerWalkMove.JumpInDirection(-ladder.transform.forward * offLadderForwardMultiplier, offLaddJumpMultiplier);
     }
 
-    void JumpInDirection(Vector2 mult) => playerWalkMove.JumpInDirection(-ladder.transform.forward * mult.x, mult.y);
+    void JumpInDirection(Vector2 mult) => playerWalkMove.JumpInDirection(
+        -CurrentOrMostRecentLadder().transform.forward * mult.x, mult.y);
 
     static Quaternion RotateAngle180(Quaternion angleToRotate) {
         var newRotation = angleToRotate.eulerAngles;

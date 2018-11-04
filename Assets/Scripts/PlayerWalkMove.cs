@@ -28,6 +28,10 @@ public class PlayerWalkMove : MonoBehaviour, ICloudInteractible {
 	[SerializeField] private bool recentValidSlopeAngle;
 	[FormerlySerializedAs("jumpLeniancy")] [SerializeField] float jumpLeniency = 0.17f;
 
+	[Header("Attacking Behavior")]
+	[SerializeField] bool attacking;
+	[SerializeField] float attackingSpeed;
+	
 	[Header("Cloud Walking Behavior")]
 	[SerializeField] float cloudWalkUpForce;
 	[SerializeField] float cloudWalkStopDist;
@@ -73,6 +77,13 @@ public class PlayerWalkMove : MonoBehaviour, ICloudInteractible {
 	Vector2 currentInputVector;
 	Vector3 movementDirectionRelativeToCamera, moveDirection, movingObjSpeed;
 	ICloudInteractible cloudInteractibleImplementation;
+	
+	public bool Attacking
+	{
+		get { return attacking; }
+		set { attacking = value; }
+	}
+	
 
 	void OnEnable() {
 		PlayerInput.OnJump += JumpPressed;
@@ -124,7 +135,7 @@ public class PlayerWalkMove : MonoBehaviour, ICloudInteractible {
 	void UpdatePlayerMovement() {
 		inputRelativeToWorld = MoveBase.MovementRelativeToCamera(currentInputVector);
 		MoveBase.characterMotor.MoveTo(moveDirection,
-		                               currentlyGrounded ? MovementSpeedOnGround() : movementSpeedInAir, movementSensitivity,
+		                               GetMoveSpeed(), movementSensitivity,
 		                               true);
 		if (!inCloud) {
 			MoveBase.characterMotor.MoveRelativeToGround(StickToGround());
@@ -137,6 +148,8 @@ public class PlayerWalkMove : MonoBehaviour, ICloudInteractible {
 		                                    maxSpeed + movingObjSpeed.magnitude, false);
 	}
 
+	private float GetMoveSpeed() => currentlyGrounded ? MovementSpeedOnGround() : movementSpeedInAir;
+
 	float MovementSpeedOnGround() {
 		inputToSlopeAngle = Vector3.Angle(inputRelativeToWorld, SlopeCorrection());
 		if (inputRelativeToWorld.magnitude != 0 && inputToSlopeAngle > 30 &&
@@ -145,9 +158,11 @@ public class PlayerWalkMove : MonoBehaviour, ICloudInteractible {
 		} else
 			animationCurveResult = 1;
 
-		slopeAdjustedMovementSpeed = movementSpeedOnGround * (animationCurveResult * slopeMovementMultiplier);
+		slopeAdjustedMovementSpeed = GetMovementSpeedOnGround() * (animationCurveResult * slopeMovementMultiplier);
 		return slopeAdjustedMovementSpeed;
 	}
+
+	float GetMovementSpeedOnGround() => Attacking ? attackingSpeed : movementSpeedOnGround;
 
 	public void AccountForCloudWalking() {
 		MoveBase.characterMotor.MoveTo(transform.position + Vector3.up,
@@ -170,6 +185,8 @@ public class PlayerWalkMove : MonoBehaviour, ICloudInteractible {
 			}
 		}
 	}
+
+
 	void CloudDamp() => MoveBase.OverrideYVelocity(0);
 
 	void Animate() {

@@ -8,6 +8,7 @@ public class PlayerWaterMove : MonoBehaviour {
 	float swimMovementSpeed = 70f;
 	[SerializeField] float rotateSpeed;
 	[SerializeField] float tooFastDecelSpeed = 7.6f;
+	[SerializeField] private float movementSmoothingSpeed = 6; 
 
 	[Header("Jumping")] [SerializeField] float jumpForce = 13;
 
@@ -23,15 +24,19 @@ public class PlayerWaterMove : MonoBehaviour {
 	public Vector2 currentInputVector;
 	public Vector3 moveDirection;
 	float lastJumpTime;
+	private float smoothedPlanarVelocity;
+	private static readonly int InWater = Animator.StringToHash("InWater");
 
 	void OnEnable() {
 		PlayerInput.OnJump += JumpPressed;
 		PlayerInput.OnMove += Move;
+		MoveBase.animator.SetBool(InWater, true);
 	}
 
 	void OnDisable() {
 		PlayerInput.OnJump -= JumpPressed;
 		PlayerInput.OnMove -= Move;
+		MoveBase.animator.SetBool(InWater, false);
 	}
 
 	void Move(Vector2 inputVector) {
@@ -42,6 +47,15 @@ public class PlayerWaterMove : MonoBehaviour {
 
 	void FixedUpdate() {
 		UpdatePlayerMovement();
+		Animate();
+	}
+
+	private void Animate()
+	{
+		smoothedPlanarVelocity = Mathf.Lerp(smoothedPlanarVelocity,
+											MoveBase.PlanarVelocity().magnitude,
+											movementSmoothingSpeed * Time.deltaTime);
+		MoveBase.animator.SetFloat("XVelocity", smoothedPlanarVelocity);
 	}
 
 	void UpdatePlayerMovement() {

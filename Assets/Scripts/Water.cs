@@ -11,8 +11,8 @@ public class Water : MonoBehaviour
 	public float resistance = 0.4f;						//the drag applied to rigidbodies in the water (but not player)
 	public float angularResistance = 0.2f;				//the angular drag applied to rigidbodies in the water (but not player)
 
-	List<Rigidbody> rigidbodiesInWaterFloat = new List<Rigidbody>();
-	List<Rigidbody> rigidbodiesInWaterSink = new List<Rigidbody>();
+	public List<Rigidbody> rigidbodiesInWaterFloat = new List<Rigidbody>();
+	public List<Rigidbody> rigidbodiesInWaterSink = new List<Rigidbody>();
 
 	Collider col;
 
@@ -24,6 +24,7 @@ public class Water : MonoBehaviour
 	[SerializeField] float particleSpeedMult = 2f;
 
 	[SerializeField] ParticleSystem particles;
+	[SerializeField] private Vector3 depthCorrectionForce;
 
 	//Dictionary<GameObject, float> dragStore = new Dictionary<GameObject, float>();
 	//Dictionary<GameObject, float> angularStore = new Dictionary<GameObject, float>();
@@ -39,18 +40,27 @@ public class Water : MonoBehaviour
 
 	void FixedUpdate() => rigidbodiesInWaterFloat.ForEach(ApplyWaterForce);
 
-	void ApplyWaterForce(Rigidbody rb) => rb.AddForce(force + SurfaceCorrection(rb.transform.position.y),
+	void ApplyWaterForce(Rigidbody rb) => rb.AddForce(force + SurfaceCorrection(rb.transform.position.y, rb.transform.position),
 	                                                  ForceMode.Force);
 
-	Vector3 SurfaceCorrection(float height) {
-		var depth = Depth(height);
-		return Vector3.up * Mathf.Clamp(-depth * depthCorrectionSpeed,
-		                                maxDownwardCorrectiveSpeed,
-		                                maxUpwardCorrectiveSpeed);
+	Vector3 SurfaceCorrection(float height, Vector3 debugPos) {
+		var depth = Depth(height, debugPos);
+		depthCorrectionForce = Vector3.up * Mathf.Clamp(depth * depthCorrectionSpeed,
+										   maxDownwardCorrectiveSpeed,
+										   maxUpwardCorrectiveSpeed);
+		return depthCorrectionForce;
 		//return depth > maxDepth ? depth * depthCorrectionSpeed : 1;
 	}
 
-	float Depth(float baseHeight) => baseHeight + HeightOfWaterSurface - surfaceOffset;
+	float Depth(float baseHeight, Vector3 debugPos)
+	{
+		Debug.DrawRay(new Vector3(debugPos.x, baseHeight, debugPos.z), Vector3.left, Color.yellow);
+		Debug.DrawRay(new Vector3(debugPos.x, HeightOfWaterSurface - surfaceOffset, debugPos.z), Vector3.right, Color.green);
+		var res = (HeightOfWaterSurface - surfaceOffset) - baseHeight;
+		Debug.DrawRay(new Vector3(debugPos.x, baseHeight, debugPos.z), Vector3.up * res, Color.magenta);
+		return res;
+	}
+
 	float HeightOfWaterSurface => col.bounds.extents.y;
 
 	void OnTriggerEnter(Collider other) {

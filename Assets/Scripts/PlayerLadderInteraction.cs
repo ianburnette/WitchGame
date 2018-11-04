@@ -12,6 +12,7 @@ public class PlayerLadderInteraction : MonoBehaviour {
 
     public void ToggleLadder(bool state, Ladder ladder = null) {
         canGrabLadder  = state;
+        ladderMovement.mostRecentLadder = ladderMovement.ladder;
         ladderMovement.ladder = ladder;
     }
 
