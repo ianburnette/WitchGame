@@ -3,6 +3,7 @@ using System.Linq;
 using JetBrains.Annotations;
 using RootMotion.FinalIK;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [RequireComponent(typeof(DealDamage))]
 public class PlayerMoveBase : MonoBehaviour {
@@ -23,6 +24,7 @@ public class PlayerMoveBase : MonoBehaviour {
 
     public Rigidbody rigid;
     public Collider col;
+    [FormerlySerializedAs("rbVel")] public float rbVelMagnitude;
 
     Quaternion screenMovementSpace;
     Vector3 screenMovementForward, screenMovementRight;
@@ -40,7 +42,11 @@ public class PlayerMoveBase : MonoBehaviour {
         groundInfo = new GroundHitInfo[floorCheckers.Length];
     }
 
-    void Update() => rigid.WakeUp();
+    void Update()
+    {
+        rigid.WakeUp();
+        rbVelMagnitude = rigid.velocity.magnitude;
+    }
 
     public bool IsGrounded(float distanceToCheck, LayerMask groundMask) {
         for (var i = 0; i < floorCheckers.Length; i++)

@@ -19,7 +19,10 @@ public class Pickup : MonoBehaviour, ICloudInteractible {
     [SerializeField] float baseDrag, cloudDrag;
     [SerializeField] float baseAngularDrag, cloudAngularDrag;
 
-
+    [Header("Slot Variables")]
+    [SerializeField] SnapSlot currentSlot;
+    [SerializeField] private float snapForce;
+    
     public bool InCloud { get { return inCloud; }
         set {
             inCloud = value;
@@ -28,9 +31,22 @@ public class Pickup : MonoBehaviour, ICloudInteractible {
         }
     }
 
+    public SnapSlot CurrentSlot
+    {
+        get { return currentSlot; }
+        set { currentSlot = value; }
+    }
+
+    void OnEnable()
+    {
+        currentSlot = null;
+    }
+
     void FixedUpdate() {
         if (inCloud && rb != null && weight == ObjectWeight.Light)
             rb.AddForce(Vector3.up * cloudUpForce);
+        else if (CurrentSlot.pos != Vector3.zero)
+            rb.AddForce((CurrentSlot.pos - transform.position) * snapForce);
         else if (rb == null)
             throw new Exception("Rigidbody not assigned for pickup");
     }
@@ -38,6 +54,8 @@ public class Pickup : MonoBehaviour, ICloudInteractible {
     public void EnterCloud() {
         if (!inCloud) CloudDamp();
     }
+
+    public void SnapTo(SnapSlot slot) => CurrentSlot = slot;
 
     public void StayInCloud() => InCloud = true;
     public void ExitCloud() => InCloud = false;

@@ -157,7 +157,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1551310670337671690}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1551310669536825227
 GameObject:
@@ -238,6 +238,7 @@ Transform:
   m_Children:
   - {fileID: 1551310669020529187}
   - {fileID: 1551310670551812163}
+  - {fileID: 411452505119414291}
   - {fileID: 1551310669262571524}
   - {fileID: 1551310670668102768}
   - {fileID: 1551310670591791805}
@@ -348,6 +349,7 @@ MonoBehaviour:
   groundCheckOffset: 0.05
   rigid: {fileID: 9092994253687928929}
   col: {fileID: 8640028486766635591}
+  rbVelMagnitude: 0
   characterMotor: {fileID: 3934885142640314606}
   dealDamage: {fileID: 838153346914349175}
   currentlyGrounded: 0
@@ -381,6 +383,8 @@ MonoBehaviour:
   recentlyGrounded: 0
   recentValidSlopeAngle: 0
   jumpLeniency: 0.1
+  attacking: 0
+  attackingSpeed: 0
   cloudWalkUpForce: 20
   cloudWalkStopDist: 0.4
   cloudMomentumMult: 60
@@ -497,6 +501,7 @@ MonoBehaviour:
   swimMovementSpeed: 70
   rotateSpeed: 0.6
   tooFastDecelSpeed: 7.6
+  movementSmoothingSpeed: 6
   jumpForce: 40
   maxSpeed: 9
   movementSensitivity: 0.25
@@ -526,6 +531,7 @@ MonoBehaviour:
   ladderTopJumpLeniancyDistance: 2
   amt: {x: 0, y: 0, z: 0}
   ladder: {fileID: 0}
+  mostRecentLadder: {fileID: 0}
   MoveBase: {fileID: 156779105178038421}
   playerWalkMove: {fileID: 4568108799467419513}
 --- !u!114 &6214455980022661448
@@ -573,11 +579,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   throwForce: {x: 0, y: 12, z: 10}
   holdPos: {x: 0, y: 1.71, z: 0}
+  dropForwardMult: 0
   broomHoldPos: {x: 0, y: 0.58, z: -1.16}
   showDebug: 1
+  throwThreshold: 0
   animator: {fileID: 1551310670574355355}
   armsAnimationLayer: 1
-  playerWalkMove: {fileID: 4568108799467419513}
+  moveBase: {fileID: 0}
   movementStateMachine: {fileID: 4571285873607812303}
   objectEligibleForPickup: {fileID: 0}
   currentlyHeldObject: {fileID: 0}
@@ -612,6 +620,10 @@ MonoBehaviour:
   damage: {fileID: 838153346914349175}
   pushHeight: 3
   pushForce: 8
+  walkMove: {fileID: 0}
+  firstAtkFinished: 0
+  secondAtkFinished: 0
+  thirdAtkFinished: 0
 --- !u!114 &838153346914349175
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -819,7 +831,7 @@ GameObject:
   - component: {fileID: 1551310670551812163}
   - component: {fileID: 1551310670551812162}
   m_Layer: 2
-  m_Name: GrabBox (1)
+  m_Name: GrabBox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -959,7 +971,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1551310670337671690}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &1551310670591791804
 Rigidbody:
@@ -1006,7 +1018,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1551310670337671690}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!119 &1551310670668102767
 Projector:
@@ -1087,6 +1099,50 @@ Transform:
   m_Father: {fileID: 1551310669020529187}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &4302664761980973004
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 411452505119414291}
+  - component: {fileID: 1422189318255650066}
+  m_Layer: 2
+  m_Name: ThrowBox
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &411452505119414291
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4302664761980973004}
+  m_LocalRotation: {x: -0, y: 0.999994, z: -0, w: -0.0034727878}
+  m_LocalPosition: {x: -0.005211711, y: -0.15505981, z: -0.74998426}
+  m_LocalScale: {x: 1.0000002, y: 1, z: 1.0000002}
+  m_Children: []
+  m_Father: {fileID: 1551310670337671690}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1422189318255650066
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4302664761980973004}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2.7581239, y: 4.1820774, z: 9.9067955}
+  m_Center: {x: 0.04607724, y: 1.6410389, z: 4.7033944}
 --- !u!1001 &1551310669893653432
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1177,7 +1233,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400046, guid: 3beb748dcf0f942eeb5ff382e6a7921c, type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 400046, guid: 3beb748dcf0f942eeb5ff382e6a7921c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y

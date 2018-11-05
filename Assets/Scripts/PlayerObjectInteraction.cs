@@ -10,18 +10,24 @@ public class PlayerObjectInteraction : MonoBehaviour {
 	[Header("Behavior variables")]
 	[SerializeField] Vector3 throwForce = new Vector3(0, 5, 7);
 	[SerializeField] Vector3 holdPos;
+	[SerializeField] float dropForwardMult;
 	[SerializeField] Vector3 broomHoldPos;
 	[SerializeField] bool showDebug;
+	[SerializeField] private float throwThreshold;
 
 	[Header("External References")]
 	[SerializeField] Animator animator;
 	[SerializeField] int armsAnimationLayer;
-	[SerializeField] PlayerWalkMove playerWalkMove;
+	[SerializeField] PlayerMoveBase moveBase;
 	[SerializeField] MovementStateMachine movementStateMachine;
 
 	[Header("Internal References")]
 	public Collider objectEligibleForPickup;
 	public Collider currentlyHeldObject;
+
+	[field: Header("Snapping")]
+	[field: SerializeField]
+	public SnapSlot CurrentSlot { get; set; }
 
 	void Awake() {
 		if(animator)
@@ -60,16 +66,27 @@ public class PlayerObjectInteraction : MonoBehaviour {
 	                                   (currentlyHeldObject != null &&
 	                                    movementStateMachine.CurrentMovementState == MoveState.Walk));
 
-	void OnTriggerEnter (Collider other) =>
-		objectEligibleForPickup = other.CompareTag("Pickup") ? other : null;
+	void OnTriggerEnter (Collider other)
+	{
+		if (other.CompareTag("Pickup"))
+			objectEligibleForPickup = other;
+	}
 
 	public bool PickupObjectInteraction() {
 		if (objectEligibleForPickup == null && currentlyHeldObject == null) return false;
-		if (currentlyHeldObject!=null)
-			ThrowPickup();
+		if (currentlyHeldObject != null)
+			LetGoOfPickup();
 		else
 			LiftPickup(objectEligibleForPickup);
 		return true;
+	}
+
+	private void LetGoOfPickup()
+	{
+		if (moveBase.rigid.velocity.magnitude > throwThreshold)
+			ThrowPickup();
+		else
+			DropPickup();
 	}
 
 	void OnTriggerExit(Collider other) {
@@ -81,13 +98,29 @@ public class PlayerObjectInteraction : MonoBehaviour {
 		currentlyHeldObject = other;
 		objectEligibleForPickup = null;
 		currentlyHeldObject.GetComponent<Rigidbody>().isKinematic = true;
+		currentlyHeldObject.GetComponent<Pickup>().CurrentSlot = null;
 		currentlyHeldObject.isTrigger = true;
 	}
 
-	public void ThrowPickup() {
-		Rigidbody r = currentlyHeldObject.GetComponent<Rigidbody>();
+	public void DropPickup()
+	{
+		var r = currentlyHeldObject.GetComponent<Rigidbody>();
 		r.isKinematic = false;
-		r.AddRelativeForce (throwForce, ForceMode.VelocityChange);
+		currentlyHeldObject.transform.position = transform.position + transform.forward * dropForwardMult;
+		currentlyHeldObject.isTrigger = false;
+		currentlyHeldObject = null;
+	}
+	
+	public void ThrowPickup() {
+		var r = currentlyHeldObject.GetComponent<Rigidbody>();
+		r.isKinematic = false;
+		if (CurrentSlot != null)
+		{
+			r.AddRelativeForce(throwForce + (transform.position - CurrentSlot.pos));
+			currentlyHeldObject.GetComponent<Pickup>().SnapTo(CurrentSlot);
+		}
+		else
+			r.AddRelativeForce(throwForce, ForceMode.VelocityChange);
 
 		currentlyHeldObject.isTrigger = false;
 		currentlyHeldObject = null;
