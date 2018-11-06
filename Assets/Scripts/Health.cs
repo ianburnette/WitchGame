@@ -95,13 +95,13 @@ public class Health : MonoBehaviour
 	}
 
 	//respawn object, or destroy it and create the SpawnOnDeath objects
-	void Death()
+	private void Death()
 	{
 		//player drop item
 		if(tag == "Player")
 			playerObjectInteraction = GetComponent<PlayerObjectInteraction>();
-		if(playerObjectInteraction && playerObjectInteraction.currentlyHeldObject != null)
-			playerObjectInteraction.ThrowPickup();
+		if(playerObjectInteraction && playerObjectInteraction.holdingObject)
+			playerObjectInteraction.DropOnDeath();
 
 		if (deadSound)
 			AudioSource.PlayClipAtPoint(deadSound, transform.position);
@@ -109,7 +109,7 @@ public class Health : MonoBehaviour
 		flashObject.GetComponent<Renderer>().material.color = originalColor;
 		if(respawn)
 		{
-			Rigidbody rigid = GetComponent<Rigidbody>();
+			var rigid = GetComponent<Rigidbody>();
 			if(rigid)
 				rigid.velocity *= 0;
 			transform.position = respawnPos;
@@ -119,9 +119,9 @@ public class Health : MonoBehaviour
 		else
 			Destroy (gameObject);
 
-		if (spawnOnDeath.Length != 0)
-			foreach(GameObject obj in spawnOnDeath)
-				Instantiate(obj, transform.position, Quaternion.Euler(Vector3.zero));
+		if (spawnOnDeath.Length == 0) return;
+		foreach(var obj in spawnOnDeath)
+			Instantiate(obj, transform.position, Quaternion.Euler(Vector3.zero));
 	}
 
 	//calculate impact damage on collision

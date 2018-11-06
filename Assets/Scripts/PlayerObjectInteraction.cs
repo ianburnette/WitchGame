@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Experimental.UIElements;
 
 //this allows the player to pick up/throw, and also pull certain objects
 //you need to add the tags "Pickup" or "Pushable" to these objects
@@ -9,8 +10,8 @@ public class PlayerObjectInteraction : MonoBehaviour {
 
 	[Header("Behavior variables")]
 	[SerializeField] Vector3 throwForce = new Vector3(0, 5, 7);
+	[SerializeField] private Vector3 dropForce = new Vector3(0, 0, 2);
 	[SerializeField] Vector3 holdPos;
-	[SerializeField] float dropForwardMult;
 	[SerializeField] Vector3 broomHoldPos;
 	[SerializeField] bool showDebug;
 	[SerializeField] private float throwThreshold;
@@ -23,11 +24,30 @@ public class PlayerObjectInteraction : MonoBehaviour {
 
 	[Header("Internal References")]
 	public Collider objectEligibleForPickup;
-	public Collider currentlyHeldObject;
 
-	[field: Header("Snapping")]
-	[field: SerializeField]
-	public SnapSlot CurrentSlot { get; set; }
+	public Collider currentlyHeldObject;
+	public bool holdingObject;
+
+	[Header("Snapping")]
+	private ObjectSnapZone currentZone;
+
+	[SerializeField] private float throwAngle;
+	[SerializeField] private float slotForceDamp;
+	[SerializeField] private float upMult;
+
+	public Collider CurrentlyHeldObject
+	{
+		private get { return currentlyHeldObject; }
+		set{
+			currentlyHeldObject = value;
+			holdingObject = currentlyHeldObject != null;}
+	}
+
+	public ObjectSnapZone CurrentZone
+	{
+		get { return currentZone; }
+		set { currentZone = value; }
+	}
 
 	void Awake() {
 		if(animator)
@@ -47,8 +67,8 @@ public class PlayerObjectInteraction : MonoBehaviour {
 		objTransform.rotation = transform.rotation;
 	}
 
-	void Update() {
-		if (currentlyHeldObject != null)
+	private void Update() {
+		if (holdingObject)
 			UpdateObjectPosition(currentlyHeldObject.transform,
 			                     movementStateMachine.CurrentMovementState == MoveState.Walk
 				                     ? transform.position + holdPos
@@ -57,72 +77,114 @@ public class PlayerObjectInteraction : MonoBehaviour {
 		if (animator) Animate();
 	}
 
-	Vector3 BroomHoldPosition() =>
+	private Vector3 BroomHoldPosition() =>
 		transform.position +
 		transform.up * broomHoldPos.y +
 		transform.forward * broomHoldPos.z;
 
-	void Animate() => animator.SetBool("HoldingPickup",
-	                                   (currentlyHeldObject != null &&
-	                                    movementStateMachine.CurrentMovementState == MoveState.Walk));
+	private void Animate() => animator.SetBool("HoldingPickup",
+											  (CurrentlyHeldObject != null &&
+									           movementStateMachine.CurrentMovementState == MoveState.Walk));
 
-	void OnTriggerEnter (Collider other)
+	private void OnTriggerEnter (Collider other)
 	{
 		if (other.CompareTag("Pickup"))
 			objectEligibleForPickup = other;
 	}
 
 	public bool PickupObjectInteraction() {
-		if (objectEligibleForPickup == null && currentlyHeldObject == null) return false;
-		if (currentlyHeldObject != null)
+		if (objectEligibleForPickup == null && CurrentlyHeldObject == null) return false;
+		if (CurrentlyHeldObject != null)
 			LetGoOfPickup();
 		else
 			LiftPickup(objectEligibleForPickup);
 		return true;
 	}
 
-	private void LetGoOfPickup()
-	{
-		if (moveBase.rigid.velocity.magnitude > throwThreshold)
-			ThrowPickup();
-		else
-			DropPickup();
-	}
 
-	void OnTriggerExit(Collider other) {
+	private void OnTriggerExit(Collider other) {
 		if (objectEligibleForPickup == other)
 			objectEligibleForPickup = null;
 	}
 
-	void LiftPickup(Collider other) {
-		currentlyHeldObject = other;
+	private void LiftPickup(Collider other) {
+		CurrentlyHeldObject = other;
 		objectEligibleForPickup = null;
-		currentlyHeldObject.GetComponent<Rigidbody>().isKinematic = true;
-		currentlyHeldObject.GetComponent<Pickup>().CurrentSlot = null;
-		currentlyHeldObject.isTrigger = true;
+		CurrentlyHeldObject.GetComponent<Rigidbody>().isKinematic = true;
+		CurrentlyHeldObject.GetComponent<Pickup>().SnapTargetPos = Vector3.zero;
+		CurrentlyHeldObject.isTrigger = true;
 	}
 
-	public void DropPickup()
+	public void DropOnDeath() => LetGoOfPickup();
+
+	void LetGoOfPickup()
 	{
-		var r = currentlyHeldObject.GetComponent<Rigidbody>();
-		r.isKinematic = false;
-		currentlyHeldObject.transform.position = transform.position + transform.forward * dropForwardMult;
-		currentlyHeldObject.isTrigger = false;
-		currentlyHeldObject = null;
+		var vel = moveBase.rigid.velocity.magnitude > throwThreshold ? throwForce : dropForce;
+		var rb = ResetAndReturnPickup();
+		ThrowOrDrop(rb, vel);
+		SnapToSlotIfPresent();
+		CleanUpCurrentlyHeld();
 	}
-	
-	public void ThrowPickup() {
-		var r = currentlyHeldObject.GetComponent<Rigidbody>();
-		r.isKinematic = false;
-		if (CurrentSlot != null)
-		{
-			r.AddRelativeForce(throwForce + (transform.position - CurrentSlot.pos));
-			currentlyHeldObject.GetComponent<Pickup>().SnapTo(CurrentSlot);
-		}
-		else
-			r.AddRelativeForce(throwForce, ForceMode.VelocityChange);
 
-		currentlyHeldObject.isTrigger = false;
-		currentlyHeldObject = null;
+	private Rigidbody ResetAndReturnPickup()
+	{
+		var r = CurrentlyHeldObject.GetComponent<Rigidbody>();
+		r.isKinematic = false;
+		return r;
+	}
+
+	private void ThrowOrDrop(Rigidbody rb, Vector3 throwOrDropForce)
+	{
+		//if (currentZone != null)
+		//	ThrowToTarget();
+		//else
+			rb.AddRelativeForce(throwOrDropForce + SlotForce(), ForceMode.VelocityChange);
+	}
+
+	private void SnapToSlotIfPresent()
+	{
+		if (currentZone != null) 
+			CurrentlyHeldObject.GetComponent<Pickup>().SnapTo(currentZone);
+	}
+
+	private void ThrowToTarget()
+	{
+		var targetPos = currentZone.CurrentSnapSlot().pos + currentZone.transform.position;
+		var targetXZPos = ZeroYAxis(targetPos);
+		CurrentlyHeldObject.transform.LookAt(targetXZPos);
+
+		var position = currentlyHeldObject.transform.position;
+		var R = Vector3.Distance(ZeroYAxis(position), targetXZPos);
+		var G = Physics.gravity.y;
+		var tanAlpha = Mathf.Tan(throwAngle * Mathf.Deg2Rad);
+		var H = targetPos.y - position.y;
+
+		var Vz0 = G * R * R;
+		var Vz1 = H - R * tanAlpha;
+		var Vz2 = 2.0f * Vz1;
+		var Vz3 = Vz0 / Vz2;
+		var Vz = Mathf.Sqrt(Vz3);
+		var Vy = tanAlpha * Vz;
+
+		var localVelocity = new Vector3(0f, Vy, Vz);
+		var globalVelocity = currentlyHeldObject.transform.TransformDirection(localVelocity);
+
+		currentlyHeldObject.GetComponent<Rigidbody>().velocity = globalVelocity;
+	}
+
+	Vector3 ZeroYAxis(Vector3 vec) => new Vector3(vec.x, 0, vec.z);
+
+	private void CleanUpCurrentlyHeld()
+	{
+		CurrentlyHeldObject.isTrigger = false;
+		CurrentlyHeldObject = null;
+	}
+
+	private Vector3 SlotForce()
+	{
+		if (currentZone == null) return Vector3.zero;
+		var targetPos = currentZone.CurrentSnapSlot().pos + currentZone.transform.position;
+		return ((targetPos - transform.position) * slotForceDamp) + 
+		       (Vector3.up * Vector3.Distance(targetPos, transform.position) * upMult);
 	}
 }

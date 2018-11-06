@@ -16,11 +16,11 @@ public class Pickup : MonoBehaviour, ICloudInteractible {
 
     [Header("Physics Variables")]
     [SerializeField] Rigidbody rb;
-    [SerializeField] float baseDrag, cloudDrag;
-    [SerializeField] float baseAngularDrag, cloudAngularDrag;
 
-    [Header("Slot Variables")]
-    [SerializeField] SnapSlot currentSlot;
+    [SerializeField] private float baseDrag, cloudDrag, snapDrag;
+    [SerializeField] float baseAngularDrag, cloudAngularDrag;
+    [SerializeField] private float dragThreshold = 3f; 
+
     [SerializeField] private float snapForce;
     
     public bool InCloud { get { return inCloud; }
@@ -31,31 +31,30 @@ public class Pickup : MonoBehaviour, ICloudInteractible {
         }
     }
 
-    public SnapSlot CurrentSlot
-    {
-        get { return currentSlot; }
-        set { currentSlot = value; }
-    }
-
-    void OnEnable()
-    {
-        currentSlot = null;
-    }
+    [field: Header("Slot Variables")]
+    [field: SerializeField]
+    public Vector3 SnapTargetPos { get; set; }
 
     void FixedUpdate() {
         if (inCloud && rb != null && weight == ObjectWeight.Light)
             rb.AddForce(Vector3.up * cloudUpForce);
-        else if (CurrentSlot.pos != Vector3.zero)
-            rb.AddForce((CurrentSlot.pos - transform.position) * snapForce);
+        else if (SnapTargetPos != Vector3.zero)
+            Snap();
         else if (rb == null)
             throw new Exception("Rigidbody not assigned for pickup");
+    }
+
+    private void Snap()
+    {
+        rb.AddForce((SnapTargetPos - transform.position) * snapForce);
+        rb.drag = Vector3.Distance(SnapTargetPos, transform.position) < dragThreshold ? snapDrag : baseDrag;
     }
 
     public void EnterCloud() {
         if (!inCloud) CloudDamp();
     }
 
-    public void SnapTo(SnapSlot slot) => CurrentSlot = slot;
+    public void SnapTo(ObjectSnapZone zone) => SnapTargetPos = zone.CurrentSnapSlot().pos + zone.transform.position;
 
     public void StayInCloud() => InCloud = true;
     public void ExitCloud() => InCloud = false;

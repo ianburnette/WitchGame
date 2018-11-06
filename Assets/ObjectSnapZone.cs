@@ -8,10 +8,11 @@ public class ObjectSnapZone : MonoBehaviour
 {
     [FormerlySerializedAs("snapPositions")] [SerializeField] private List<SnapSlot> snapSlots;
     public bool eligible;
+    public bool Highlighted { get; set; }
     
     private void OnDrawGizmos()
     {
-        if (!eligible) return;
+        if (!Highlighted) return;
         Gizmos.color = Color.red;
         foreach (var slot in snapSlots)
         {
@@ -33,6 +34,12 @@ public class ObjectSnapZone : MonoBehaviour
                 return slot;
         }
         return null;
+    }
+
+    // TODO: this isn't gonna work long term.
+    public SnapSlot CurrentSnapSlot()
+    {
+        return snapSlots[0];
     }
 }
 
