@@ -1,6 +1,8 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.Serialization;
 
 [RequireComponent(typeof(BoxCollider))]
 public class Water : MonoBehaviour
@@ -11,13 +13,15 @@ public class Water : MonoBehaviour
 	public float resistance = 0.4f;						//the drag applied to rigidbodies in the water (but not player)
 	public float angularResistance = 0.2f;				//the angular drag applied to rigidbodies in the water (but not player)
 
-	public List<Rigidbody> rigidbodiesInWaterFloat = new List<Rigidbody>();
-	public List<Rigidbody> rigidbodiesInWaterSink = new List<Rigidbody>();
+	[FormerlySerializedAs("waterInteractions")] 
+	public List<IWaterInteraction> floatingInWater = new List<IWaterInteraction>();
+	public List<IWaterInteraction> sinkingInWater = new List<IWaterInteraction>();
 
 	Collider col;
 
 	[SerializeField] float maxDepth = .4f;
 	[SerializeField] float surfaceOffset = -0.4f;
+
 
 	[SerializeField] float maxUpwardCorrectiveSpeed, maxDownwardCorrectiveSpeed;
 	[SerializeField] float depthCorrectionSpeed = 2f;
@@ -38,13 +42,23 @@ public class Water : MonoBehaviour
 		particlesMain.startSpeed = particleForce.magnitude * particleSpeedMult;
 	}
 
-	void FixedUpdate() => rigidbodiesInWaterFloat.ForEach(ApplyWaterForce);
+	void FixedUpdate()
+	{
+		floatingInWater?.ForEach(ApplyFloatingForce);
+		sinkingInWater?.ForEach(ApplySinkingForce);
+	}
 
-	void ApplyWaterForce(Rigidbody rb) => rb.AddForce(force + SurfaceCorrection(rb.transform.position.y, rb.transform.position),
-	                                                  ForceMode.Force);
+	void ApplyFloatingForce(IWaterInteraction waterInteraction) => 
+		waterInteraction.FloatForce(GetWaterForce(waterInteraction), ForceMode.Force);
 
-	Vector3 SurfaceCorrection(float height, Vector3 debugPos) {
-		var depth = Depth(height, debugPos);
+	Vector3 GetWaterForce(IWaterInteraction waterInteraction) =>
+		force + SurfaceCorrection(waterInteraction.Height, waterInteraction.Offset);
+
+	void ApplySinkingForce(IWaterInteraction waterInteraction) => 
+		waterInteraction.SinkForce(GetWaterForce(waterInteraction), ForceMode.Force);
+
+	Vector3 SurfaceCorrection(float height, float offset) {
+		var depth = Depth(height, offset);
 		depthCorrectionForce = Vector3.up * Mathf.Clamp(depth * depthCorrectionSpeed,
 										   maxDownwardCorrectiveSpeed,
 										   maxUpwardCorrectiveSpeed);
@@ -52,40 +66,37 @@ public class Water : MonoBehaviour
 		//return depth > maxDepth ? depth * depthCorrectionSpeed : 1;
 	}
 
-	float Depth(float baseHeight, Vector3 debugPos)
+	float Depth(float baseHeight, float offset)
 	{
-		Debug.DrawRay(new Vector3(debugPos.x, baseHeight, debugPos.z), Vector3.left, Color.yellow);
-		Debug.DrawRay(new Vector3(debugPos.x, HeightOfWaterSurface - surfaceOffset, debugPos.z), Vector3.right, Color.green);
-		var res = (HeightOfWaterSurface - surfaceOffset) - baseHeight;
-		Debug.DrawRay(new Vector3(debugPos.x, baseHeight, debugPos.z), Vector3.up * res, Color.magenta);
+		var res = (HeightOfWaterSurface - offset) - baseHeight;
 		return res;
+		//Debug.DrawRay(new Vector3(debugPos.x, baseHeight, debugPos.z), Vector3.left, Color.yellow);
+		//Debug.DrawRay(new Vector3(debugPos.x, HeightOfWaterSurface - surfaceOffset, debugPos.z), Vector3.right, Color.green);
+		//Debug.DrawRay(new Vector3(debugPos.x, baseHeight, debugPos.z), Vector3.up * res, Color.magenta);
 	}
 
 	float HeightOfWaterSurface => col.bounds.extents.y;
 
-	void OnTriggerEnter(Collider other) {
-		var rb = other.GetComponent<Rigidbody>();
-		if (rb == null)
-			return;
-		if (rb.transform.CompareTag("Player")) {
-			other.GetComponent<MovementStateMachine>()?.GetInWater();
-			if (other.GetComponent<PlayerAbilities>().underwaterUnlocked) {
-				rigidbodiesInWaterSink.Add(rb);
-				return;
-			}
-		}
-		rigidbodiesInWaterFloat.Add(rb);
+	void OnTriggerEnter(Collider other)
+	{
+		var waterInteraction = other.GetComponent<IWaterInteraction>();
+		var waterInteractionState = waterInteraction?.OnWaterEnter();
+		if (waterInteraction == null) return;
+		var toAssign = waterInteractionState == WaterInteractionState.Floating
+			? floatingInWater
+			: sinkingInWater;
+		toAssign.Add(waterInteraction);
 	}
 
-	void OnTriggerExit(Collider other) {
-		var rb = other.GetComponent<Rigidbody>();
-		if (rb == null)
-			return;
-		if (rigidbodiesInWaterFloat.Contains(rb))
-			rigidbodiesInWaterFloat.Remove(rb);
-		if (rigidbodiesInWaterSink.Contains(rb))
-			rigidbodiesInWaterSink.Remove(rb);
-		other.GetComponent<MovementStateMachine>()?.GetOutOfWater();
+	void OnTriggerExit(Collider other)
+	{
+		var waterInteraction = other.GetComponent<IWaterInteraction>();
+		if (waterInteraction != null)
+		{
+			floatingInWater.Remove(waterInteraction);
+			sinkingInWater.Remove(waterInteraction);
+		}
+		waterInteraction?.OnWaterExit();
 	}
 
 	//sets drag on objects entering water

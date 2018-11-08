@@ -30,13 +30,23 @@ public class Pickup : MonoBehaviour, ICloudInteractible {
             rb.angularDrag = inCloud ? cloudAngularDrag : baseAngularDrag;
         }
     }
+    public ObjectWeight Weight{
+        get { return weight; }
+        set { weight = value; }}
 
     [field: Header("Slot Variables")]
     [field: SerializeField]
     public Vector3 SnapTargetPos { get; set; }
 
+    Vector3 originPosition;
+
+    void Start()
+    {
+        originPosition = transform.position;
+    }
+
     void FixedUpdate() {
-        if (inCloud && rb != null && weight == ObjectWeight.Light)
+        if (inCloud && rb != null && Weight == ObjectWeight.Light)
             rb.AddForce(Vector3.up * cloudUpForce);
         else if (SnapTargetPos != Vector3.zero)
             Snap();
@@ -59,6 +69,13 @@ public class Pickup : MonoBehaviour, ICloudInteractible {
     public void StayInCloud() => InCloud = true;
     public void ExitCloud() => InCloud = false;
     void CloudDamp() => rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
+
+    public void Reset()
+    {
+        //TODO some sort of reset particles here
+        transform.position = originPosition;
+        rb.velocity = Vector3.zero;
+    }
 }
 
 public enum ObjectWeight {
