@@ -11,5 +11,7 @@ public class Umbrella : MonoBehaviour
         var rb = other.GetComponent<Rigidbody>();
         if (rb == null) return;
         rb.AddForce(force * transform.up, ForceMode.Impulse);
+        if (other.CompareTag("Player"))
+            other.GetComponent<PlayerObjectInteraction>().AccidentallyLetGoOfPickup();
     }
 }

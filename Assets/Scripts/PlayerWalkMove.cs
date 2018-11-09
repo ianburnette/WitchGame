@@ -63,6 +63,9 @@ public class PlayerWalkMove : MonoBehaviour, ICloudInteractible {
 
 	[Header("Debug")]
 	[SerializeField] Vector3 inputRelativeToWorld;
+
+	[SerializeField] Vector3 inputRelativeToSlope;
+	[SerializeField] float slopeInputToSlopeAngle;
 	[SerializeField] float slopeAdjustedMovementSpeed;
 	[SerializeField] float animationCurveResult;
 
@@ -150,10 +153,12 @@ public class PlayerWalkMove : MonoBehaviour, ICloudInteractible {
 
 	private float GetMoveSpeed() => currentlyGrounded ? MovementSpeedOnGround() : movementSpeedInAir;
 
-	float MovementSpeedOnGround() {
+	float MovementSpeedOnGround()
+	{
 		inputToSlopeAngle = Vector3.Angle(inputRelativeToWorld, SlopeCorrection());
-		if (inputRelativeToWorld.magnitude != 0 && inputToSlopeAngle > 30 &&
-		    inputToSlopeAngle < 90) {
+		//inputRelativeToSlope = Vector3.Reflect(inputRelativeToWorld, MoveBase.slopeNormal);
+		//slopeInputToSlopeAngle = Vector3.Angle(inputRelativeToSlope, SlopeCorrection());
+		if (inputRelativeToWorld.magnitude != 0 && inputToSlopeAngle < 45) {
 			animationCurveResult = slopeMovementAdjustmentCurve.Evaluate(inputToSlopeAngle);
 		} else
 			animationCurveResult = 1;

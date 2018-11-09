@@ -115,7 +115,7 @@ public class PlayerObjectInteraction : MonoBehaviour {
 		CurrentlyHeldObject.isTrigger = true;
 	}
 
-	public void DropOnDeath() => LetGoOfPickup();
+	public void AccidentallyLetGoOfPickup() => LetGoOfPickup();
 
 	void LetGoOfPickup()
 	{

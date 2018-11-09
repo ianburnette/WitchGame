@@ -1,18 +1,22 @@
 ﻿using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [RequireComponent(typeof(Rigidbody))]
-public class CharacterMotor : MonoBehaviour {
+public class CharacterMotor : MonoBehaviour, IVelocityLimiter {
 	[HideInInspector] public Vector3 currentSpeed;
 	[HideInInspector] public float DistanceToTarget;
-	[SerializeField] Rigidbody rigid;
+	[SerializeField] float maxMagnitude = 50f;
+	[FormerlySerializedAs("rigid")] [SerializeField] Rigidbody rb;
 
 	public Vector3 relativePosition;
 
 	void Awake() {
-		rigid.interpolation = RigidbodyInterpolation.Interpolate;
-		rigid.constraints = RigidbodyConstraints.FreezeRotation;
+		rb.interpolation = RigidbodyInterpolation.Interpolate;
+		rb.constraints = RigidbodyConstraints.FreezeRotation;
 	}
+
+	void FixedUpdate() => LimitVelocity();
 
 	public bool MoveTo(Vector3 destination, float acceleration, float stopDistance, bool ignoreY) {
 		relativePosition = (destination - transform.position);
@@ -22,7 +26,7 @@ public class CharacterMotor : MonoBehaviour {
 		DistanceToTarget = relativePosition.magnitude;
 		if (DistanceToTarget <= stopDistance)
 			return true;
-		rigid.AddForce(relativePosition.normalized * acceleration * Time.deltaTime, ForceMode.VelocityChange);
+		rb.AddForce(relativePosition.normalized * acceleration * Time.deltaTime, ForceMode.VelocityChange);
 		return false;
 	}
 
@@ -32,7 +36,7 @@ public class CharacterMotor : MonoBehaviour {
 	}
 
 	public void RotateToVelocity(float turnSpeed, bool ignoreY) {
-		var dir = new Vector3(rigid.velocity.x, ignoreY ? 0f : rigid.velocity.y, rigid.velocity.z);
+		var dir = new Vector3(rb.velocity.x, ignoreY ? 0f : rb.velocity.y, rb.velocity.z);
 		RotateToDirection(turnSpeed, dir);
 	}
 
@@ -40,12 +44,12 @@ public class CharacterMotor : MonoBehaviour {
 		if (!(velocity.magnitude > 0.1)) return;
 		var dirQ = Quaternion.LookRotation(velocity);
 		var slerp = Quaternion.Slerp(transform.rotation, dirQ, velocity.magnitude * turnSpeed * Time.deltaTime);
-		rigid.MoveRotation(slerp);
+		rb.MoveRotation(slerp);
 	}
 
 	public void RotateToVelocity(float turnSpeed, float minYvel, float maxYvel, float yMultiplier) {
-		var currentY = Scale(minYvel, maxYvel, rigid.velocity.y);
-		RotateToDirection(turnSpeed, new Vector3(rigid.velocity.x, currentY * yMultiplier * rigid.velocity.magnitude, rigid.velocity.z));
+		var currentY = Scale(minYvel, maxYvel, rb.velocity.y);
+		RotateToDirection(turnSpeed, new Vector3(rb.velocity.x, currentY * yMultiplier * rb.velocity.magnitude, rb.velocity.z));
 	}
 
 	public float Scale(float newMin, float newMax, float oldValue) {
@@ -64,25 +68,25 @@ public void RotateToDirection(Vector3 lookDir, float turnSpeed, bool ignoreY)
 		if (ignoreY) newDir.y = 0;
 		var dirQ = Quaternion.LookRotation (newDir);
 		var slerp = Quaternion.Slerp (transform.rotation, dirQ, turnSpeed * Time.deltaTime);
-		rigid.MoveRotation (slerp);
+		rb.MoveRotation (slerp);
 	}
 
 	public void ManageSpeed(float deceleration, float maxSpeed, bool ignoreY)
 	{
-		currentSpeed = rigid.velocity;
+		currentSpeed = rb.velocity;
 		if (ignoreY)
 			currentSpeed.y = 0;
 
 		if (!(currentSpeed.magnitude > 0)) return;
-		rigid.AddForce ((currentSpeed * -1) * deceleration * Time.deltaTime, ForceMode.VelocityChange);
-		if (rigid.velocity.magnitude > maxSpeed)
-			rigid.AddForce ((currentSpeed * -1) * deceleration * Time.deltaTime, ForceMode.VelocityChange);
+		rb.AddForce ((currentSpeed * -1) * deceleration * Time.deltaTime, ForceMode.VelocityChange);
+		if (rb.velocity.magnitude > maxSpeed)
+			rb.AddForce ((currentSpeed * -1) * deceleration * Time.deltaTime, ForceMode.VelocityChange);
 	}
 
-	public void MoveRelativeToGround(Vector3 groundForce) => rigid.AddForce(groundForce);
+	public void MoveRelativeToGround(Vector3 groundForce) => rb.AddForce(groundForce);
 
 	public void SetVelocity(Vector3 direction) =>
-		rigid.velocity = direction;
+		rb.velocity = direction;
 
 
 	void OnDrawGizmos() {
@@ -91,4 +95,9 @@ public void RotateToDirection(Vector3 lookDir, float turnSpeed, bool ignoreY)
 			Gizmos.DrawSphere(transform.position + relativePosition, .3f);
 	}
 
+	public void LimitVelocity()
+	{
+		if (rb.velocity.magnitude > maxMagnitude)
+			rb.velocity = rb.velocity.normalized * maxMagnitude;
+	}
 }

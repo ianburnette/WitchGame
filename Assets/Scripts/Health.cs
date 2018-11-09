@@ -101,7 +101,7 @@ public class Health : MonoBehaviour
 		if(tag == "Player")
 			playerObjectInteraction = GetComponent<PlayerObjectInteraction>();
 		if(playerObjectInteraction && playerObjectInteraction.holdingObject)
-			playerObjectInteraction.DropOnDeath();
+			playerObjectInteraction.AccidentallyLetGoOfPickup();
 
 		if (deadSound)
 			AudioSource.PlayClipAtPoint(deadSound, transform.position);

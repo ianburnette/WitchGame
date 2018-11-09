@@ -14,6 +14,8 @@ public class PlayerLadderInteraction : MonoBehaviour {
         canGrabLadder  = state;
         ladderMovement.mostRecentLadder = ladderMovement.ladder;
         ladderMovement.ladder = ladder;
+        if (canGrabLadder)
+            AttemptToGrabLadder();
     }
 
     public void AttemptToGrabLadder() {

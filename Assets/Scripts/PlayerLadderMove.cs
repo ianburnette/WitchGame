@@ -48,10 +48,12 @@ public class PlayerLadderMove : MonoBehaviour {
         MoveBase.rigid.isKinematic = false;
     }
 
-    void Move(Vector2 movementInput) {
-        if ((movementInput.y > 0 && transform.position.y < ladder.transform.position.y + ladder.MaxHeight))
+    void Move(Vector2 movementInput)
+    {
+        var lad = CurrentOrMostRecentLadder();
+        if ((movementInput.y > 0 && transform.position.y < lad.MaxHeight.y))
             MoveBase.characterMotor.MoveVertical(Vector3.up * movementInput.y * climbSpeed * Time.deltaTime);
-        if((movementInput.y < 0 && transform.position.y > ladder.transform.position.y + ladder.MinHeight))
+        if((movementInput.y < 0 && transform.position.y >lad.MinHeight.y))
             MoveBase.characterMotor.MoveVertical(Vector3.up * movementInput.y * climbSpeed * Time.deltaTime);
     }
 
@@ -59,7 +61,7 @@ public class PlayerLadderMove : MonoBehaviour {
     {
         var tempLadder = CurrentOrMostRecentLadder();
 
-        if (Vector3.Distance(transform.position, tempLadder.transform.position + Vector3.up * tempLadder.MaxHeight) <
+        if (Vector3.Distance(transform.position, tempLadder.MaxHeight) <
             ladderTopJumpLeniancyDistance)
             JumpToLedge();
         else
@@ -69,10 +71,7 @@ public class PlayerLadderMove : MonoBehaviour {
     private Ladder CurrentOrMostRecentLadder()
     {
         Ladder tempLadder;
-        if (ladder == null)
-            tempLadder = ladder;
-        else
-            tempLadder = mostRecentLadder;
+        tempLadder = ladder != null ? ladder : mostRecentLadder;
         return tempLadder;
     }
 

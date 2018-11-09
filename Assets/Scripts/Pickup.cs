@@ -5,7 +5,7 @@ using UnityEditor.PackageManager;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-public class Pickup : MonoBehaviour, ICloudInteractible {
+public class Pickup : MonoBehaviour, ICloudInteractible, IVelocityLimiter {
 
     [Header("Mock Physics Variables")]
     [SerializeField] ObjectWeight weight;
@@ -22,6 +22,7 @@ public class Pickup : MonoBehaviour, ICloudInteractible {
     [SerializeField] private float dragThreshold = 3f; 
 
     [SerializeField] private float snapForce;
+    [SerializeField] float maxMagnitude;
     
     public bool InCloud { get { return inCloud; }
         set {
@@ -45,13 +46,20 @@ public class Pickup : MonoBehaviour, ICloudInteractible {
         originPosition = transform.position;
     }
 
-    void FixedUpdate() {
+    void FixedUpdate()
+    {
+        if (rb == null) return;
         if (inCloud && rb != null && Weight == ObjectWeight.Light)
             rb.AddForce(Vector3.up * cloudUpForce);
         else if (SnapTargetPos != Vector3.zero)
             Snap();
-        else if (rb == null)
-            throw new Exception("Rigidbody not assigned for pickup");
+        LimitVelocity();
+    }
+
+    public void LimitVelocity()
+    {
+        if (rb.velocity.magnitude > maxMagnitude)
+            rb.velocity = rb.velocity.normalized * maxMagnitude;
     }
 
     private void Snap()

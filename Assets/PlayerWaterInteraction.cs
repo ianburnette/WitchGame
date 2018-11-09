@@ -11,6 +11,7 @@ public class PlayerWaterInteraction : MonoBehaviour, IWaterInteraction
     public Rigidbody rb { get; set; }
 
     [SerializeField] private PlayerMoveBase movementBase;
+    [SerializeField] PlayerObjectInteraction objectInteraction;
 
     void OnEnable() => rb = GetComponent<Rigidbody>();
 
@@ -21,6 +22,7 @@ public class PlayerWaterInteraction : MonoBehaviour, IWaterInteraction
         {
             // TODO: handle this when we get to it
         }
+        objectInteraction.AccidentallyLetGoOfPickup();
         return WaterInteractionState.Floating;
     }
 

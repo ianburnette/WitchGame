@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <LangVersion>6</LangVersion>
@@ -9,8 +9,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <ProjectGuid>{B9D63043-40DA-AD21-2C2F-0EA340DE1E66}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -55,15 +54,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\CameraNodes.cs" />
-    <Compile Include="Assets\DialogueBase.cs" />
-    <Compile Include="Assets\Node.cs" />
-    <Compile Include="Assets\NodeSystem.cs" />
-    <Compile Include="Assets\NpcDialogue.cs" />
-    <Compile Include="Assets\NpcNavigation.cs" />
-    <Compile Include="Assets\PlayerAbilities.cs" />
-    <Compile Include="Assets\PlayerCameraReference.cs" />
-    <Compile Include="Assets\PlayerUnderwaterMove.cs" />
+    <Compile Include="Assets\AttackState.cs" />
+    <Compile Include="Assets\CameraBiasZone.cs" />
+    <Compile Include="Assets\CVCameraHandle.cs" />
+    <Compile Include="Assets\IVelocityLimiter.cs" />
+    <Compile Include="Assets\ObjectSnapZone.cs" />
+    <Compile Include="Assets\ObjectWaterInteraction.cs" />
+    <Compile Include="Assets\PlayerWaterInteraction.cs" />
     <Compile Include="Assets\Scripts\CameraBase.cs" />
     <Compile Include="Assets\Scripts\CameraSelector.cs" />
     <Compile Include="Assets\Scripts\CharacterMotor.cs" />
