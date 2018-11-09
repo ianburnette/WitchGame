@@ -24,6 +24,7 @@ public class PlayerGlideMove : MonoBehaviour {
         PlayerInput.OnMove += Move;
         MoveBase.rigid.drag = RigidbodyDrag;
         MoveBase.animator.SetBool("RidingBroom", true);
+        MoveBase.LockCamAndResetOnGround();
     }
 
     void OnDisable() {

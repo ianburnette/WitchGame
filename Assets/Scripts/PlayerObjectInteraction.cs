@@ -119,14 +119,16 @@ public class PlayerObjectInteraction : MonoBehaviour {
 
 	void LetGoOfPickup()
 	{
-		var vel = moveBase.rigid.velocity.magnitude > throwThreshold ? throwForce : dropForce;
+		if (currentlyHeldObject == null) return;
 		var rb = ResetAndReturnPickup();
+		if (rb == null) return;
+		var vel = moveBase.rigid.velocity.magnitude > throwThreshold ? throwForce : dropForce;
 		ThrowOrDrop(rb, vel);
 		SnapToSlotIfPresent();
 		CleanUpCurrentlyHeld();
 	}
 
-	private Rigidbody ResetAndReturnPickup()
+	Rigidbody ResetAndReturnPickup()
 	{
 		var r = CurrentlyHeldObject.GetComponent<Rigidbody>();
 		r.isKinematic = false;

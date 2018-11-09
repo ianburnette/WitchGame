@@ -30,10 +30,13 @@ public class PlayerMoveBase : MonoBehaviour {
     Vector3 screenMovementForward, screenMovementRight;
 
     public CharacterMotor characterMotor;
+    public PlayerCameraReference camReferenceTransform;
 
     [SerializeField] DealDamage dealDamage;
     EnemyAI currentEnemyAi;
 
+    public bool ResetCamOnGrounded { get; set; }
+    public float camLockResetTime = .4f;
     public bool currentlyGrounded;
     public GroundType myGroundType;
 
@@ -60,6 +63,10 @@ public class PlayerMoveBase : MonoBehaviour {
         slopeNormal = AverageContactNormal();
         slopeAngle = Vector3.Angle(slopeNormal, Vector3.up);
         currentlyGrounded = PointsOfContact() != 0;
+        if (currentlyGrounded && ResetCamOnGrounded)
+            Invoke(nameof(LockCamNow), camLockResetTime);
+        if (!currentlyGrounded)
+            CancelInvoke(nameof(LockCamNow));
         return currentlyGrounded;
     }
 
@@ -85,7 +92,6 @@ public class PlayerMoveBase : MonoBehaviour {
 
     [CanBeNull] GroundHitInfo EnemyBounceHit() =>
         groundInfo.Where(info => info != null).FirstOrDefault(info => info.transform.CompareTag("Enemy"));
-
 
     public Vector3 MovementRelativeToPlayerAndCamera(Vector2 input) =>
         transform.position + MovementRelativeToCamera(input);
@@ -118,4 +124,12 @@ public class PlayerMoveBase : MonoBehaviour {
     }
 
     public Vector3 PlanarVelocity() => new Vector3(rigid.velocity.x, 0, rigid.velocity.z);
+
+    public void LockCamAndResetOnGround()
+    {
+        camReferenceTransform.LockToPlayer = true;
+        ResetCamOnGrounded = true;
+    }
+
+    void LockCamNow() => camReferenceTransform.LockToPlayer = false;
 }

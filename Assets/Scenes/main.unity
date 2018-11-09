@@ -21693,7 +21693,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 735109962}
-  m_LocalRotation: {x: -0.1833099, y: -0.12827551, z: 0.024132397, w: -0.9743513}
+  m_LocalRotation: {x: -0.18330996, y: -0.12827541, z: 0.024132378, w: -0.9743514}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -27236,7 +27236,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1086464248}
-  m_LocalRotation: {x: -0.2010024, y: -0.1278155, z: 0.02646312, w: -0.97085583}
+  m_LocalRotation: {x: -0.20100236, y: -0.12781556, z: 0.02646314, w: -0.97085583}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -36397,7 +36397,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1721376772}
-  m_LocalRotation: {x: -0.07075497, y: 0.9079508, z: -0.17081755, w: -0.37608564}
+  m_LocalRotation: {x: -0.070754975, y: 0.9079508, z: -0.17081761, w: -0.37608555}
   m_LocalPosition: {x: 18.438723, y: 15.62, z: 7.600477}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -47970,8 +47970,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 940443862}
-  moveBase: {fileID: 156779105178038421}
-  camera: {fileID: 792191959}
   groundLayer:
     serializedVersion: 2
     m_Bits: 1
@@ -47979,6 +47977,7 @@ MonoBehaviour:
   groundHeightOffset: 1
   distanceToCheck: 10
   targetPosition: {x: 0, y: 0, z: 0}
+  lockToPlayer: 0
 --- !u!1 &2073422994
 GameObject:
   m_ObjectHideFlags: 0
@@ -49425,6 +49424,16 @@ PrefabInstance:
         type: 3}
       propertyPath: climbSpeed
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 156779105178038421, guid: d3ade0ddcdacbc840bad3813ad4fd742,
+        type: 3}
+      propertyPath: camReferenceTransform
+      value: 
+      objectReference: {fileID: 2062755260}
+    - target: {fileID: 3934885142640314606, guid: d3ade0ddcdacbc840bad3813ad4fd742,
+        type: 3}
+      propertyPath: maxMagnitude
+      value: 150
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d3ade0ddcdacbc840bad3813ad4fd742, type: 3}

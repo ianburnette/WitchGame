@@ -11,7 +11,7 @@ public class PlayerLadderInteraction : MonoBehaviour {
     [SerializeField] MovementStateMachine movementStateMachine;
 
     public void ToggleLadder(bool state, Ladder ladder = null) {
-        canGrabLadder  = state;
+        canGrabLadder = state;
         ladderMovement.mostRecentLadder = ladderMovement.ladder;
         ladderMovement.ladder = ladder;
         if (canGrabLadder)

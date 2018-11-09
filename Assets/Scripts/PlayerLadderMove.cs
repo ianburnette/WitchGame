@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class PlayerLadderMove : MonoBehaviour {
 
@@ -20,8 +21,8 @@ public class PlayerLadderMove : MonoBehaviour {
     [SerializeField] float ladderDropForwardMultiplier = .4f;
     [SerializeField] float ladderDropJumpMultiplier = -.4f;
 
-    [Header("Passive Behavior")]
-    public float ladderTopJumpLeniancyDistance = 2f;
+    [FormerlySerializedAs("ladderTopJumpLeniancyDistance")] [Header("Passive Behavior")]
+    public float ladderTopJumpLeniencyDistance = 2f;
 
     [Header("Reference Variables")]
     public Vector3 amt;
@@ -37,6 +38,7 @@ public class PlayerLadderMove : MonoBehaviour {
         PlayerInput.OnJump += Jump;
         PlayerInput.OnGrab += Grab;
         MoveBase.rigid.isKinematic = true;
+        MoveBase.camReferenceTransform.LockToPlayer = true;
     }
 
     void Update() => transform.rotation = RotateAngle180(CurrentOrMostRecentLadder().transform.rotation);
@@ -46,6 +48,7 @@ public class PlayerLadderMove : MonoBehaviour {
         PlayerInput.OnJump -= Jump;
         PlayerInput.OnGrab -= Grab;
         MoveBase.rigid.isKinematic = false;
+        MoveBase.camReferenceTransform.LockToPlayer = false;
     }
 
     void Move(Vector2 movementInput)
@@ -62,7 +65,7 @@ public class PlayerLadderMove : MonoBehaviour {
         var tempLadder = CurrentOrMostRecentLadder();
 
         if (Vector3.Distance(transform.position, tempLadder.MaxHeight) <
-            ladderTopJumpLeniancyDistance)
+            ladderTopJumpLeniencyDistance)
             JumpToLedge();
         else
             JumpOff();
