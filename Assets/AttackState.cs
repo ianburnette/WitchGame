@@ -5,8 +5,12 @@ using UnityEngine;
 public class AttackState : MonoBehaviour
 {
     [SerializeField] private PlayerAttack atk;
-    public void FinishedAttack(int attackNumber)
+    public Animator anim;
+
+    public void FinishedAttack(int attackNumber) => atk.FinishedAtk(attackNumber);
+
+    public void GrabBroom(int state)
     {
-        atk.FinishedAtk(attackNumber);
+        anim.SetLayerWeight(2, state == 1 ? 0 : 1);
     }
 }

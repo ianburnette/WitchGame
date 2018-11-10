@@ -16,5 +16,6 @@ public interface IWaterInteraction
 public enum WaterInteractionState
 {
     Floating,
-    Sinking
+    Sinking,
+    SwimmingAway
 }

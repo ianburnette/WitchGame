@@ -18,6 +18,9 @@ GameObject:
   - component: {fileID: 11400008}
   - component: {fileID: 11400010}
   - component: {fileID: 8200000}
+  - component: {fileID: 1885459284008690731}
+  - component: {fileID: 5521787499040371608}
+  - component: {fileID: 3226208656472642453}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Enemy
@@ -33,7 +36,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 100000}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 17.056547, y: 0.9851103, z: -29.016272}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1.2643434, z: 1}
   m_Children:
   - {fileID: 400004}
@@ -129,7 +132,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentSpeed: {x: 0, y: 0, z: 0}
   DistanceToTarget: 0
-  rigid: {fileID: 0}
+  maxMagnitude: 50
+  rb: {fileID: 5400000}
   relativePosition: {x: 0, y: 0, z: 0}
 --- !u!114 &11400002
 MonoBehaviour:
@@ -159,6 +163,9 @@ MonoBehaviour:
   attackBounds: {fileID: 100004}
   animatorController: {fileID: 0}
   moveToPointsScript: {fileID: 0}
+  wanderBasePosition: {x: 0, y: 0, z: 0}
+  wanderDistance: 10
+  wanderTime: 5
 --- !u!114 &11400008
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -188,6 +195,7 @@ MonoBehaviour:
   flashObject: {fileID: 0}
   spawnOnDeath:
   - {fileID: 100000, guid: de22137421d24f049b9b87e224ae7a0b, type: 3}
+  canDie: 0
   dead: 0
   flashing: 0
   respawnPos: {x: 0, y: 0, z: 0}
@@ -299,6 +307,75 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1885459284008690731
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73ad58e33a0cbd946afddab8c8339887, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rb: {fileID: 5400000}
+  motor: {fileID: 11400000}
+  ai: {fileID: 11400002}
+  health: {fileID: 11400008}
+  waterInteraction: {fileID: 5521787499040371608}
+  pickup: {fileID: 3226208656472642453}
+  currentState: 0
+  stunTime: 0
+  postHeldWakeTime: 0
+--- !u!114 &5521787499040371608
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f172c119420114a4ea01a64cc59e8b3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  offset: 0
+  resetTime: -1
+  sinkSpeed: 0
+  sinkForce: 0
+  waterEntranceSpeedDamping: 0
+  waterDrag: 4
+  waterAngularDrag: 3
+  baseDrag: 0.1
+  baseAngularDrag: 0.1
+  pickup: {fileID: 3226208656472642453}
+  motor: {fileID: 11400000}
+--- !u!114 &3226208656472642453
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96f5d2a063136416994637acdf5307c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weight: 0
+  inCloud: 0
+  cloudUpForce: 0
+  rb: {fileID: 5400000}
+  baseDrag: 0.1
+  cloudDrag: 0
+  snapDrag: 0
+  baseAngularDrag: 0
+  cloudAngularDrag: 0
+  dragThreshold: 3
+  snapForce: 0
+  maxMagnitude: 0
+  <SnapTargetPos>k__BackingField: {x: 0, y: 0, z: 0}
 --- !u!1 &100002
 GameObject:
   m_ObjectHideFlags: 0

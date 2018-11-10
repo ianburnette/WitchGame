@@ -151,9 +151,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.035793304
-  m_TransitionOffset: 0.000005722035
-  m_ExitTime: 0.9712374
+  m_TransitionDuration: 0.1106714
+  m_TransitionOffset: 0
+  m_ExitTime: 0.9105467
   m_HasExitTime: 1
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
@@ -285,9 +285,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0
-  m_TransitionOffset: 0.023795092
-  m_ExitTime: 1
+  m_TransitionDuration: 0.019551277
+  m_TransitionOffset: 0.00022856271
+  m_ExitTime: 0.95655274
   m_HasExitTime: 1
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
@@ -528,9 +528,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0
+  m_TransitionDuration: 0.014238358
   m_TransitionOffset: 0
-  m_ExitTime: 1
+  m_ExitTime: 0.97371376
   m_HasExitTime: 1
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
@@ -553,9 +553,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.048231244
-  m_TransitionOffset: 0
-  m_ExitTime: 0.93875426
+  m_TransitionDuration: 0.018627524
+  m_TransitionOffset: 0.5245769
+  m_ExitTime: 0.97618103
   m_HasExitTime: 1
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
@@ -656,9 +656,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.044388592
-  m_TransitionOffset: 0
-  m_ExitTime: 0.93510365
+  m_TransitionDuration: 0.03592658
+  m_TransitionOffset: 0.13112509
+  m_ExitTime: 0.95
   m_HasExitTime: 1
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
@@ -765,7 +765,7 @@ AnimatorStateTransition:
   m_TransitionOffset: 0
   m_ExitTime: 0
   m_HasExitTime: 0
-  m_HasFixedDuration: 1
+  m_HasFixedDuration: 0
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 0
@@ -1316,6 +1316,32 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
+--- !u!1102 &1102951740987531458
+AnimatorState:
+  serializedVersion: 5
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: BroomAttack1
+  m_Speed: 1
+  m_CycleOffset: 0
+  m_Transitions: []
+  m_StateMachineBehaviours: []
+  m_Position: {x: 50, y: 50, z: 0}
+  m_IKOnFeet: 0
+  m_WriteDefaultValues: 1
+  m_Mirror: 0
+  m_SpeedParameterActive: 0
+  m_MirrorParameterActive: 0
+  m_CycleOffsetParameterActive: 0
+  m_TimeParameterActive: 0
+  m_Motion: {fileID: 7400000, guid: 78a50042b38e03f45afd5d93e409eccc, type: 2}
+  m_Tag: 
+  m_SpeedParameter: 
+  m_MirrorParameter: 
+  m_CycleOffsetParameter: 
+  m_TimeParameter: 
 --- !u!1102 &1102954739954811098
 AnimatorState:
   serializedVersion: 5
@@ -1417,6 +1443,9 @@ AnimatorStateMachine:
   - serializedVersion: 1
     m_State: {fileID: 1102790175814699348}
     m_Position: {x: 482.35645, y: 266.8099, z: 0}
+  - serializedVersion: 1
+    m_State: {fileID: 1102951740987531458}
+    m_Position: {x: 517.35645, y: 331.8099, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions:
   - {fileID: 1101696461944093250}

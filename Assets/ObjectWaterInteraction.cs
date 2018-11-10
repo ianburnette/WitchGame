@@ -18,15 +18,21 @@ public class ObjectWaterInteraction : MonoBehaviour, IWaterInteraction
     
     void OnEnable() => rb = GetComponent<Rigidbody>();
     
-    public WaterInteractionState OnWaterEnter()
+    public virtual WaterInteractionState OnWaterEnter()
     {
-        rb.drag = waterDrag;
-        rb.angularDrag = waterAngularDrag;
-        rb.velocity = rb.velocity / waterEntranceSpeedDamping;
+        SetRigidbodyValues(inWater: true);
         var waterInteractionState = GetWaterInteractionState(pickup.Weight);
         if (waterInteractionState == WaterInteractionState.Sinking)
             StartCoroutine(ResetObjectInWater());
-        return GetWaterInteractionState(pickup.Weight);  
+        return waterInteractionState;  
+    }
+
+    internal void SetRigidbodyValues(bool inWater)
+    {
+        rb.drag = inWater ? waterDrag : baseDrag;
+        rb.angularDrag = inWater ? waterAngularDrag : baseAngularDrag;
+        rb.velocity = inWater ? rb.velocity / waterEntranceSpeedDamping : rb.velocity;
+        sinkForce = inWater ? sinkForce : 0;
     }
 
     WaterInteractionState GetWaterInteractionState(ObjectWeight pickupWeight) => 
@@ -49,10 +55,5 @@ public class ObjectWaterInteraction : MonoBehaviour, IWaterInteraction
         sinkForce -= sinkSpeed * Time.deltaTime;
     }
 
-    public void OnWaterExit()
-    {
-        rb.drag = baseDrag;
-        rb.angularDrag = baseAngularDrag;
-        sinkForce = 0;
-    }
+    public void OnWaterExit() => SetRigidbodyValues(inWater: false);
 }

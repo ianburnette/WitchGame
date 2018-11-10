@@ -71,7 +71,6 @@ public class PlayerAttack : MonoBehaviour {
                     ResetAllAttacks();
                 break;
             case 3:
-                thirdAtkFinished = true;
                 ResetAllAttacks();
                 break;
         }
@@ -79,6 +78,7 @@ public class PlayerAttack : MonoBehaviour {
 
     private void ResetAllAttacks()
     {
+        anim.SetLayerWeight(2, 1);
         anim.SetBool(FirstAttack, false);
         anim.SetBool(SecondAttack, false);
         anim.SetBool(ThirdAttack, false);

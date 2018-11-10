@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Cinemachine;
 
 //simple "platformer enemy" AI
 [RequireComponent(typeof(CharacterMotor))]
@@ -21,7 +22,6 @@ public class EnemyAI : MonoBehaviour
 	public GameObject sightBounds;						//trigger for sight bounds
 	public GameObject attackBounds;						//trigger for attack bounds (player is hurt when they enter these bounds)
 	public Animator animatorController;					//object which holds the animator for this enem
-	public MoveToPoints moveToPointsScript;				//if you've attached this script, drag the component here
 
 	private TriggerParent sightTrigger;
 	private TriggerParent attackTrigger;
@@ -29,66 +29,79 @@ public class EnemyAI : MonoBehaviour
 	private CharacterMotor characterMotor;
 	private DealDamage dealDamage;
 
+	[SerializeField] Vector3 wanderBasePosition;
+	[SerializeField] float wanderDistance;
+	[SerializeField] float wanderTime;
+	bool wander = true;
+	public Vector3 targetPosition;
+	[SerializeField] float wanderStopDistance;
+	
+	public bool Flee
+	{
+		set
+		{
+			sightTrigger.enabled = false;
+			attackTrigger.enabled = false;
+			chase = false;
+		}
+	}
 
 	//setup
 	void Awake()
 	{
 		characterMotor = GetComponent<CharacterMotor>();
 		dealDamage = GetComponent<DealDamage>();
-		//avoid setup errors
-		if(tag != "Enemy")
-		{
-			tag = "Enemy";
-			Debug.LogWarning("'EnemyAI' script attached to object without 'Enemy' tag, it has been assign automatically", transform);
-		}
 
-		if(sightBounds)
-		{
-			sightTrigger = sightBounds.GetComponent<TriggerParent>();
-			if(!sightTrigger)
-				Debug.LogError("'TriggerParent' script needs attaching to enemy 'SightBounds'", sightBounds);
-		}
-		if(!sightBounds)
-			Debug.LogWarning("Assign a trigger with 'TriggerParent' script attached, to 'SightBounds' or enemy will not be able to see", transform);
-
-		if(attackBounds)
-		{
-			attackTrigger = attackBounds.GetComponent<TriggerParent>();
-			if(!attackTrigger)
-				Debug.LogError("'TriggerParent' script needs attaching to enemy 'attackBounds'", attackBounds);
-		}
-		else
-			Debug.LogWarning("Assign a trigger with 'TriggerParent' script attached, to 'AttackBounds' or enemy will not be able to attack", transform);
+		if (sightBounds) sightTrigger = sightBounds.GetComponent<TriggerParent>();
+		if(attackBounds) attackTrigger = attackBounds.GetComponent<TriggerParent>();
+		wanderBasePosition = transform.position;
+		InvokeRepeating(nameof(Wander), 0, wanderTime);
 	}
 
+	void OnDrawGizmos()
+	{
+		Gizmos.color = Color.red;
+		Gizmos.DrawSphere(targetPosition, .3f);
+	}
+
+	void Wander()
+	{
+		var pos = wanderBasePosition + RandomPosition(wanderDistance);
+		Physics.Raycast(wanderBasePosition, pos, out var hit);
+		if (hit.transform == null)
+			targetPosition = pos;
+		else
+			Wander();
+	}
+
+	Vector3 RandomPosition(float range) => new Vector3(RandomPoint(range), RandomPoint(range), RandomPoint(range));
+
+	float RandomPoint(float range) => Random.Range(-range, range); 
+	
 	void Update()
 	{
-		//chase
 		if (sightTrigger && sightTrigger.colliding && chase && sightTrigger.hitObject != null && sightTrigger.hitObject.activeInHierarchy)
 		{
+			transform.LookAt(sightTrigger.hitObject.transform);
 			characterMotor.MoveTo (sightTrigger.hitObject.transform.position, acceleration, chaseStopDistance, ignoreY);
-			//nofity animator controller
-			if(animatorController)
-				animatorController.SetBool("Moving", true);
-			//disable patrol behaviour
-			if(moveToPointsScript)
-				moveToPointsScript.enabled = false;
+			if(animatorController) animatorController.SetBool("Moving", true);
+			wander = false;
 		}
 		else
 		{
-			//notify animator
-			if(animatorController)
-				animatorController.SetBool("Moving", false);
-			//enable patrol behaviour
-			if(moveToPointsScript)
-				moveToPointsScript.enabled = true;
+			if(animatorController) animatorController.SetBool("Moving", false);
+			wander = true;
 		}
 
-		//attack
+		if (wander)
+		{
+			transform.LookAt(targetPosition);
+			characterMotor.MoveTo(targetPosition, acceleration, wanderStopDistance, ignoreY);
+		}
+
 		if (attackTrigger && attackTrigger.collided)
 		{
 			dealDamage.Attack(attackTrigger.hitObject, attackDmg, pushHeight, pushForce);
-			//notify animator controller
 			if(animatorController)
 				animatorController.SetBool("Attacking", true);
 		}
@@ -102,7 +115,6 @@ public class EnemyAI : MonoBehaviour
 		characterMotor.RotateToVelocity (rotateSpeed, ignoreY);
 	}
 
-	//bounce player when they land on this enemy
 	public void BouncedOn()
 	{
 		if(!playerWalkMove)
@@ -114,7 +126,5 @@ public class EnemyAI : MonoBehaviour
 			var bounceMultiplier = new Vector3(0f, 1.5f, 0f) * playerWalkMove.onEnemyBounce;
 			playerWalkMove.BounceOnEnemy (bounceForce + bounceMultiplier);
 		}
-		else
-			Debug.LogWarning("'Player' tagged object landed on enemy, but without playerMove script attached, is unable to bounce");
 	}
 }

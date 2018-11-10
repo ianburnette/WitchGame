@@ -19,6 +19,8 @@ public class Health : MonoBehaviour
 	public Transform flashObject;					//object to flash upon receiving damage (ie: a child mesh). If left blank it defaults to this object.
 	public GameObject[] spawnOnDeath;				//objects to spawn upon death of this object (ie: a particle effect or a coin)
 
+	[SerializeField] bool canDie = false;
+	
 	[HideInInspector]
 	public bool dead, flashing;
 	[HideInInspector]
@@ -78,6 +80,7 @@ public class Health : MonoBehaviour
 		}
 
 		//are we dead?
+		if (!canDie) return;
 		dead = (currentHealth <= 0) ? true : false;
 		if (dead)
 			Death();

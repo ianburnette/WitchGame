@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Cinemachine;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -19,9 +20,7 @@ public class PlayerWalkMove : MonoBehaviour, ICloudInteractible {
 	[Header("Jumping Behavior")]
 	[SerializeField] float jumpForce = 13f;
 	[SerializeField] float jumpReleaseYVelocity = 0.2f;
-	[SerializeField] float slowFallSpeed;
-	[SerializeField] float slowFallDecel;
-	[SerializeField] float maxYvelocityBeforeSlowing;
+	[SerializeField] float extraGravity;
 	
 	[Header("Jump Leniency")]
 	[SerializeField] private bool recentlyGrounded;
@@ -52,7 +51,6 @@ public class PlayerWalkMove : MonoBehaviour, ICloudInteractible {
 	[SerializeField] float maxWalkableSlopeAngle = 60, slideForce = 35;
 	[SerializeField] float inputToSlopeAngle;
 	[SerializeField] AnimationCurve slopeMovementAdjustmentCurve;
-	[SerializeField] float slopeMovementMultiplier;
 
 	[Header("Audio")]
 	[SerializeField] AudioSource audioSource;
@@ -140,10 +138,11 @@ public class PlayerWalkMove : MonoBehaviour, ICloudInteractible {
 		MoveBase.characterMotor.MoveTo(moveDirection,
 		                               GetMoveSpeed(), movementSensitivity,
 		                               true);
-		if (!inCloud) {
+		if (!inCloud)
 			MoveBase.characterMotor.MoveRelativeToGround(StickToGround());
-			MoveBase.characterMotor.MoveRelativeToGround(SlopeCorrection());
-		}
+
+		//if (!currentlyGrounded)
+		//	EnactExtraGravity();
 
 		if (rotateSpeed != 0 && MoveBase.MovementRelativeToCamera(currentInputVector).magnitude != 0)
 			MoveBase.characterMotor.RotateToVelocity(currentlyGrounded ? rotateSpeed : airRotateSpeed, true);
@@ -151,23 +150,44 @@ public class PlayerWalkMove : MonoBehaviour, ICloudInteractible {
 		                                    maxSpeed + movingObjSpeed.magnitude, false);
 	}
 
+	void EnactExtraGravity()
+	{
+		if (MoveBase.rigid.velocity.y < 0)
+			MoveBase.characterMotor.MoveVertical(Vector3.down * extraGravity * Time.deltaTime);
+	}
+
 	private float GetMoveSpeed() => currentlyGrounded ? MovementSpeedOnGround() : movementSpeedInAir;
 
 	float MovementSpeedOnGround()
 	{
-		inputToSlopeAngle = Vector3.Angle(inputRelativeToWorld, SlopeCorrection());
-		//inputRelativeToSlope = Vector3.Reflect(inputRelativeToWorld, MoveBase.slopeNormal);
+		var slopeUp = SlopeUp();
+		Debug.DrawRay(transform.position, slopeUp, Color.cyan);
+		inputToSlopeAngle = Vector3.Angle(inputRelativeToWorld, slopeUp);
+		
+		inputRelativeToSlope = Vector3.ProjectOnPlane(inputRelativeToWorld, MoveBase.slopeNormal);
+		Debug.DrawRay(transform.position, inputRelativeToSlope, Color.red);
 		//slopeInputToSlopeAngle = Vector3.Angle(inputRelativeToSlope, SlopeCorrection());
 		if (inputRelativeToWorld.magnitude != 0 && inputToSlopeAngle < 45) {
 			animationCurveResult = slopeMovementAdjustmentCurve.Evaluate(inputToSlopeAngle);
 		} else
 			animationCurveResult = 1;
 
-		slopeAdjustedMovementSpeed = GetMovementSpeedOnGround() * (animationCurveResult * slopeMovementMultiplier);
+		slopeAdjustedMovementSpeed = GetMovementSpeedOnGround() * animationCurveResult;
 		return slopeAdjustedMovementSpeed;
 	}
 
 	float GetMovementSpeedOnGround() => Attacking ? attackingSpeed : movementSpeedOnGround;
+	
+	Vector3 SlopeUp()
+	{
+		return MoveBase.slopeAngle > maxWalkableSlopeAngle
+			? SlopeCorrection(slideForce)
+			: (SlopeCorrection(slopeCorrectionAmount));
+	}
+
+	Vector3 StickToGround() => -MoveBase.slopeNormal * stickToGroundForce;
+	Vector3 SlopeCorrection(float force) => Vector3.Cross(MoveBase.slopeNormal, SlopeTangent() * force);
+	Vector3 SlopeTangent() => new Vector3(-MoveBase.slopeNormal.z, 0, MoveBase.slopeNormal.x);
 
 	public void AccountForCloudWalking() {
 		MoveBase.characterMotor.MoveTo(transform.position + Vector3.up,
@@ -206,13 +226,6 @@ public class PlayerWalkMove : MonoBehaviour, ICloudInteractible {
 		//                           .1f);
 	}
 
-	Vector3 SlopeCorrection() => MoveBase.slopeAngle > maxWalkableSlopeAngle ?
-		                             SlopeCorrection(slideForce) :
-		                             (SlopeCorrection(slopeCorrectionAmount));
-
-	Vector3 StickToGround() => -MoveBase.slopeNormal * stickToGroundForce;
-	Vector3 SlopeCorrection(float force) => Vector3.Cross(MoveBase.slopeNormal, SlopeTangent() * force);
-	Vector3 SlopeTangent() => new Vector3(-MoveBase.slopeNormal.z, 0, MoveBase.slopeNormal.x);
 
 	private void JumpPressed() {
 		if (!EligibleForJummp()) return;
