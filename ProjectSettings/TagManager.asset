@@ -16,6 +16,7 @@ TagManager:
   - Character 1
   - Character 2
   - DoNotOcclude
+  - Interactable
   layers:
   - Default
   - TransparentFX

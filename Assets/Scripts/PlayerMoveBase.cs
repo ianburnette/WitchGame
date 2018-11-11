@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Cinemachine;
 using JetBrains.Annotations;
 using RootMotion.FinalIK;
 using UnityEngine;
@@ -40,6 +41,14 @@ public class PlayerMoveBase : MonoBehaviour {
     public bool currentlyGrounded;
     public GroundType myGroundType;
 
+    [Header("Slope Matching")] 
+    [SerializeField] float slopeMatchSpeed;
+    public bool matchSlope;
+    [SerializeField] Transform model;
+    [SerializeField] Vector3 upVector;
+    [SerializeField] float slopeLookForwardSpeed;
+    [SerializeField] bool lookForward;
+
     void OnEnable() {
         col = GetComponent<Collider>();
         groundInfo = new GroundHitInfo[floorCheckers.Length];
@@ -49,6 +58,8 @@ public class PlayerMoveBase : MonoBehaviour {
     {
         rigid.WakeUp();
         rbVelMagnitude = rigid.velocity.magnitude;
+        if (matchSlope)
+            MatchSlope();
     }
 
     public bool IsGrounded(float distanceToCheck, LayerMask groundMask) {
@@ -72,15 +83,15 @@ public class PlayerMoveBase : MonoBehaviour {
 
     public int PointsOfContact() => groundInfo.Count(t => t != null);
 
-    /*
-    void OnDrawGizmos() {
-        Gizmos.color = Color.green;
-        if (groundInfo.Length == 0) return;
-        foreach (var info in groundInfo)
-            if (groundInfo!=null && info!=null)
-                Gizmos.DrawSphere(info.position, .2f);
-    }
-    */
+    
+   //void OnDrawGizmos() {
+   //    Gizmos.color = Color.green;
+   //    if (groundInfo.Length == 0) return;
+   //    foreach (var info in groundInfo)
+   //        if (groundInfo!=null && info!=null)
+   //            Gizmos.DrawSphere(info.position, .2f);
+   //}
+    
 
     [CanBeNull]
     public float DistanceToGround() {
@@ -132,4 +143,26 @@ public class PlayerMoveBase : MonoBehaviour {
     }
 
     void LockCamNow() => camReferenceTransform.LockToPlayer = false;
+
+    public void MatchSlopeAngle(bool state, bool onBack=false, float speed=0, bool lookForward=false)
+    {
+        matchSlope = state;
+        slopeMatchSpeed = speed;
+        upVector = onBack ? model.transform.forward : model.transform.up;
+        if (!state)
+        {
+            model.localRotation = Quaternion.Euler(Vector3.zero);
+            transform.rotation =
+                Quaternion.Euler(0, transform.eulerAngles.y, 0);
+        }
+        this.lookForward = lookForward;
+    }
+
+    void MatchSlope()
+    {
+        var newRotation = Quaternion.FromToRotation(upVector, slopeNormal) * transform.rotation; 
+        model.rotation = Quaternion.Lerp(model.rotation, newRotation, slopeMatchSpeed * Time.deltaTime);
+        if (lookForward)
+            characterMotor.RotateToVelocity(slopeLookForwardSpeed, false);
+    }
 }

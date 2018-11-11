@@ -107,6 +107,11 @@
     <Compile Include="Assets\Scripts\TriggerParent.cs" />
     <Compile Include="Assets\Scripts\Water.cs" />
     <Compile Include="Assets\Scripts\Weapon.cs" />
+    <Compile Include="Assets\SomethingEnterTrigger.cs" />
+    <Compile Include="Assets\ThrowAreaDetection.cs" />
+    <Compile Include="Assets\Umbrella.cs" />
+    <Compile Include="Assets\WaterInteraction.cs" />
+    <None Include="Assets\PostProcessing\Resources\Shaders\DepthOfField.shader" />
     <None Include="Assets\Models\Environment\Voxels\MagicaVoxel-0.99.1-alpha-mac\shader\wave.txt" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface-Mobile.shader" />
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />

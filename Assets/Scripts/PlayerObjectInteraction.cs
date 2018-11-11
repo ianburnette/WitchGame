@@ -123,8 +123,8 @@ public class PlayerObjectInteraction : MonoBehaviour {
 		var rb = ResetAndReturnPickup();
 		if (rb == null) return;
 		var vel = moveBase.rigid.velocity.magnitude > throwThreshold ? throwForce : dropForce;
-		ThrowOrDrop(rb, vel);
-		SnapToSlotIfPresent();
+		if (!SnapToSlotIfPresent())
+			ThrowOrDrop(rb, vel);
 		CleanUpCurrentlyHeld();
 	}
 
@@ -143,10 +143,11 @@ public class PlayerObjectInteraction : MonoBehaviour {
 			rb.AddRelativeForce(throwOrDropForce + SlotForce(), ForceMode.VelocityChange);
 	}
 
-	private void SnapToSlotIfPresent()
+	private bool SnapToSlotIfPresent()
 	{
-		if (currentZone != null) 
-			CurrentlyHeldObject.GetComponent<Pickup>().SnapTo(currentZone);
+		if (currentZone == null) return false;
+		CurrentlyHeldObject.GetComponent<Pickup>().SnapTo(currentZone);
+		return true;
 	}
 
 	private void ThrowToTarget()

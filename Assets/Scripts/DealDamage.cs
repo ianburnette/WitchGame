@@ -2,7 +2,7 @@
 
 public class DealDamage : MonoBehaviour
 {
-	private Health health;
+	Health health;
 
 	public void Attack(GameObject victim, int dmg, float pushHeight, float pushForce)
 	{
@@ -21,4 +21,6 @@ public class DealDamage : MonoBehaviour
 		if(health && !health.flashing)
 			health.currentHealth -= dmg;
 	}
+
+	public void Interact(GameObject toInteractWith) => toInteractWith.GetComponent<IInteractable>().Interact();
 }

@@ -24,6 +24,8 @@ public class PlayerHoverMove : MonoBehaviour {
     [SerializeField] float minYrotation = -1f;
     [SerializeField] float maxYrotation = 1f;
     [SerializeField] float yMultiplier = 1f;
+    [SerializeField] float slopeMatchSpeed = 2f;
+
 
     [Header("Class References")]
     [SerializeField] PlayerMoveBase MoveBase;
@@ -35,12 +37,14 @@ public class PlayerHoverMove : MonoBehaviour {
         PlayerInput.OnBroom += BroomPressed;
         MoveBase.rigid.drag = rigidbodyDrag;
         MoveBase.animator.SetBool("RidingBroom", true);
+        MoveBase.MatchSlopeAngle(true, onBack:false,speed:slopeMatchSpeed);
     }
 
     void OnDisable() {
         PlayerInput.OnJump -= JumpPressed;
         PlayerInput.OnMove -= Move;
         PlayerInput.OnBroom -= BroomPressed;
+        MoveBase.MatchSlopeAngle(false);
     }
 
     void JumpPressed() => MoveBase.movementStateMachine.NormalMovement();
@@ -63,6 +67,4 @@ public class PlayerHoverMove : MonoBehaviour {
                                                          movementSpeed,
                                                          movementSensitivity,
                                                          ignoreY:true);
-
-
 }

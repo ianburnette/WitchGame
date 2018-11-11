@@ -53,7 +53,13 @@ public class PlayerAttack : MonoBehaviour {
     }
 
     public void HitOther(Collider other) {
-        damage.Attack(other.gameObject, 1, pushHeight, pushForce);
+        if (other.CompareTag("Enemy"))
+            damage.Attack(other.gameObject, 1, pushHeight, pushForce);
+        else if (other.CompareTag("Interactable"))
+            damage.Interact(other.gameObject);
+        else
+            Debug.LogError("Not prepared to hit object with tag " + other.tag);
+            throw new System.NotImplementedException();
     }
 
     public void FinishedAtk(int attackNumber)

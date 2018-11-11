@@ -49,9 +49,17 @@ public class PlayerWalkMove : MonoBehaviour, ICloudInteractible {
 	[SerializeField] float slopeMovementCorrectionAmount;
 	[SerializeField] float stickToGroundForce;
 	[SerializeField] float maxWalkableSlopeAngle = 60, slideForce = 35;
-	[SerializeField] float inputToSlopeAngle;
-	[SerializeField] AnimationCurve slopeMovementAdjustmentCurve;
+	[SerializeField] Vector3 slopeUp;
+	[SerializeField] Vector3 slopeDown;
+	[SerializeField] float slopeAngle;
+	[SerializeField] float slidingSlopeMatchSpeed;
 
+	[Header("Umbrella Behavior")]
+	[SerializeField] bool canReleaseToResetVelocity;
+	public bool CanReleaseToResetVelocity {
+		get { return canReleaseToResetVelocity; }
+		set { canReleaseToResetVelocity = value; }}
+	
 	[Header("Audio")]
 	[SerializeField] AudioSource audioSource;
 
@@ -78,7 +86,7 @@ public class PlayerWalkMove : MonoBehaviour, ICloudInteractible {
 	Vector2 currentInputVector;
 	Vector3 movementDirectionRelativeToCamera, moveDirection, movingObjSpeed;
 	ICloudInteractible cloudInteractibleImplementation;
-	
+
 	public bool Attacking
 	{
 		get { return attacking; }
@@ -100,18 +108,19 @@ public class PlayerWalkMove : MonoBehaviour, ICloudInteractible {
 	void OnDisable() {
 		PlayerInput.OnJump -= JumpPressed;
 		PlayerInput.OnMove -= Move;
+		if (!canReleaseToResetVelocity)
+			canReleaseToResetVelocity = true;
 	}
 
 	void Move(Vector2 inputVector) {
-		moveDirection = transform.position +
-		                MoveBase.MovementRelativeToCamera(inputVector);
-
+		moveDirection = transform.position + MoveBase.MovementRelativeToCamera(inputVector);
 		currentInputVector = inputVector;
 	}
 
 	void FixedUpdate() {
 		if (InCloud) AccountForCloudWalking();
 		CalculateGroundedState();
+		CalculateSlope();
 		UpdatePlayerMovement();
 		if (MoveBase.animator) Animate();
 	}
@@ -122,6 +131,14 @@ public class PlayerWalkMove : MonoBehaviour, ICloudInteractible {
 		currentlyGrounded = InCloud ? InCloud : MoveBase.IsGrounded(MoveBase.col.bounds.extents.y, groundMask);
 		if (!currentlyGrounded && tempGroundedState)
 			EnactJumpLeniency();
+		if (currentlyGrounded && !canReleaseToResetVelocity)
+			canReleaseToResetVelocity = true;
+	}
+
+	void CalculateSlope()
+	{
+		slopeUp = SlopeUp();
+		slopeDown = -slopeUp;
 	}
 
 	private void EnactJumpLeniency()
@@ -135,9 +152,13 @@ public class PlayerWalkMove : MonoBehaviour, ICloudInteractible {
 
 	void UpdatePlayerMovement() {
 		inputRelativeToWorld = MoveBase.MovementRelativeToCamera(currentInputVector);
+		//Debug.DrawRay(transform.position, inputRelativeToWorld, Color.green);
+		inputRelativeToSlope = InputAdjustedForCurrentSlope(inputRelativeToWorld);
+		//Debug.DrawRay(transform.position, inputRelativeToSlope, Color.red);
+		moveDirection = transform.position + inputRelativeToSlope;
 		MoveBase.characterMotor.MoveTo(moveDirection,
 		                               GetMoveSpeed(), movementSensitivity,
-		                               true);
+		                               false);
 		if (!inCloud)
 			MoveBase.characterMotor.MoveRelativeToGround(StickToGround());
 
@@ -156,34 +177,31 @@ public class PlayerWalkMove : MonoBehaviour, ICloudInteractible {
 			MoveBase.characterMotor.MoveVertical(Vector3.down * extraGravity * Time.deltaTime);
 	}
 
-	private float GetMoveSpeed() => currentlyGrounded ? MovementSpeedOnGround() : movementSpeedInAir;
-
-	float MovementSpeedOnGround()
-	{
-		var slopeUp = SlopeUp();
-		Debug.DrawRay(transform.position, slopeUp, Color.cyan);
-		inputToSlopeAngle = Vector3.Angle(inputRelativeToWorld, slopeUp);
-		
-		inputRelativeToSlope = Vector3.ProjectOnPlane(inputRelativeToWorld, MoveBase.slopeNormal);
-		Debug.DrawRay(transform.position, inputRelativeToSlope, Color.red);
-		//slopeInputToSlopeAngle = Vector3.Angle(inputRelativeToSlope, SlopeCorrection());
-		if (inputRelativeToWorld.magnitude != 0 && inputToSlopeAngle < 45) {
-			animationCurveResult = slopeMovementAdjustmentCurve.Evaluate(inputToSlopeAngle);
-		} else
-			animationCurveResult = 1;
-
-		slopeAdjustedMovementSpeed = GetMovementSpeedOnGround() * animationCurveResult;
-		return slopeAdjustedMovementSpeed;
-	}
+	float GetMoveSpeed() => currentlyGrounded ? GetMovementSpeedOnGround() : movementSpeedInAir;
 
 	float GetMovementSpeedOnGround() => Attacking ? attackingSpeed : movementSpeedOnGround;
-	
-	Vector3 SlopeUp()
+	Vector3 InputAdjustedForCurrentSlope(Vector3 input)
 	{
-		return MoveBase.slopeAngle > maxWalkableSlopeAngle
+		var inputOnSlope = Vector3.ProjectOnPlane(input, MoveBase.slopeNormal);
+		if (MoveBase.slopeAngle > maxWalkableSlopeAngle)
+		{
+			MoveBase.animator.SetBool("Sliding", true);
+			MoveBase.MatchSlopeAngle(state: true, onBack: true, speed: slidingSlopeMatchSpeed, lookForward: true);
+			return inputOnSlope - slopeDown;
+		}
+
+		if (MoveBase.animator.GetBool("Sliding"))
+		{
+			MoveBase.animator.SetBool("Sliding", false);
+			MoveBase.MatchSlopeAngle(false);
+		}
+		return inputOnSlope;
+	}
+
+	Vector3 SlopeUp() =>
+		MoveBase.slopeAngle > maxWalkableSlopeAngle
 			? SlopeCorrection(slideForce)
 			: (SlopeCorrection(slopeCorrectionAmount));
-	}
 
 	Vector3 StickToGround() => -MoveBase.slopeNormal * stickToGroundForce;
 	Vector3 SlopeCorrection(float force) => Vector3.Cross(MoveBase.slopeNormal, SlopeTangent() * force);
@@ -212,6 +230,7 @@ public class PlayerWalkMove : MonoBehaviour, ICloudInteractible {
 	}
 
 
+
 	void CloudDamp() => MoveBase.OverrideYVelocity(0);
 
 	void Animate() {
@@ -237,8 +256,9 @@ public class PlayerWalkMove : MonoBehaviour, ICloudInteractible {
 		(currentlyGrounded && MoveBase.SlopeAngle() < maxWalkableSlopeAngle) ||
 		(recentlyGrounded && recentValidSlopeAngle);
 
-	void JumpReleased() {
-		if (MoveBase.rigid.velocity.y > jumpReleaseYVelocity)
+	void JumpReleased()
+	{
+		if (MoveBase.rigid.velocity.y > jumpReleaseYVelocity && CanReleaseToResetVelocity)
 			MoveBase.OverrideYVelocity(jumpReleaseYVelocity);
 	}
 

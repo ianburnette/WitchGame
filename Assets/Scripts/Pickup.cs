@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using UnityEditor.PackageManager;
 using UnityEngine;
 
@@ -23,6 +24,10 @@ public class Pickup : MonoBehaviour, ICloudInteractible, IVelocityLimiter {
 
     [SerializeField] private float snapForce;
     [SerializeField] float maxMagnitude;
+
+    [Header("Easing")] 
+    [SerializeField] GoEaseType myEaseType;
+    [SerializeField] float throwTime;
     
     public bool InCloud { get { return inCloud; }
         set {
@@ -64,15 +69,30 @@ public class Pickup : MonoBehaviour, ICloudInteractible, IVelocityLimiter {
 
     private void Snap()
     {
-        rb.AddForce((SnapTargetPos - transform.position) * snapForce);
-        rb.drag = Vector3.Distance(SnapTargetPos, transform.position) < dragThreshold ? snapDrag : baseDrag;
+        //rb.AddForce((SnapTargetPos - transform.position) * snapForce);
+        //rb.drag = Vector3.Distance(SnapTargetPos, transform.position) < dragThreshold ? snapDrag : baseDrag;
     }
 
     public void EnterCloud() {
         if (!inCloud) CloudDamp();
     }
 
-    public void SnapTo(ObjectSnapZone zone) => SnapTargetPos = zone.CurrentSnapSlot().pos + zone.transform.position;
+    public void SnapTo(ObjectSnapZone zone)
+    {
+        SnapTargetPos = zone.CurrentSnapSlot().pos + zone.transform.position;
+        var position = transform.position;
+        var points = new[]
+        {
+            position,
+            ((position + SnapTargetPos) / 2) + (Vector3.up * (Vector3.Distance(position, SnapTargetPos) / 2)),
+            SnapTargetPos
+        };
+        var path = new GoSpline(points);
+        var config = new GoTweenConfig();
+        config.positionPath(path, false);
+        config.easeType = myEaseType;
+        Go.to(transform, throwTime, config);
+    }
 
     public void StayInCloud() => InCloud = true;
     public void ExitCloud() => InCloud = false;
