@@ -126,7 +126,7 @@ public class Health : MonoBehaviour
 		foreach(var obj in spawnOnDeath)
 			Instantiate(obj, transform.position, Quaternion.Euler(Vector3.zero));
 	}
-
+	
 	//calculate impact damage on collision
 	void OnCollisionEnter(Collision col)
 	{

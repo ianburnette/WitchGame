@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using TMPro.EditorUtilities;
 using UnityEngine;
 
 public class PlayerGlideMove : MonoBehaviour {
@@ -14,10 +16,17 @@ public class PlayerGlideMove : MonoBehaviour {
     [SerializeField] float heightToSwitchToHover;
     [SerializeField] float heightToSwitchToWalking;
     [SerializeField] const float RigidbodyDrag = .5f;
+    
+    [Header("Crashing Behavior")]
+    [SerializeField] Vector2 crashForce;
+    [SerializeField] Collider crashTrigger;
+
+    [Header("Effects")] [SerializeField] TrailRenderer glideTrail;
 
     [Header("Class References")]
     [SerializeField] PlayerMoveBase MoveBase;
     [SerializeField] CharacterMotor characterMotor;
+    [SerializeField] DealDamage playerDealDamage;
 
     void OnEnable() {
         PlayerInput.OnBroom += JumpPressed;
@@ -25,11 +34,15 @@ public class PlayerGlideMove : MonoBehaviour {
         MoveBase.rigid.drag = RigidbodyDrag;
         MoveBase.animator.SetBool("RidingBroom", true);
         MoveBase.LockCamAndResetOnGround();
+        crashTrigger.enabled = true;
+        glideTrail.emitting = true;
     }
 
     void OnDisable() {
         PlayerInput.OnBroom -= JumpPressed;
         PlayerInput.OnMove -= Move;
+        crashTrigger.enabled = false;
+        glideTrail.emitting = false;
     }
 
     void FixedUpdate() => Glide();
@@ -55,5 +68,12 @@ public class PlayerGlideMove : MonoBehaviour {
                 (MoveBase.MovementRelativeToPlayerAndCamera(movement),
                  turnSpeed,
                  ignoreY: true);
+    }
+
+    public void SomethingEnteredTrigger(Collider other)
+    {
+        print("hit " + other.transform);
+        MoveBase.movementStateMachine.NormalMovement();
+        playerDealDamage.Attack(gameObject, 0, crashForce.y, crashForce.x, other.ClosestPoint(transform.position));
     }
 }

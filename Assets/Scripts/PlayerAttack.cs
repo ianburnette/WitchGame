@@ -12,6 +12,7 @@ public class PlayerAttack : MonoBehaviour {
     [SerializeField] int pushForce;
 
     [SerializeField] private PlayerWalkMove walkMove;
+    [SerializeField] Collider weaponCollider;
 
     private bool attacking;
     public bool firstAtkFinished, secondAtkFinished, thirdAtkFinished;
@@ -57,9 +58,14 @@ public class PlayerAttack : MonoBehaviour {
             damage.Attack(other.gameObject, 1, pushHeight, pushForce);
         else if (other.CompareTag("Interactable"))
             damage.Interact(other.gameObject);
+        else if (other.CompareTag("Environment"))
+            Debug.Log("hit environment - set up ik?");
+        else if (other.CompareTag("Untagged"))
+            Debug.Log("hit something untagged");
         else
-            Debug.LogError("Not prepared to hit object with tag " + other.tag);
-            throw new System.NotImplementedException();
+            Debug.LogError("Not prepared to hit object with tag " + other.tag + "...it's name is " +
+                           other.transform.name);
+            //throw new System.NotImplementedException();
     }
 
     public void FinishedAtk(int attackNumber)

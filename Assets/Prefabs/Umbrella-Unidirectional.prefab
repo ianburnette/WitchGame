@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1379492635}
   - component: {fileID: 1379492634}
   - component: {fileID: 1379492633}
-  m_Layer: 0
+  m_Layer: 18
   m_Name: folded
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -565,8 +565,9 @@ GameObject:
   - component: {fileID: 1444170724}
   - component: {fileID: 1444170723}
   - component: {fileID: 1444170722}
-  m_Layer: 0
-  m_Name: Umbrella
+  - component: {fileID: 5651051564949327642}
+  m_Layer: 18
+  m_Name: Umbrella-Unidirectional
   m_TagString: Interactable
   m_Icon: {fileID: 3443629218296621865, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -646,6 +647,23 @@ MonoBehaviour:
   dislodgeEaseType: 3
   dislodgeTime: 0.03
   halfwayYHeightAboveStart: 10
+  spinDirection: {x: 0, y: 0, z: 0}
+--- !u!54 &5651051564949327642
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4356230395967505645}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &6352987562351271306
 GameObject:
   m_ObjectHideFlags: 0
@@ -659,7 +677,7 @@ GameObject:
   - component: {fileID: 6352987562351271303}
   - component: {fileID: 6352987562351271304}
   - component: {fileID: 6352987562351271305}
-  m_Layer: 0
+  m_Layer: 18
   m_Name: pole
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1216,7 +1234,7 @@ MeshCollider:
   m_GameObject: {fileID: 6352987562351271306}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Convex: 0
   m_CookingOptions: 14
@@ -1234,8 +1252,8 @@ GameObject:
   - component: {fileID: 6352987562749876109}
   - component: {fileID: 6352987562749876110}
   - component: {fileID: 6352987562749876111}
-  - component: {fileID: 418856992}
-  m_Layer: 0
+  - component: {fileID: 2422311538254311055}
+  m_Layer: 18
   m_Name: expanded
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1775,7 +1793,7 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 14
   m_Mesh: {fileID: 0}
---- !u!114 &418856992
+--- !u!114 &2422311538254311055
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1784,7 +1802,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6352987562749876144}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5fb1e43d5ecba2d48af64dbd44ca5746, type: 3}
+  m_Script: {fileID: 11500000, guid: 69b02c10d11d3824fbdfecec0b6f970a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  umbrella: {fileID: 1444170722}
+  parent: {fileID: 1444170722}

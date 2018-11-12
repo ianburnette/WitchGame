@@ -25,6 +25,7 @@ public class Umbrella : MonoBehaviour, IInteractable
     [FormerlySerializedAs("dislogdeEaseType")] [SerializeField] GoEaseType dislodgeEaseType;
     [SerializeField] float dislodgeTime;
     [SerializeField] float halfwayYHeightAboveStart;
+    [SerializeField] Vector3 spinDirection;
 
     void Start()
     {
@@ -100,7 +101,7 @@ public class Umbrella : MonoBehaviour, IInteractable
         var config = new GoTweenConfig();
         config.positionPath(path, false);
         // TODO: put in directional sensitivity here
-        config.eulerAngles(new Vector3(0, 0, 360), true);
+        config.eulerAngles(spinDirection * 360, true);
         config.easeType = dislodgeEaseType;
         config.onComplete(_=>
         {

@@ -162,8 +162,8 @@ public class PlayerWalkMove : MonoBehaviour, ICloudInteractible {
 		if (!inCloud)
 			MoveBase.characterMotor.MoveRelativeToGround(StickToGround());
 
-		//if (!currentlyGrounded)
-		//	EnactExtraGravity();
+		if (!currentlyGrounded)
+			EnactExtraGravity();
 
 		if (rotateSpeed != 0 && MoveBase.MovementRelativeToCamera(currentInputVector).magnitude != 0)
 			MoveBase.characterMotor.RotateToVelocity(currentlyGrounded ? rotateSpeed : airRotateSpeed, true);
@@ -237,7 +237,7 @@ public class PlayerWalkMove : MonoBehaviour, ICloudInteractible {
 		smoothedPlanarVelocity = Mathf.Lerp(smoothedPlanarVelocity,
 		                                    MoveBase.PlanarVelocity().magnitude,
 		                                    movementSmoothingSpeed * Time.deltaTime);
-		MoveBase.animator.SetFloat("XVelocity", smoothedPlanarVelocity);
+		MoveBase.animator.SetFloat("XVelocity", currentlyGrounded ? smoothedPlanarVelocity : 0);
 		MoveBase.animator.SetBool("Grounded", currentlyGrounded);
 		MoveBase.animator.SetFloat("YVelocity", GetComponent<Rigidbody>().velocity.y);
 		//MoveBase.animator.SetFloat("XVelocity",

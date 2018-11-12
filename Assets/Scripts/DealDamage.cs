@@ -8,18 +8,31 @@ public class DealDamage : MonoBehaviour
 	{
 		health = victim.GetComponent<Health>();
 
-		Vector3 pushDir = (victim.transform.position - transform.position);
+		var pushDir = (victim.transform.position - transform.position);
 		pushDir.y = 0f;
 		pushDir.y = pushHeight * 0.1f;
-		if (victim.GetComponent<Rigidbody>() && !victim.GetComponent<Rigidbody>().isKinematic)
-		{
-			victim.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
-			victim.GetComponent<Rigidbody>().AddForce (pushDir.normalized * pushForce, ForceMode.VelocityChange);
-			victim.GetComponent<Rigidbody>().AddForce (Vector3.up * pushHeight, ForceMode.VelocityChange);
-		}
 
+		Push(victim, pushDir, new Vector2(pushForce, pushHeight));
+			
 		if(health && !health.flashing)
 			health.currentHealth -= dmg;
+	}
+
+	public void Attack(GameObject victim, int dmg, float pushHeight, float pushForce, Vector3 hitPosition)
+	{
+		var pushDir = -victim.transform.forward;
+		pushDir.y = pushHeight;
+
+		Push(victim, pushDir, new Vector2(pushForce, pushHeight));
+	}
+
+	void Push(GameObject pushTarget, Vector3 pushDirection, Vector2 pushForce)
+	{
+		var rb = pushTarget.GetComponent<Rigidbody>();
+		if (!rb || rb.isKinematic) return;
+		rb.velocity = new Vector3(0, 0, 0);
+		rb.AddForce (pushDirection.normalized * pushForce.x, ForceMode.VelocityChange);
+		rb.AddForce (Vector3.up * pushForce.y, ForceMode.VelocityChange);
 	}
 
 	public void Interact(GameObject toInteractWith) => toInteractWith.GetComponent<IInteractable>().Interact();
