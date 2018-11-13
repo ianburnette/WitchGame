@@ -283,7 +283,9 @@ public class PlayerWalkMove : MonoBehaviour, ICloudInteractible {
 	}
 
 	public void BounceOnEnemy(Vector3 bounceForce) {
-		MoveBase.rigid.velocity = new Vector3(MoveBase.rigid.velocity.x, 0f, MoveBase.rigid.velocity.z);
+		var velocity = MoveBase.rigid.velocity;
+		velocity = new Vector3(velocity.x, 0f, velocity.z);
+		MoveBase.rigid.velocity = velocity;
 		MoveBase.rigid.AddRelativeForce(bounceForce, ForceMode.Impulse);
 	}
 

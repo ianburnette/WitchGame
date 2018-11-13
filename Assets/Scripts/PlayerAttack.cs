@@ -12,6 +12,7 @@ public class PlayerAttack : MonoBehaviour {
     [SerializeField] int pushForce;
 
     [SerializeField] private PlayerWalkMove walkMove;
+    [SerializeField] MovementStateMachine stateMachine;
     [SerializeField] Collider weaponCollider;
 
     private bool attacking;
@@ -37,6 +38,7 @@ public class PlayerAttack : MonoBehaviour {
 
     public void AttackPressed()
     {
+        if (stateMachine.CurrentMovementState != MoveState.Walk || !walkMove.currentlyGrounded) return;
         attacking = true;
         walkMove.Attacking = true;
         if (thirdAtkFinished)

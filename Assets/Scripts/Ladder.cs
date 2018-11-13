@@ -17,7 +17,9 @@ public class Ladder : MonoBehaviour {
     }
 
     void OnDrawGizmos() {
-        Gizmos.DrawSphere(col.bounds.min, .3f);
-        Gizmos.DrawSphere(col.bounds.max, .3f);
+        Gizmos.color = Color.green;
+        Gizmos.DrawSphere(new Vector3(transform.position.x, col.bounds.min.y, transform.position.z), .3f);
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawSphere(new Vector3(transform.position.x, col.bounds.max.y, transform.position.z), .3f);
     }
 }

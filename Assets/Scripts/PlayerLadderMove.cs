@@ -32,21 +32,30 @@ public class PlayerLadderMove : MonoBehaviour {
     [Header("Class References")]
     [SerializeField] PlayerMoveBase MoveBase;
     [SerializeField] PlayerWalkMove playerWalkMove;
+    [SerializeField] float positionCorrectionSpeed;
 
     void OnEnable() {
         PlayerInput.OnMove += Move;
         PlayerInput.OnJump += Jump;
-        PlayerInput.OnGrab += Grab;
+        PlayerInput.OnGrab += Drop;
         MoveBase.rigid.isKinematic = true;
         MoveBase.camReferenceTransform.LockToPlayer = true;
     }
 
-    void Update() => transform.rotation = RotateAngle180(CurrentOrMostRecentLadder().transform.rotation);
+    void Update()
+    {
+        var lad = CurrentOrMostRecentLadder().transform;
+        transform.rotation = RotateAngle180(lad.rotation);
+        var ladPos = lad.position;
+        transform.position = Vector3.Lerp(transform.position,
+            new Vector3(ladPos.x, transform.position.y, ladPos.z),
+            positionCorrectionSpeed * Time.deltaTime);
+    }
 
     void OnDisable() {
         PlayerInput.OnMove -= Move;
         PlayerInput.OnJump -= Jump;
-        PlayerInput.OnGrab -= Grab;
+        PlayerInput.OnGrab -= Drop;
         MoveBase.rigid.isKinematic = false;
         MoveBase.camReferenceTransform.LockToPlayer = false;
     }
@@ -58,6 +67,10 @@ public class PlayerLadderMove : MonoBehaviour {
             MoveBase.characterMotor.MoveVertical(Vector3.up * movementInput.y * climbSpeed * Time.deltaTime);
         if((movementInput.y < 0 && transform.position.y >lad.MinHeight.y))
             MoveBase.characterMotor.MoveVertical(Vector3.up * movementInput.y * climbSpeed * Time.deltaTime);
+        if (movementInput.y > 0 && transform.position.y >= lad.MaxHeight.y)
+            JumpToLedge();
+        if (movementInput.y < 0 && transform.position.y <= lad.MinHeight.y)
+            Drop();
     }
 
     void Jump()
@@ -78,27 +91,26 @@ public class PlayerLadderMove : MonoBehaviour {
         return tempLadder;
     }
 
-    void Grab() {
+    void Drop() {
         MoveBase.movementStateMachine.NormalMovement();
         JumpInDirection(new Vector2(ladderDropForwardMultiplier, ladderDropJumpMultiplier));
-        //playerWalkMove.JumpInDirection(-ladder.transform.forward * ladderDropForwardMultiplier, ladderDropJumpMultiplier);
     }
 
     void JumpToLedge() {
         MoveBase.movementStateMachine.NormalMovement();
         JumpInDirection(new Vector2(ledgeForwardMultiplier, ledgeJumpMultiplier));
-        //playerWalkMove.JumpInDirection(-ladder.transform.forward * ledgeForwardMultiplier, ledgeJumpMultiplier);
     }
 
     void JumpOff() {
         MoveBase.movementStateMachine.NormalMovement();
         transform.rotation = RotateAngle180(transform.rotation);
         JumpInDirection(new Vector2(offLadderForwardMultiplier, offLaddJumpMultiplier));
-        //playerWalkMove.JumpInDirection(-ladder.transform.forward * offLadderForwardMultiplier, offLaddJumpMultiplier);
     }
 
-    void JumpInDirection(Vector2 mult) => playerWalkMove.JumpInDirection(
-        -CurrentOrMostRecentLadder().transform.forward * mult.x, mult.y);
+    void JumpInDirection(Vector2 mult)
+    {
+        playerWalkMove.JumpInDirection(Vector3.forward * mult.x, mult.y);
+    }
 
     static Quaternion RotateAngle180(Quaternion angleToRotate) {
         var newRotation = angleToRotate.eulerAngles;

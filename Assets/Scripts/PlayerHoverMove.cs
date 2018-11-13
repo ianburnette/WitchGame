@@ -19,12 +19,18 @@ public class PlayerHoverMove : MonoBehaviour {
     [SerializeField] float heightBelowWhichToApplyHoverForce;
     [SerializeField] float rigidbodyDrag = .5f;
     [SerializeField] float distanceFromGroundForceMult = 2f;
+    [SerializeField] float minDistFromGround, maxDistFromGround;
 
     [Header("Animation Variables")]
     [SerializeField] float minYrotation = -1f;
     [SerializeField] float maxYrotation = 1f;
     [SerializeField] float yMultiplier = 1f;
     [SerializeField] float slopeMatchSpeed = 2f;
+    
+    [Header("Velocity Facing")]
+    [SerializeField] float minSpeedForVelocityFacing; 
+    [SerializeField] float minVelocityFacingTurnSpeed; 
+    [SerializeField] float maxVeloctiyFacingTurnSpeed; 
 
 
     [Header("Class References")]
@@ -50,9 +56,20 @@ public class PlayerHoverMove : MonoBehaviour {
     void JumpPressed() => MoveBase.movementStateMachine.NormalMovement();
     void BroomPressed() => MoveBase.movementStateMachine.NormalMovement();
     void SwitchToGlide() => MoveBase.movementStateMachine.GlideMovement();
-    void Hover() =>
+    void Hover()
+    {
         characterMotor.MoveRelativeToGround(Vector3.up * groundRepelForce /
-                                            (MoveBase.DistanceToGround() * distanceFromGroundForceMult));
+                                            Mathf.Clamp(MoveBase.DistanceToGround(), minDistFromGround, maxDistFromGround));
+        var rigid = MoveBase.rigid;
+        //characterMotor.RotateToVelocity());
+    }
+
+    float GetVelocityFacingSpeed(Rigidbody rigid)
+    {
+        if (rigid.velocity.magnitude > minSpeedForVelocityFacing)
+            return Mathf.Clamp(rigid.velocity.magnitude, minVelocityFacingTurnSpeed, maxVeloctiyFacingTurnSpeed);
+        else return 0;
+    }
 
     void FixedUpdate() {
         if (MoveBase.IsGrounded(heightBelowWhichToApplyHoverForce, groundMask))
