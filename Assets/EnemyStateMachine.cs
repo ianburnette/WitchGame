@@ -10,8 +10,7 @@ public enum EnemyState { Wander,Chase,Stun,Held,Escape }
 public class EnemyStateMachine : MonoBehaviour
 {
    [SerializeField] Rigidbody rb;
-   [SerializeField] CharacterMotor motor;
-   [SerializeField] EnemyAI ai;
+   [SerializeField] Enemy enemy;
    [SerializeField] Health health;
    [SerializeField] EnemyWaterInteraction waterInteraction;
    [SerializeField] Pickup pickup;
@@ -64,14 +63,14 @@ public class EnemyStateMachine : MonoBehaviour
       rb.constraints = RigidbodyConstraints.FreezeRotationX | 
                        RigidbodyConstraints.FreezeRotationY |
                        RigidbodyConstraints.FreezeRotationZ;
-      motor.enabled = ai.enabled = health.enabled = true;
+      enemy.enabled = health.enabled = true;
       waterInteraction.enabled = pickup.enabled = false;
    }
 
    void StunEnemy()
    {
       rb.constraints = RigidbodyConstraints.None;
-      motor.enabled = ai.enabled = health.enabled = false;
+      enemy.enabled = health.enabled = false;
       waterInteraction.enabled = pickup.enabled = true;
       // TODO: some sort of flashing or indication of when they will get back up
       Invoke(nameof(SetActiveEnemy), stunTime);
@@ -90,6 +89,6 @@ public class EnemyStateMachine : MonoBehaviour
    void EnemyEscape()
    {
       SetActiveEnemy();
-      ai.Flee = true;
+      enemy.Flee();
    }
 }

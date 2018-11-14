@@ -59,16 +59,15 @@ public class PlayerHoverMove : MonoBehaviour {
     void Hover()
     {
         characterMotor.MoveRelativeToGround(Vector3.up * groundRepelForce /
-                                            Mathf.Clamp(MoveBase.DistanceToGround(), minDistFromGround, maxDistFromGround));
-        var rigid = MoveBase.rigid;
-        //characterMotor.RotateToVelocity());
+                                            (MoveBase.DistanceToGround() * distanceFromGroundForceMult));
+        characterMotor.RotateToVelocity(rotateSpeed, true);
     }
 
     float GetVelocityFacingSpeed(Rigidbody rigid)
     {
         if (rigid.velocity.magnitude > minSpeedForVelocityFacing)
             return Mathf.Clamp(rigid.velocity.magnitude, minVelocityFacingTurnSpeed, maxVeloctiyFacingTurnSpeed);
-        else return 0;
+        return 0;
     }
 
     void FixedUpdate() {
@@ -76,7 +75,7 @@ public class PlayerHoverMove : MonoBehaviour {
             Hover();
         else if (!MoveBase.IsGrounded(heightAboveWhichToGlide, groundMask))
             SwitchToGlide();
-        characterMotor.RotateToVelocity(rotateSpeed, minYrotation, maxYrotation, yMultiplier);
+        //characterMotor.RotateToVelocity(rotateSpeed, minYrotation, maxYrotation, yMultiplier);
         characterMotor.ManageSpeed(tooFastDecelSpeed, maxSpeed, false);
     }
 

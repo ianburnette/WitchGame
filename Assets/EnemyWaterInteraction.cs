@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class EnemyWaterInteraction : ObjectWaterInteraction
 {
-
-    [SerializeField] CharacterMotor motor;
     public override WaterInteractionState OnWaterEnter()
     {
         SetRigidbodyValues(inWater: true);
@@ -13,10 +11,6 @@ public class EnemyWaterInteraction : ObjectWaterInteraction
         return WaterInteractionState.SwimmingAway;
     }
 
-    void Update()
-    {
-            
-    }
 
     void StartEnemyEscapeIntoWater()
     {
