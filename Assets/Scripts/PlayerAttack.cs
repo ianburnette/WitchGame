@@ -57,7 +57,7 @@ public class PlayerAttack : MonoBehaviour {
 
     public void HitOther(Collider other) {
         if (other.CompareTag("Enemy"))
-            damage.Attack(other.gameObject, 1, pushHeight, pushForce);
+            damage.HitEnemy(other.gameObject, pushHeight, pushForce);
         else if (other.CompareTag("Interactable"))
             damage.Interact(other.gameObject);
         else if (other.CompareTag("Environment"))

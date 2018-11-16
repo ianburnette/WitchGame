@@ -110,6 +110,9 @@ public class PlayerObjectInteraction : MonoBehaviour {
 	private void LiftPickup(Collider other) {
 		CurrentlyHeldObject = other;
 		objectEligibleForPickup = null;
+		var enemyState = other.GetComponent<EnemyStateMachine>();
+		if (enemyState != null)
+			enemyState.MyState = EnemyState.Held;
 		CurrentlyHeldObject.GetComponent<Rigidbody>().isKinematic = true;
 		CurrentlyHeldObject.GetComponent<Pickup>().SnapTargetPos = Vector3.zero;
 		CurrentlyHeldObject.isTrigger = true;
@@ -125,6 +128,9 @@ public class PlayerObjectInteraction : MonoBehaviour {
 		var vel = moveBase.rigid.velocity.magnitude > throwThreshold ? throwForce : dropForce;
 		if (!SnapToSlotIfPresent())
 			ThrowOrDrop(rb, vel);
+		var enemyState = currentlyHeldObject.GetComponent<EnemyStateMachine>();
+		if (enemyState != null)
+			enemyState.ThrowOrDropEnemy();
 		CleanUpCurrentlyHeld();
 	}
 

@@ -11,67 +11,70 @@ public class EnemyStateMachine : MonoBehaviour
 {
    [SerializeField] Rigidbody rb;
    [SerializeField] Enemy enemy;
-   [SerializeField] Health health;
    [SerializeField] EnemyWaterInteraction waterInteraction;
    [SerializeField] Pickup pickup;
-
-   [FormerlySerializedAs("currentMoveState")] [SerializeField] EnemyState currentState;
 
    [SerializeField] float stunTime;
    [SerializeField] float postHeldWakeTime;
    
-   public EnemyState CurrentState
+   private EnemyState myState;
+   public EnemyState customState;
+
+   public EnemyState MyState
    {
-      get => currentState;
+      get => myState;
       set
       {
-         currentState = value;
-         ActivateState(currentState);
+         customState = value;
+         myState = value;
+         switch (myState)
+         {
+            case EnemyState.Wander:
+               ActivateEnemy(true);
+               enemy.Wander();
+               break;
+            case EnemyState.Chase:
+               ActivateEnemy(true);
+               enemy.Chase();
+               break;
+            case EnemyState.Stun:
+               ActivateEnemy(false);
+               StunEnemy();
+               break;
+            case EnemyState.Held:
+               PickupEnemy();
+               break;
+            case EnemyState.Escape:
+               break;
+            default:
+               throw new ArgumentOutOfRangeException();
+         }
       }
    }
 
-   public void Wander() => CurrentState = EnemyState.Wander;
-   public void Chase() => CurrentState = EnemyState.Chase;
-   public void Stun() => CurrentState = EnemyState.Stun;
-   public void Escape() => CurrentState = EnemyState.Escape;
-
-   void ActivateState(EnemyState state)
+   void Start()
    {
-      switch (state)
-      {
-         case EnemyState.Wander: 
-            SetActiveEnemy();
-            break;
-         case EnemyState.Chase:
-            SetActiveEnemy();
-            break;
-         case EnemyState.Stun:
-            StunEnemy();
-            break;
-         case EnemyState.Held:
+      MyState = customState;
+   }
+      
+   void SetActiveEnemy() => MyState = EnemyState.Wander;
 
-            break;
-         case EnemyState.Escape:
-            break;
-         default:
-            throw new ArgumentOutOfRangeException();
-      }
+   void Update()
+   {
+      if (MyState != customState)
+         MyState = customState;
    }
 
-   void SetActiveEnemy()
+   void ActivateEnemy(bool state)
    {
-      rb.constraints = RigidbodyConstraints.FreezeRotationX | 
-                       RigidbodyConstraints.FreezeRotationY |
-                       RigidbodyConstraints.FreezeRotationZ;
-      enemy.enabled = health.enabled = true;
-      waterInteraction.enabled = pickup.enabled = false;
+      enemy.enabled = state;
+      waterInteraction.enabled = pickup.enabled = rb.useGravity = !state;
+      enemy.tag = state ? "Enemy" : "Pickup";
    }
 
    void StunEnemy()
    {
-      rb.constraints = RigidbodyConstraints.None;
-      enemy.enabled = health.enabled = false;
-      waterInteraction.enabled = pickup.enabled = true;
+      
       // TODO: some sort of flashing or indication of when they will get back up
       Invoke(nameof(SetActiveEnemy), stunTime);
    }
@@ -81,8 +84,9 @@ public class EnemyStateMachine : MonoBehaviour
       CancelInvoke(nameof(SetActiveEnemy));
    }
 
-   void ThrowOrDropEnemy()
+   public void ThrowOrDropEnemy()
    {
+      MyState = EnemyState.Stun;
       Invoke(nameof(SetActiveEnemy), postHeldWakeTime);
    }
 

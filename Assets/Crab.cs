@@ -23,6 +23,22 @@ public class Enemy : MonoBehaviour
     [Header("Physics Behavior")]
     [SerializeField] Rigidbody rb;
     
+    [Header("Hover Behavior")]
+    [SerializeField] LayerMask hoverOnLayer;
+    [SerializeField] float maxGroundDist;
+
+    [SerializeField] AnimationCurve hoverCurve;
+    [SerializeField] float hoverForce;
+    [SerializeField] float hoverForceSmootheSpeed;
+    [SerializeField] float heightDestinationOffset;
+    [SerializeField] float minHoverForceThreshold = .01f;
+    public Vector3 currentForce;
+    public float currentCurveEval;
+    public float toEval;
+    public float diff;
+    public float dist;
+    
+    
     [Header("Chase Behavior")]
     [SerializeField] float chaseLookSpeed;
     [SerializeField] float chaseTargetUpdateTime;
@@ -39,45 +55,14 @@ public class Enemy : MonoBehaviour
     [SerializeField] internal float minTimeBetweenWanderEvents = 5f;
     [SerializeField] float wanderLookSpeed;
     [SerializeField] float wanderDistanceRadius;
-
     [SerializeField] Vector3 initialPosition;
-    
-    private EnemyState myState;
 
-    public EnemyState customState;
+    [SerializeField] EnemyStateMachine stateMachine;
     
-    [SerializeField]
-    public EnemyState MyState
-    {
-        get => myState;
-        set
-        {
-            myState = value;
-            switch (myState)
-            {
-                case EnemyState.Wander:
-                    StartCoroutine(WanderWaypointSelection());
-                    StartCoroutine(WanderMovement());
-                    break;
-                case EnemyState.Chase:
-                    StartCoroutine(ChaseWaypointUpdate());
-                    StartCoroutine(ChaseMovement());
-                    break;
-                case EnemyState.Stun:
-                    break;
-                case EnemyState.Held:
-                    break;
-                case EnemyState.Escape:
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-        }
-    }
 
     IEnumerator ChaseWaypointUpdate()
     {
-        while (MyState == EnemyState.Chase)
+        while (stateMachine.MyState == EnemyState.Chase)
         {
             yield return new WaitForSeconds(chaseTargetUpdateTime);
             targetPosition = target.position;
@@ -85,15 +70,57 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    void Start() => initialPosition = transform.position;
-    
+    void Start()
+    {
+        initialPosition = transform.position;
+    }
+
     void Move() => 
-        rb.AddForce(transform.forward * (MyState == EnemyState.Chase ? chaseSpeed : wanderSpeed), ForceMode.Impulse);
+        rb.AddForce(transform.forward * (stateMachine.MyState == EnemyState.Chase ? chaseSpeed : wanderSpeed), ForceMode.Impulse);
+
+    public void Wander()
+    {
+        
+        StartCoroutine(WanderWaypointSelection());
+        StartCoroutine(WanderMovement());
+    }
+
+    public void Chase()
+    {
+        
+        StartCoroutine(ChaseWaypointUpdate());
+        StartCoroutine(ChaseMovement());
+    }
+    
+    void Hover()
+    {
+        var dt = Time.deltaTime;
+        dist = DistanceToGround();
+        diff = DestinationDifference() - heightDestinationOffset;
+        toEval = Mathf.Clamp(diff + dist, 0, 500);
+        var force = hoverCurve.Evaluate(toEval);
+        currentCurveEval = force;
+        var adjustedForce = Vector3.up * (force * hoverForce * dt);
+        currentForce = Vector3.Lerp(currentForce, adjustedForce, hoverForceSmootheSpeed * dt);
+        rb.AddForce(currentForce, ForceMode.Force);
+    }
+
+    float DestinationDifference() => transform.position.y - targetPosition.y; //-1 means target is above
+
+    float DistanceToGround()
+    {
+        var ray = new Ray(transform.position, Vector3.down * maxGroundDist);
+        Debug.DrawRay(ray.origin, ray.direction, Color.red);
+        Physics.Raycast(ray, out var hit, maxGroundDist, hoverOnLayer);
+        if (hit.transform != null && hit.distance < maxGroundDist)
+            return Mathf.Clamp(hit.distance, 0, maxGroundDist);
+        return 500;
+    }
 
     void Update()
     {
-        if (MyState != customState)
-            MyState = customState;    
+        if (stateMachine.MyState == EnemyState.Chase || stateMachine.MyState == EnemyState.Wander)
+            Hover();
     }
 
     void FixedUpdate() => LookAtTargetPosition();
@@ -103,15 +130,15 @@ public class Enemy : MonoBehaviour
         var dir = targetPosition - transform.position;
         var toRotation = Quaternion.LookRotation(dir);
         transform.rotation = Quaternion.Lerp(transform.rotation, toRotation,
-            MyState == EnemyState.Chase ? chaseLookSpeed  * Time.deltaTime : wanderLookSpeed * Time.deltaTime);   
+            stateMachine.MyState == EnemyState.Chase ? chaseLookSpeed  * Time.deltaTime : wanderLookSpeed * Time.deltaTime);   
     }
 
     IEnumerator ChaseMovement()
     {
-        while (MyState == EnemyState.Chase)
+        while (stateMachine.MyState == EnemyState.Chase)
         {
             if (!target)
-                MyState = EnemyState.Wander;
+                stateMachine.MyState = EnemyState.Wander;
             yield return new WaitForSeconds(Random.Range(minTimeBetweenChasePulses, minTimeBetweenChasePulses * 2));
             Move();
         }
@@ -119,7 +146,7 @@ public class Enemy : MonoBehaviour
     
     IEnumerator WanderMovement()
     {
-        while (MyState == EnemyState.Wander)
+        while (stateMachine.MyState == EnemyState.Wander)
         {
             yield return new WaitForSeconds(Random.Range(minTimeBetweenWanderPulses, minTimeBetweenWanderPulses * 2));
             Move();
@@ -128,7 +155,7 @@ public class Enemy : MonoBehaviour
 
     IEnumerator WanderWaypointSelection()
     {
-        while (MyState == EnemyState.Wander)
+        while (stateMachine.MyState == EnemyState.Wander)
         {
             yield return new WaitForSeconds(Random.Range(minTimeBetweenWanderEvents, minTimeBetweenWanderEvents * 2));
             FindNewWanderWaypoint();
@@ -137,14 +164,12 @@ public class Enemy : MonoBehaviour
 
     void FindNewWanderWaypoint()
     {
-        var previousPosition = targetPosition;
         var potentialNewTargetPoint = initialPosition + new Vector3(RandomPoint(),0, RandomPoint());
 
         var hitInfo = new RaycastHit();    
         Physics.SphereCast(potentialNewTargetPoint, .2f, Vector3.up, out hitInfo, 1f);
         if (!hitInfo.transform)
             targetPosition = potentialNewTargetPoint;
-       
     }
 
     void OnDrawGizmos()

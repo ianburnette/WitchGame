@@ -18,6 +18,14 @@ public class DealDamage : MonoBehaviour
 			health.currentHealth -= dmg;
 	}
 
+	public void HitEnemy(GameObject enemy, float pushHeight, float pushForce)
+	{
+		enemy.GetComponent<EnemyStateMachine>().MyState = EnemyState.Stun;
+		var pushDir = (enemy.transform.position - transform.position);
+		pushDir.y = pushHeight * 0.1f;
+		Push(enemy, pushDir, new Vector2(pushForce, pushHeight));
+	}
+
 	public void Attack(GameObject victim, int dmg, float pushHeight, float pushForce, Vector3 hitPosition)
 	{
 		var pushDir = -victim.transform.forward;
