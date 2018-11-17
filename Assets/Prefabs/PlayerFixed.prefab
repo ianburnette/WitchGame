@@ -358,6 +358,12 @@ MonoBehaviour:
   camLockResetTime: 0.4
   currentlyGrounded: 0
   myGroundType: 0
+  slopeMatchSpeed: 0
+  matchSlope: 0
+  model: {fileID: 0}
+  upVector: {x: 0, y: 0, z: 0}
+  slopeLookForwardSpeed: 0
+  lookForward: 0
 --- !u!114 &4568108799467419513
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -381,9 +387,7 @@ MonoBehaviour:
   airRotateSpeed: 0.38
   jumpForce: 32
   jumpReleaseYVelocity: 1
-  slowFallSpeed: 0
-  slowFallDecel: 0
-  maxYvelocityBeforeSlowing: 0
+  extraGravity: 0
   recentlyGrounded: 0
   recentValidSlopeAngle: 0
   jumpLeniency: 0.1
@@ -403,32 +407,11 @@ MonoBehaviour:
   stickToGroundForce: 32
   maxWalkableSlopeAngle: 45
   slideForce: 150
-  inputToSlopeAngle: 0
-  slopeMovementAdjustmentCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 30
-      value: 2
-      inSlope: -0.016666668
-      outSlope: -0.016666668
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 90
-      value: 1
-      inSlope: -0.016666668
-      outSlope: -0.016666668
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  slopeMovementMultiplier: 1
+  slopeUp: {x: 0, y: 0, z: 0}
+  slopeDown: {x: 0, y: 0, z: 0}
+  slopeAngle: 0
+  slidingSlopeMatchSpeed: 0
+  canReleaseToResetVelocity: 0
   audioSource: {fileID: 0}
   MoveBase: {fileID: 156779105178038421}
   ladderMovement: {fileID: 1883212043216413023}
@@ -460,8 +443,12 @@ MonoBehaviour:
     m_Bits: 4113
   heightToSwitchToHover: 1
   heightToSwitchToWalking: 0.5
+  crashForce: {x: 0, y: 0}
+  crashTrigger: {fileID: 0}
+  glideTrail: {fileID: 0}
   MoveBase: {fileID: 156779105178038421}
   characterMotor: {fileID: 3934885142640314606}
+  playerDealDamage: {fileID: 0}
 --- !u!114 &8669960092580292412
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -487,9 +474,15 @@ MonoBehaviour:
   heightBelowWhichToApplyHoverForce: 6
   rigidbodyDrag: 0.1
   distanceFromGroundForceMult: 1
+  minDistFromGround: 0
+  maxDistFromGround: 0
   minYrotation: 0
   maxYrotation: 0
   yMultiplier: 0
+  slopeMatchSpeed: 2
+  minSpeedForVelocityFacing: 0
+  minVelocityFacingTurnSpeed: 0
+  maxVeloctiyFacingTurnSpeed: 0
   MoveBase: {fileID: 156779105178038421}
   characterMotor: {fileID: 3934885142640314606}
 --- !u!114 &2682012752042106683
@@ -540,6 +533,7 @@ MonoBehaviour:
   mostRecentLadder: {fileID: 0}
   MoveBase: {fileID: 156779105178038421}
   playerWalkMove: {fileID: 4568108799467419513}
+  positionCorrectionSpeed: 0
 --- !u!114 &6214455980022661448
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -631,6 +625,8 @@ MonoBehaviour:
   pushHeight: 3
   pushForce: 8
   walkMove: {fileID: 4568108799467419513}
+  stateMachine: {fileID: 0}
+  weaponCollider: {fileID: 0}
   firstAtkFinished: 0
   secondAtkFinished: 0
   thirdAtkFinished: 0
@@ -687,6 +683,7 @@ MonoBehaviour:
   flashObject: {fileID: 0}
   spawnOnDeath:
   - {fileID: 100000, guid: de22137421d24f049b9b87e224ae7a0b, type: 3}
+  canDie: 0
   dead: 0
   flashing: 0
   respawnPos: {x: 0, y: 0, z: 0}
@@ -920,6 +917,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   atk: {fileID: 5568561907853543691}
+  anim: {fileID: 0}
 --- !u!4 &1551310670565043287 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400044, guid: 3beb748dcf0f942eeb5ff382e6a7921c,
@@ -1033,56 +1031,12 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!1 &1551310670668102769
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1551310670668102768}
-  - component: {fileID: 1551310670668102767}
-  m_Layer: 0
-  m_Name: BlobShadowProjector (1)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1551310670668102768
+--- !u!4 &1551310670668102768 stripped
 Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 2228173860902396775, guid: 14183a3ca0eea24498f264cb192e9caa,
+    type: 3}
+  m_PrefabInstance: {fileID: 822835502877253399}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1551310670668102769}
-  m_LocalRotation: {x: -0.0026100676, y: 0.65964144, z: -0.75157243, w: -0.0022908088}
-  m_LocalPosition: {x: 0.00031256676, y: -0.23999977, z: 0.044999123}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1551310670337671690}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!119 &1551310670668102767
-Projector:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1551310670668102769}
-  m_Enabled: 1
-  serializedVersion: 2
-  m_NearClipPlane: 0.1
-  m_FarClipPlane: 50
-  m_FieldOfView: 30
-  m_AspectRatio: 1
-  m_Orthographic: 1
-  m_OrthographicSize: 0.81
-  m_Material: {fileID: 2100000, guid: e30ff3588e719f34bbf0c66f22d97487, type: 2}
-  m_IgnoreLayers:
-    serializedVersion: 2
-    m_Bits: 0
 --- !u!1 &1551310670740238539
 GameObject:
   m_ObjectHideFlags: 0
@@ -1202,6 +1156,75 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectInteraction: {fileID: 1385053378238541315}
   currentZone: {fileID: 0}
+--- !u!1001 &822835502877253399
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1551310670337671690}
+    m_Modifications:
+    - target: {fileID: 2228173860902396775, guid: 14183a3ca0eea24498f264cb192e9caa,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.00031256676
+      objectReference: {fileID: 0}
+    - target: {fileID: 2228173860902396775, guid: 14183a3ca0eea24498f264cb192e9caa,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.23999977
+      objectReference: {fileID: 0}
+    - target: {fileID: 2228173860902396775, guid: 14183a3ca0eea24498f264cb192e9caa,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.044999123
+      objectReference: {fileID: 0}
+    - target: {fileID: 2228173860902396775, guid: 14183a3ca0eea24498f264cb192e9caa,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 2228173860902396775, guid: 14183a3ca0eea24498f264cb192e9caa,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2228173860902396775, guid: 14183a3ca0eea24498f264cb192e9caa,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2228173860902396775, guid: 14183a3ca0eea24498f264cb192e9caa,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 2228173860902396775, guid: 14183a3ca0eea24498f264cb192e9caa,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2228173860902396775, guid: 14183a3ca0eea24498f264cb192e9caa,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 2228173860902396775, guid: 14183a3ca0eea24498f264cb192e9caa,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2228173860902396775, guid: 14183a3ca0eea24498f264cb192e9caa,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2228173860902396774, guid: 14183a3ca0eea24498f264cb192e9caa,
+        type: 3}
+      propertyPath: m_Name
+      value: BlobShadowProjector
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 14183a3ca0eea24498f264cb192e9caa, type: 3}
 --- !u!1001 &1551310669893653432
 PrefabInstance:
   m_ObjectHideFlags: 0

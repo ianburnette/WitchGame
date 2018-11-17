@@ -35,7 +35,10 @@ public class EnemyStateMachine : MonoBehaviour
                break;
             case EnemyState.Chase:
                ActivateEnemy(true);
-               enemy.Chase();
+               if (!waterInteraction.inWater)
+                  enemy.Chase();
+               else
+                  MyState = EnemyState.Wander;
                break;
             case EnemyState.Stun:
                ActivateEnemy(false);
@@ -93,6 +96,6 @@ public class EnemyStateMachine : MonoBehaviour
    void EnemyEscape()
    {
       SetActiveEnemy();
-      enemy.Flee();
+     
    }
 }

@@ -38,11 +38,16 @@ public class Enemy : MonoBehaviour
     public float diff;
     public float dist;
     
+    [Header("Attacking Behavior")]
+    [SerializeField] DealDamage dealDamage;
+    [SerializeField] int crabDamage;
+    [SerializeField] float crabPushHeight, crabPushDist;
     
     [Header("Chase Behavior")]
     [SerializeField] float chaseLookSpeed;
     [SerializeField] float chaseTargetUpdateTime;
     [SerializeField] Transform target;
+    [SerializeField] float targetVerticalOffset;
     
     [Header("Movement Behavior")]
     [SerializeField] float chaseSpeed;
@@ -56,6 +61,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] float wanderLookSpeed;
     [SerializeField] float wanderDistanceRadius;
     [SerializeField] Vector3 initialPosition;
+    [SerializeField] float initialPositionOffset;
 
     [SerializeField] EnemyStateMachine stateMachine;
     
@@ -65,14 +71,20 @@ public class Enemy : MonoBehaviour
         while (stateMachine.MyState == EnemyState.Chase)
         {
             yield return new WaitForSeconds(chaseTargetUpdateTime);
-            targetPosition = target.position;
-
+            targetPosition = target.position + Vector3.up * targetVerticalOffset;
         }
     }
 
-    void Start()
+    void OnEnable()
     {
-        initialPosition = transform.position;
+       SetInitialPosition();
+    }
+
+    public void SetInitialPosition()
+    {
+        var diff = DistanceToGround(500f);
+        if (diff != 500)
+            initialPosition = transform.position - Vector3.up * diff + Vector3.up * initialPositionOffset;
     }
 
     void Move() => 
@@ -80,22 +92,30 @@ public class Enemy : MonoBehaviour
 
     public void Wander()
     {
-        
+        StopAllCoroutines();
+        SetInitialPosition();
         StartCoroutine(WanderWaypointSelection());
         StartCoroutine(WanderMovement());
     }
 
     public void Chase()
     {
-        
+        StopAllCoroutines();
+        StartChase();
         StartCoroutine(ChaseWaypointUpdate());
         StartCoroutine(ChaseMovement());
+    }
+
+    void StartChase()
+    {
+        targetPosition = target.position + Vector3.up * targetVerticalOffset;
+        Move();
     }
     
     void Hover()
     {
         var dt = Time.deltaTime;
-        dist = DistanceToGround();
+        dist = DistanceToGround(maxGroundDist);
         diff = DestinationDifference() - heightDestinationOffset;
         toEval = Mathf.Clamp(diff + dist, 0, 500);
         var force = hoverCurve.Evaluate(toEval);
@@ -107,13 +127,13 @@ public class Enemy : MonoBehaviour
 
     float DestinationDifference() => transform.position.y - targetPosition.y; //-1 means target is above
 
-    float DistanceToGround()
+    float DistanceToGround(float distToCheck)
     {
-        var ray = new Ray(transform.position, Vector3.down * maxGroundDist);
-        Debug.DrawRay(ray.origin, ray.direction, Color.red);
-        Physics.Raycast(ray, out var hit, maxGroundDist, hoverOnLayer);
-        if (hit.transform != null && hit.distance < maxGroundDist)
-            return Mathf.Clamp(hit.distance, 0, maxGroundDist);
+        var ray = new Ray(transform.position, Vector3.down * distToCheck);
+        Debug.DrawRay(ray.origin, ray.direction * distToCheck, Color.red);
+        Physics.Raycast(ray, out var hit, distToCheck, hoverOnLayer);
+        if (hit.transform != null && hit.distance < distToCheck)
+            return Mathf.Clamp(hit.distance, 0, distToCheck);
         return 500;
     }
 
@@ -175,12 +195,15 @@ public class Enemy : MonoBehaviour
     void OnDrawGizmos()
     {
         Gizmos.DrawSphere(targetPosition, .4f);
+        Gizmos.color = Color.yellow;        
+        Gizmos.DrawSphere(initialPosition, .4f);
     }
 
     float RandomPoint() => Random.Range(-wanderDistanceRadius, wanderDistanceRadius);
 
-    public void Flee()
+    void OnCollisionEnter(Collision other)
     {
-        
+        if (other.transform.CompareTag("Player") && stateMachine.MyState==EnemyState.Chase)
+            dealDamage.Attack(other.gameObject, crabDamage, crabPushHeight, crabPushDist);
     }
 }
