@@ -25,6 +25,7 @@ public class PlayerMoveBase : MonoBehaviour {
 
     public Rigidbody rigid;
     public Collider col;
+    [SerializeField] PhysicMaterial frictionPlayerMat, frictionlessPlayerMat;
     [FormerlySerializedAs("rbVel")] public float rbVelMagnitude;
 
     Quaternion screenMovementSpace;
@@ -78,6 +79,7 @@ public class PlayerMoveBase : MonoBehaviour {
             Invoke(nameof(LockCamNow), camLockResetTime);
         if (!currentlyGrounded)
             CancelInvoke(nameof(LockCamNow));
+        col.material = currentlyGrounded ? frictionPlayerMat : frictionlessPlayerMat;
         return currentlyGrounded;
     }
 

@@ -229,8 +229,6 @@ public class PlayerWalkMove : MonoBehaviour, ICloudInteractible {
 		}
 	}
 
-
-
 	void CloudDamp() => MoveBase.OverrideYVelocity(0);
 
 	void Animate() {

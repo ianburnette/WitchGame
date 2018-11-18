@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Experimental.PlayerLoop;
 using UnityEngine.Serialization;
 
 public enum UmbrellaState { Loose, Closed, Open, OpenDirOne, OpenDirTwo, Falling }
@@ -26,28 +27,72 @@ public class Umbrella : MonoBehaviour, IInteractable
     [SerializeField] float dislodgeTime;
     [SerializeField] float halfwayYHeightAboveStart;
     [SerializeField] Vector3 spinDirection;
+    
+    [Header("DislodgeDebug")]
+    public bool debugDislodgeNow;
+    public bool debugResetNow;
+    public Vector3 debugStartPos;
+    
+    [Header("Camera")]
+    [SerializeField] float zoomOutValue;
+    [SerializeField] float slowDownTimeScale = .00f;
 
     void Start()
     {
+        debugStartPos = transform.position;
+    }
+    
+    void OnEnable(){
         if (currentState != UmbrellaState.Closed && currentState != UmbrellaState.Loose)
             anim.SetTrigger("Open");
     }
 
+    void Update()
+    {
+        if (debugDislodgeNow)
+        {
+            Dislodge();
+            debugDislodgeNow = false;
+        }
+
+        if (debugResetNow)
+        {
+            currentState = UmbrellaState.Loose;
+            transform.position = debugStartPos;
+            debugResetNow = false;
+        }
+    }
     public void SomethingEnteredTrigger(Collider other)
     {
         var rb = other.GetComponent<Rigidbody>();
         if (rb == null) return;
+        rb.velocity = Vector3.zero;
         rb.AddForce(force * transform.up, ForceMode.Impulse);
         anim.SetTrigger("Bounce");
+        if (thisUmbrellaType == UmbrellaType.Bidirectional)
+            ChangeDirection();
         if (!other.CompareTag("Player")) return;
+        StartCoroutine(PropelPlayer(other));
+    }
+
+    IEnumerator PropelPlayer(Collider other)
+    {
+        Time.timeScale = slowDownTimeScale;
+        CVCameraHandle.instance.OverridingY = true;
+        CVCameraHandle.instance.YAxisOverride = zoomOutValue;
+        while (CVCameraHandle.instance.TransitioningY)
+            yield return new WaitForEndOfFrame();
+           //CVCameraHandle.instance.TransitionToYValueOutsideOfGameTime(zoomOutValue, zoomOutTime, FinishPlayerPropel(other));/
+           //yield return new WaitForSecondsRealtime(zoomOutTime);
+        Time.timeScale = 1f;
         var movementStateMachine = other.GetComponent<MovementStateMachine>();
-        if (movementStateMachine.CurrentMovementState == MoveState.Glide)
+        if (movementStateMachine.CurrentMovementState == MoveState.Glide || 
+            movementStateMachine.CurrentMovementState == MoveState.Hover)
             movementStateMachine.CurrentMovementState = MoveState.Walk;
         other.GetComponent<PlayerObjectInteraction>().AccidentallyLetGoOfPickup();
         other.GetComponent<PlayerMoveBase>().LockCamAndResetOnGround();
         other.GetComponent<PlayerWalkMove>().CanReleaseToResetVelocity = false;
-        if (thisUmbrellaType == UmbrellaType.Bidirectional)
-            ChangeDirection();
+        yield return null;
     }
 
     public void Interact()

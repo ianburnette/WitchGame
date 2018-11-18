@@ -7,6 +7,7 @@ public class PlayerInteraction : MonoBehaviour {
     [Header("Reference Classes")]
     [SerializeField] PlayerObjectInteraction objectInteraction;
     [SerializeField] PlayerLadderInteraction ladderInteraction;
+    [SerializeField] PlayerDialogueInteraction dialogueInteraction;
 
     void OnEnable() {
         PlayerInput.OnGrab += GrabPressed;
@@ -18,6 +19,6 @@ public class PlayerInteraction : MonoBehaviour {
 
     void GrabPressed() {
         if (objectInteraction.PickupObjectInteraction()) return;
-        ladderInteraction.AttemptToGrabLadder();
+        dialogueInteraction.AttemptToGoToNextDialogue();
     }
 }
