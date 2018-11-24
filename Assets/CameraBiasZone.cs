@@ -1,10 +1,31 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraBiasZone : MonoBehaviour
 {
+    [SerializeField] CameraBiasSetting mySettings; 
     [SerializeField] private float myBias;
-    private void OnTriggerEnter(Collider other) => CVCameraHandle.instance.SetBias(myBias);
-    private void OnTriggerExit(Collider other) => CVCameraHandle.instance.ResetBias();
+    [SerializeField] float transitionTime;
+    
+    private void OnTriggerEnter(Collider other)
+    {
+        CVCameraHandle.instance.CurrentSetting = mySettings;
+    }
+
+    private void OnTriggerExit(Collider other) => CVCameraHandle.instance.CurrentSetting = null;
+}
+
+public enum CameraBiasType
+{
+    RotationOnly,
+    ZoomOnly,
+    RotationAndZoom,
+}
+
+public class CameraBiasSetting
+{
+    public Transform followOverride;
+    public CameraBiasType biasType;
 }

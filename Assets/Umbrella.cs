@@ -35,6 +35,7 @@ public class Umbrella : MonoBehaviour, IInteractable
     
     [Header("Camera")]
     [SerializeField] float zoomOutValue;
+    [SerializeField] float zoomOutTime;
     [SerializeField] float slowDownTimeScale = .00f;
 
     void Start()
@@ -78,12 +79,7 @@ public class Umbrella : MonoBehaviour, IInteractable
     IEnumerator PropelPlayer(Collider other)
     {
         Time.timeScale = slowDownTimeScale;
-        CVCameraHandle.instance.OverridingY = true;
-        CVCameraHandle.instance.YAxisOverride = zoomOutValue;
-        while (CVCameraHandle.instance.TransitioningY)
-            yield return new WaitForEndOfFrame();
-           //CVCameraHandle.instance.TransitionToYValueOutsideOfGameTime(zoomOutValue, zoomOutTime, FinishPlayerPropel(other));/
-           //yield return new WaitForSecondsRealtime(zoomOutTime);
+        yield return StartCoroutine(CVCameraHandle.instance.SetZoomValue(zoomOutValue, zoomOutTime));
         Time.timeScale = 1f;
         var movementStateMachine = other.GetComponent<MovementStateMachine>();
         if (movementStateMachine.CurrentMovementState == MoveState.Glide || 

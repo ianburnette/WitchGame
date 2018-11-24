@@ -37,9 +37,10 @@ public class PlayerLadderMove : MonoBehaviour {
     void OnEnable() {
         PlayerInput.OnMove += Move;
         PlayerInput.OnJump += Jump;
-        PlayerInput.OnGrab += Drop;
+        PlayerInput.OnInteract += Drop;
         MoveBase.rigid.isKinematic = true;
         MoveBase.camReferenceTransform.LockToPlayer = true;
+        MoveBase.animator.SetBool("Climbing", true);
     }
 
     void Update()
@@ -55,13 +56,16 @@ public class PlayerLadderMove : MonoBehaviour {
     void OnDisable() {
         PlayerInput.OnMove -= Move;
         PlayerInput.OnJump -= Jump;
-        PlayerInput.OnGrab -= Drop;
+        PlayerInput.OnInteract -= Drop;
         MoveBase.rigid.isKinematic = false;
         MoveBase.camReferenceTransform.LockToPlayer = false;
+        MoveBase.animator.SetBool("Climbing", false);
+        MoveBase.animator.speed = 1;
     }
 
     void Move(Vector2 movementInput)
     {
+        MoveBase.animator.SetFloat("YVelocity", Mathf.Clamp(movementInput.y, -1, 1));
         var lad = CurrentOrMostRecentLadder();
         if ((movementInput.y > 0 && transform.position.y < lad.MaxHeight.y))
             MoveBase.characterMotor.MoveVertical(Vector3.up * movementInput.y * climbSpeed * Time.deltaTime);

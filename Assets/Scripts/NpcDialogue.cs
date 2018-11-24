@@ -2,24 +2,32 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NpcDialogue : MonoBehaviour {
+public class NpcDialogue : Promptable  {
 	[SerializeField] List<string> dialogues;
-	Collider col;
+	Collider myCollider;
 
-	public List<string> Dialogues
+	public List<string> Dialogues { get { return dialogues; } set { dialogues = value; }}
+	
+	
+	public Collider MyCollider
 	{
-		get { return dialogues; }
-		set { dialogues = value; }
+		get { return myCollider; }
+		set { myCollider = value; }
 	}
 
-	void OnEnable() => col = GetComponent<Collider>();
-	void OnTriggerEnter(Collider other) => ToggleDialogueBubble(true);
-	void OnTriggerExit(Collider other) => ToggleDialogueBubble(false);
+	void OnEnable() => MyCollider = GetComponent<Collider>();
+	void OnTriggerEnter(Collider other) => ToggleInputPrompt(true);//ToggleDialogueBubble(true);
+	void OnTriggerExit(Collider other) => ToggleInputPrompt(false);
 
-	void ToggleDialogueBubble(bool state) {
-		if (state)
-			DialogueBase.instance.ShowBubble(col.bounds.max, this);
-		else
-			DialogueBase.instance.HideBubble();
+	void Start()
+	{
+		promptableCollider = GetComponent<Collider>();
+	}
+
+	void ToggleInputPrompt(bool state)
+	{
+		InputPrompt.instance.Prompt = state ? this : null;
+		DialogueBase.instance.InRange = state;
+		DialogueBase.instance.CurrentDialogue = state ? this : null;
 	}
 }

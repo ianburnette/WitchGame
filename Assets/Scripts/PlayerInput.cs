@@ -4,8 +4,13 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using static CameraSelector;
+
+
+
+
 
 public class PlayerInput : MonoBehaviour {
 
@@ -25,8 +30,8 @@ public class PlayerInput : MonoBehaviour {
     public delegate void MoveDelegate(Vector2 movement);
     public static event MoveDelegate OnMove;
 
-    public delegate void GrabDelegate();
-    public static event GrabDelegate OnGrab;
+    public delegate void InteractDelegate();
+    public static event InteractDelegate OnInteract;
 
     public delegate void AttackDelegate();
     public static event AttackDelegate OnAttack;
@@ -66,7 +71,7 @@ public class PlayerInput : MonoBehaviour {
         //                                 "...");
         if (Input.GetButtonDown("Broom")) OnBroom?.Invoke();
         if (Input.GetButtonUp("Jump")) OnJumpRelease?.Invoke();
-        if (Input.GetButtonDown("Interact")) OnGrab?.Invoke();
+        if (Input.GetButtonDown("Interact")) OnInteract?.Invoke();
         if (Input.GetButtonDown("Attack")) OnAttack?.Invoke();
         if (Input.GetButtonUp("Attack")) OnAttackRelease?.Invoke();
         if (Input.GetButtonDown("Magic")) OnMagic?.Invoke();
@@ -120,7 +125,7 @@ public class PlayerInput : MonoBehaviour {
     void JumpDebug() {if (debug) { print("jump pressed");}}
     void BroomDebug() {if (debug) {  print("broom pressed");}}
     void JumpReleaseDebug() {if (debug) {        print("jump released") ;}}
-    void GrabDebug() {if (debug) {     print("grab pressed") ;}}
+    void InteractDebug() {if (debug) {     print("interact pressed") ;}}
     void AttackDebug() {if (debug) {   print("attack pressed") ;}}
     void MagicDebug() {if (debug) {  print("magic pressed") ;}}
     void RiseDebug() {if (debug) { print("rise pressed") ;}}

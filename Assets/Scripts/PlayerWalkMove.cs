@@ -78,6 +78,10 @@ public class PlayerWalkMove : MonoBehaviour, ICloudInteractible {
 	[Header("Animation")]
 	[SerializeField] float movementSmoothingSpeed;
 	[SerializeField] float smoothedPlanarVelocity;
+	[SerializeField] float movementAngleDelta;
+	[SerializeField] float pivotAngle;
+	float previousMovementAngle;
+	bool pivoting;
 
 	[Header("Private Variables")]
 	[HideInInspector] public int onEnemyBounce;
@@ -153,9 +157,17 @@ public class PlayerWalkMove : MonoBehaviour, ICloudInteractible {
 	void UpdatePlayerMovement() {
 		inputRelativeToWorld = MoveBase.MovementRelativeToCamera(currentInputVector);
 		//Debug.DrawRay(transform.position, inputRelativeToWorld, Color.green);
+		var previousInputRelativeToSlope = inputRelativeToSlope;
 		inputRelativeToSlope = InputAdjustedForCurrentSlope(inputRelativeToWorld);
 		//Debug.DrawRay(transform.position, inputRelativeToSlope, Color.red);
-		moveDirection = transform.position + inputRelativeToSlope;
+		
+		var newMoveDirection = transform.position + inputRelativeToSlope;
+
+		movementAngleDelta = (Vector3.Angle(inputRelativeToSlope, previousInputRelativeToSlope));
+		if (Mathf.Abs(movementAngleDelta) > pivotAngle)
+			pivoting = true;
+			
+		moveDirection = newMoveDirection;
 		MoveBase.characterMotor.MoveTo(moveDirection,
 		                               GetMoveSpeed(), movementSensitivity,
 		                               false);
@@ -238,6 +250,11 @@ public class PlayerWalkMove : MonoBehaviour, ICloudInteractible {
 		MoveBase.animator.SetFloat("XVelocity", currentlyGrounded ? smoothedPlanarVelocity : 0);
 		MoveBase.animator.SetBool("Grounded", currentlyGrounded);
 		MoveBase.animator.SetFloat("YVelocity", GetComponent<Rigidbody>().velocity.y);
+		if (pivoting)
+		{
+			MoveBase.animator.SetTrigger("Pivot");
+			pivoting = false;
+		}
 		//MoveBase.animator.SetFloat("XVelocity",
 		//                           new Vector3(MoveBase.rigid.velocity.x, 0, MoveBase.rigid.velocity.z).normalized.magnitude +
 		//                           .1f);

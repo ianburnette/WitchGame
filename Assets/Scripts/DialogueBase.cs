@@ -22,6 +22,7 @@ class DialogueBase : MonoBehaviour {
     [Header("Current")]
     [SerializeField] NpcDialogue currentDialogue;
     [SerializeField] int currentDialogueIndex;
+    [SerializeField] bool inRange;
     
     [Header("Camera Control")]
     [SerializeField] CinemachineMixingCamera mixingCamera;
@@ -49,15 +50,27 @@ class DialogueBase : MonoBehaviour {
         set { dialogueCameraWeight = value; }
     }
 
+    public bool InRange
+    {
+        get { return inRange; }
+        set { inRange = value; }
+    }
+
+    public NpcDialogue CurrentDialogue
+    {
+        get { return currentDialogue; }
+        set => currentDialogue = value;
+    }
+
     void OnEnable() => instance = this;
 
-    public void ShowBubble(Vector3 position, NpcDialogue dialogue)
+    public void ShowBubble()
     {
+        if (currentDialogue == null) return;
         InDialogue = true;
         dialogueBubble.localScale = Vector3.zero;
-        dialogueBubble.position = position + Vector3.up * heightOffset;
+        dialogueBubble.position = currentDialogue.MyCollider.bounds.max + Vector3.up * heightOffset;
         currentDialogueIndex = 0;
-        currentDialogue = dialogue;
         ShowDialogue();
         dialogueBubble.DOScale(bubbleSize, bubbleGrowSpeed);
         align = true;
@@ -66,7 +79,8 @@ class DialogueBase : MonoBehaviour {
 
     public void ShowNextDialogue()
     {
-        if (currentDialogueIndex < currentDialogue.Dialogues.Count-1)
+        if (CurrentDialogue == null) return;
+        if (currentDialogueIndex < CurrentDialogue.Dialogues.Count-1)
         {
             currentDialogueIndex++;
             ShowDialogue();
@@ -75,7 +89,7 @@ class DialogueBase : MonoBehaviour {
             HideBubble();
     }
 
-    void ShowDialogue() => textField.text = currentDialogue.Dialogues[currentDialogueIndex];
+    void ShowDialogue() => textField.text = CurrentDialogue.Dialogues[currentDialogueIndex];
 
     void TransitionTo(bool dialogueCamera)
     {
@@ -100,8 +114,8 @@ class DialogueBase : MonoBehaviour {
     void Update() {
         mixingCamera.m_Weight0 = normalCameraWeight;
         mixingCamera.m_Weight1 = dialogueCameraWeight;
-        if (!align) return;
+        if (!align || CurrentDialogue==null) return;
         dialogueBubble.LookAt(camera);
-        dialogueFocus.position = (player.position + dialogueBubble.position + currentDialogue.transform.position) / 3f;
+        dialogueFocus.position = (player.position + dialogueBubble.position + CurrentDialogue.transform.position) / 3f;
     }
 }

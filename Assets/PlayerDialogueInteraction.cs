@@ -4,9 +4,19 @@ using UnityEngine;
 
 public class PlayerDialogueInteraction : MonoBehaviour
 {
-    public void AttemptToGoToNextDialogue()
+    NpcDialogue currentDialogue;
+    public bool AttemptToOpenDialogue()
     {
-        if (DialogueBase.instance.InDialogue)
-            DialogueBase.instance.ShowNextDialogue();
+        if (!DialogueBase.instance.InRange || DialogueBase.instance.InDialogue) return false;
+        DialogueBase.instance.ShowBubble();
+        InputPrompt.instance.Prompt = null;
+        return true;
+    }
+    
+    public bool AttemptToGoToNextDialogue()
+    {
+        if (!DialogueBase.instance.InDialogue) return false;
+        DialogueBase.instance.ShowNextDialogue();
+        return true;
     }
 }

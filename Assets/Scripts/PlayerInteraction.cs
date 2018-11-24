@@ -10,15 +10,16 @@ public class PlayerInteraction : MonoBehaviour {
     [SerializeField] PlayerDialogueInteraction dialogueInteraction;
 
     void OnEnable() {
-        PlayerInput.OnGrab += GrabPressed;
+        PlayerInput.OnInteract += InteractPressed;
     }
 
     void OnDisable() {
-        PlayerInput.OnGrab -= GrabPressed;
+        PlayerInput.OnInteract -= InteractPressed;
     }
 
-    void GrabPressed() {
+    void InteractPressed() {
         if (objectInteraction.PickupObjectInteraction()) return;
-        dialogueInteraction.AttemptToGoToNextDialogue();
+        if (dialogueInteraction.AttemptToOpenDialogue()) return;
+        if (dialogueInteraction.AttemptToGoToNextDialogue()) return;
     }
 }
