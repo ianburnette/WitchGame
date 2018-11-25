@@ -2,7 +2,6 @@
 using System.Linq;
 using Cinemachine;
 using JetBrains.Annotations;
-using RootMotion.FinalIK;
 using UnityEngine;
 using UnityEngine.Serialization;
 
